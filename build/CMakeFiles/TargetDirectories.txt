@@ -1,0 +1,6 @@
+/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/optitrack_mocap_server.dir
+/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/pico_mocap_server.dir
+/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/xsens_mocap_server.dir
+/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/fzmotion_mocap_server.dir
+/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/edit_cache.dir
+/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/rebuild_cache.dir

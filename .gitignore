@@ -1,0 +1,3 @@
+mocap_server/build/
+*.tar.gz
+calibrated_json/

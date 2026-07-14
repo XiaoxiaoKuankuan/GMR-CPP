@@ -1,0 +1,3 @@
+[submodule "third_party/pico_sdk"]
+	path = third_party/pico_sdk
+	url = https://github.com/YanjieZe/XRoboToolkit-PC-Service-Pybind.git
