@@ -1,0 +1,251 @@
+{
+  "robot_root_name": "pelvis",
+  "human_root_name": "Pelvis",
+  "ground_height": 0.0,
+  "human_height_assumption": 1.8,
+  "use_ik_match_table1": false,
+  "use_ik_match_table2": true,
+  "human_scale_table": {
+    "Pelvis": 0.85,
+    "Chest": 0.85,
+    "Left_UpperLeg": 0.85,
+    "Right_UpperLeg": 0.85,
+    "Left_LowerLeg": 0.85,
+    "Right_LowerLeg": 0.85,
+    "Left_Foot": 0.85,
+    "Right_Foot": 0.85,
+    "Left_UpperArm": 0.78,
+    "Right_UpperArm": 0.78,
+    "Left_Forearm": 0.78,
+    "Right_Forearm": 0.78,
+    "Left_Hand": 0.78,
+    "Right_Hand": 0.78
+  },
+  "ik_match_table1": {},
+  "ik_match_table2": {
+    "pelvis": [
+      "Pelvis",
+      100,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "torso_link": [
+      "Chest",
+      30,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "left_hip_yaw_link": [
+      "Left_UpperLeg",
+      20,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "left_knee_link": [
+      "Left_LowerLeg",
+      40,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "left_ankle_roll_link": [
+      "Left_Foot",
+      100,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "right_hip_yaw_link": [
+      "Right_UpperLeg",
+      20,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "right_knee_link": [
+      "Right_LowerLeg",
+      40,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "right_ankle_roll_link": [
+      "Right_Foot",
+      100,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "left_shoulder_yaw_link": [
+      "Left_UpperArm",
+      20,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "left_elbow_link": [
+      "Left_Forearm",
+      50,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "left_wrist_yaw_link": [
+      "Left_Hand",
+      100,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "right_shoulder_yaw_link": [
+      "Right_UpperArm",
+      20,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "right_elbow_link": [
+      "Right_Forearm",
+      50,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "right_wrist_yaw_link": [
+      "Right_Hand",
+      100,
+      0,
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ]
+  }
+}

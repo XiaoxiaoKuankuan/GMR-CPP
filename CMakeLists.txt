@@ -256,3 +256,33 @@ message(STATUS "")
 message(STATUS "  Run:")
 message(STATUS "    ./run.sh --server <motive_ip> --client <this_ip> --always --vis")
 message(STATUS "")
+# ==============================================================================
+#  GEM real-time UDP mocap server
+# ==============================================================================
+add_executable(gem_mocap_server
+    apps/gem_server.cpp
+    readers/gem_reader.cpp
+)
+
+target_include_directories(gem_mocap_server PRIVATE
+    ${GMR_ROOT}
+    ${GMR_ROOT}/include
+    ${GMR_ROOT}/readers
+    ${MUJOCO_INCLUDE_DIR}
+)
+
+target_link_libraries(gem_mocap_server PRIVATE
+    mujoco::mujoco
+    glfw
+    hiredis::hiredis
+    Eigen3::Eigen
+    nlohmann_json::nlohmann_json
+    pthread
+    GL
+    ${DAQP_LIB}
+)
+
+target_compile_options(gem_mocap_server PRIVATE
+    -O2 -Wall -Wextra -Wno-unused-parameter)
+
+message(STATUS "=== gem_mocap_server ENABLED ===")

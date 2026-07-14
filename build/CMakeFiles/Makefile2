@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi
+CMAKE_SOURCE_DIR = /home/weili/GMR-CPP_e1jump_lowdpi
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build
+CMAKE_BINARY_DIR = /home/weili/GMR-CPP_e1jump_lowdpi/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -67,6 +67,7 @@ all: CMakeFiles/optitrack_mocap_server.dir/all
 all: CMakeFiles/pico_mocap_server.dir/all
 all: CMakeFiles/xsens_mocap_server.dir/all
 all: CMakeFiles/fzmotion_mocap_server.dir/all
+all: CMakeFiles/gem_mocap_server.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -78,6 +79,7 @@ clean: CMakeFiles/optitrack_mocap_server.dir/clean
 clean: CMakeFiles/pico_mocap_server.dir/clean
 clean: CMakeFiles/xsens_mocap_server.dir/clean
 clean: CMakeFiles/fzmotion_mocap_server.dir/clean
+clean: CMakeFiles/gem_mocap_server.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -87,14 +89,14 @@ clean: CMakeFiles/fzmotion_mocap_server.dir/clean
 CMakeFiles/optitrack_mocap_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/optitrack_mocap_server.dir/build.make CMakeFiles/optitrack_mocap_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/optitrack_mocap_server.dir/build.make CMakeFiles/optitrack_mocap_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=4,5,6 "Built target optitrack_mocap_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=7,8,9 "Built target optitrack_mocap_server"
 .PHONY : CMakeFiles/optitrack_mocap_server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/optitrack_mocap_server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/optitrack_mocap_server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
 .PHONY : CMakeFiles/optitrack_mocap_server.dir/rule
 
 # Convenience name for target.
@@ -113,14 +115,14 @@ CMakeFiles/optitrack_mocap_server.dir/clean:
 CMakeFiles/pico_mocap_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pico_mocap_server.dir/build.make CMakeFiles/pico_mocap_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pico_mocap_server.dir/build.make CMakeFiles/pico_mocap_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=7,8,9 "Built target pico_mocap_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=10,11,12 "Built target pico_mocap_server"
 .PHONY : CMakeFiles/pico_mocap_server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/pico_mocap_server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/pico_mocap_server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
 .PHONY : CMakeFiles/pico_mocap_server.dir/rule
 
 # Convenience name for target.
@@ -139,14 +141,14 @@ CMakeFiles/pico_mocap_server.dir/clean:
 CMakeFiles/xsens_mocap_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xsens_mocap_server.dir/build.make CMakeFiles/xsens_mocap_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xsens_mocap_server.dir/build.make CMakeFiles/xsens_mocap_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=10,11,12 "Built target xsens_mocap_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=13,14,15 "Built target xsens_mocap_server"
 .PHONY : CMakeFiles/xsens_mocap_server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/xsens_mocap_server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/xsens_mocap_server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
 .PHONY : CMakeFiles/xsens_mocap_server.dir/rule
 
 # Convenience name for target.
@@ -165,14 +167,14 @@ CMakeFiles/xsens_mocap_server.dir/clean:
 CMakeFiles/fzmotion_mocap_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=1,2,3 "Built target fzmotion_mocap_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=1,2,3 "Built target fzmotion_mocap_server"
 .PHONY : CMakeFiles/fzmotion_mocap_server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/fzmotion_mocap_server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/fzmotion_mocap_server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
 .PHONY : CMakeFiles/fzmotion_mocap_server.dir/rule
 
 # Convenience name for target.
@@ -183,6 +185,32 @@ fzmotion_mocap_server: CMakeFiles/fzmotion_mocap_server.dir/rule
 CMakeFiles/fzmotion_mocap_server.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/clean
 .PHONY : CMakeFiles/fzmotion_mocap_server.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/gem_mocap_server.dir
+
+# All Build rule for target.
+CMakeFiles/gem_mocap_server.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=4,5,6 "Built target gem_mocap_server"
+.PHONY : CMakeFiles/gem_mocap_server.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/gem_mocap_server.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/gem_mocap_server.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
+.PHONY : CMakeFiles/gem_mocap_server.dir/rule
+
+# Convenience name for target.
+gem_mocap_server: CMakeFiles/gem_mocap_server.dir/rule
+.PHONY : gem_mocap_server
+
+# clean rule for target.
+CMakeFiles/gem_mocap_server.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/clean
+.PHONY : CMakeFiles/gem_mocap_server.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

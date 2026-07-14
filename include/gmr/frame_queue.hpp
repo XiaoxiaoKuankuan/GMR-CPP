@@ -7,6 +7,7 @@
 
 #include "body_map.hpp"
 #include <atomic>
+#include <cstdint>
 #include <deque>
 #include <mutex>
 #include <condition_variable>
@@ -14,7 +15,7 @@
 namespace gmr {
 
 struct RawFrame {
-    int     frame_number = 0;
+    uint32_t frame_number = 0;
     int64_t stamp_ns     = 0;
     BodyMap body_data;
 };

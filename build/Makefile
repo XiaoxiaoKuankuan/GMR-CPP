@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi
+CMAKE_SOURCE_DIR = /home/weili/GMR-CPP_e1jump_lowdpi
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build
+CMAKE_BINARY_DIR = /home/weili/GMR-CPP_e1jump_lowdpi/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles /home/weili/GMR-CPP_e1jump_lowdpi/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -168,6 +168,19 @@ fzmotion_mocap_server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/build
 .PHONY : fzmotion_mocap_server/fast
 
+#=============================================================================
+# Target rules for targets named gem_mocap_server
+
+# Build rule for target.
+gem_mocap_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gem_mocap_server
+.PHONY : gem_mocap_server
+
+# fast build rule for target.
+gem_mocap_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/build
+.PHONY : gem_mocap_server/fast
+
 apps/fzmotion_server.o: apps/fzmotion_server.cpp.o
 .PHONY : apps/fzmotion_server.o
 
@@ -191,6 +204,30 @@ apps/fzmotion_server.s: apps/fzmotion_server.cpp.s
 apps/fzmotion_server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.s
 .PHONY : apps/fzmotion_server.cpp.s
+
+apps/gem_server.o: apps/gem_server.cpp.o
+.PHONY : apps/gem_server.o
+
+# target to build an object file
+apps/gem_server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/apps/gem_server.cpp.o
+.PHONY : apps/gem_server.cpp.o
+
+apps/gem_server.i: apps/gem_server.cpp.i
+.PHONY : apps/gem_server.i
+
+# target to preprocess a source file
+apps/gem_server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/apps/gem_server.cpp.i
+.PHONY : apps/gem_server.cpp.i
+
+apps/gem_server.s: apps/gem_server.cpp.s
+.PHONY : apps/gem_server.s
+
+# target to generate assembly for a file
+apps/gem_server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/apps/gem_server.cpp.s
+.PHONY : apps/gem_server.cpp.s
 
 apps/mocap_server.o: apps/mocap_server.cpp.o
 .PHONY : apps/mocap_server.o
@@ -288,6 +325,30 @@ readers/fzmotion_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.s
 .PHONY : readers/fzmotion_reader.cpp.s
 
+readers/gem_reader.o: readers/gem_reader.cpp.o
+.PHONY : readers/gem_reader.o
+
+# target to build an object file
+readers/gem_reader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/readers/gem_reader.cpp.o
+.PHONY : readers/gem_reader.cpp.o
+
+readers/gem_reader.i: readers/gem_reader.cpp.i
+.PHONY : readers/gem_reader.i
+
+# target to preprocess a source file
+readers/gem_reader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/readers/gem_reader.cpp.i
+.PHONY : readers/gem_reader.cpp.i
+
+readers/gem_reader.s: readers/gem_reader.cpp.s
+.PHONY : readers/gem_reader.s
+
+# target to generate assembly for a file
+readers/gem_reader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/readers/gem_reader.cpp.s
+.PHONY : readers/gem_reader.cpp.s
+
 readers/optitrack_reader.o: readers/optitrack_reader.cpp.o
 .PHONY : readers/optitrack_reader.o
 
@@ -369,12 +430,16 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... fzmotion_mocap_server"
+	@echo "... gem_mocap_server"
 	@echo "... optitrack_mocap_server"
 	@echo "... pico_mocap_server"
 	@echo "... xsens_mocap_server"
 	@echo "... apps/fzmotion_server.o"
 	@echo "... apps/fzmotion_server.i"
 	@echo "... apps/fzmotion_server.s"
+	@echo "... apps/gem_server.o"
+	@echo "... apps/gem_server.i"
+	@echo "... apps/gem_server.s"
 	@echo "... apps/mocap_server.o"
 	@echo "... apps/mocap_server.i"
 	@echo "... apps/mocap_server.s"
@@ -387,6 +452,9 @@ help:
 	@echo "... readers/fzmotion_reader.o"
 	@echo "... readers/fzmotion_reader.i"
 	@echo "... readers/fzmotion_reader.s"
+	@echo "... readers/gem_reader.o"
+	@echo "... readers/gem_reader.i"
+	@echo "... readers/gem_reader.s"
 	@echo "... readers/optitrack_reader.o"
 	@echo "... readers/optitrack_reader.i"
 	@echo "... readers/optitrack_reader.s"

@@ -1,8 +1,8 @@
 CMakeFiles/optitrack_mocap_server.dir/apps/mocap_server.cpp.o: \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/apps/mocap_server.cpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/apps/mocap_server.cpp \
  /usr/include/stdc-predef.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/include/gmr/frame_queue.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/include/gmr/body_map.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/frame_queue.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/body_map.hpp \
  /usr/include/eigen3/Eigen/Dense /usr/include/eigen3/Eigen/Core \
  /usr/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
  /usr/include/eigen3/Eigen/src/Core/util/Macros.h \
@@ -424,23 +424,23 @@ CMakeFiles/optitrack_mocap_server.dir/apps/mocap_server.cpp.o: \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/ext/concurrence.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/include/gmr/motion_buffer.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/include/gmr/gmr_mink.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mujoco.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/motion_buffer.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/gmr_mink.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mujoco.h \
  /usr/include/c++/11/math.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjdata.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjtnum.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjmodel.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjthread.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjexport.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjmacro.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjplugin.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjvisualize.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjrender.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjsan.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjspec.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjui.h \
- /home/suanfa/miniconda3/include/nlohmann/json.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjdata.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjtnum.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjmodel.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjthread.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjexport.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjmacro.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjplugin.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjvisualize.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjrender.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjsan.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjspec.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjui.h \
+ /home/weili/miniconda3/include/nlohmann/json.hpp \
  /usr/include/c++/11/iterator /usr/include/c++/11/bits/stream_iterator.h \
  /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
@@ -450,9 +450,9 @@ CMakeFiles/optitrack_mocap_server.dir/apps/mocap_server.cpp.o: \
  /usr/include/c++/11/pstl/glue_memory_defs.h /usr/include/c++/11/numeric \
  /usr/include/c++/11/bits/stl_numeric.h \
  /usr/include/c++/11/pstl/glue_numeric_defs.h \
- /home/suanfa/miniconda3/include/nlohmann/adl_serializer.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/abi_macros.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/conversions/from_json.hpp \
+ /home/weili/miniconda3/include/nlohmann/adl_serializer.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/abi_macros.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/conversions/from_json.hpp \
  /usr/include/c++/11/forward_list /usr/include/c++/11/bits/forward_list.h \
  /usr/include/c++/11/bits/forward_list.tcc /usr/include/c++/11/valarray \
  /usr/include/c++/11/bits/valarray_array.h \
@@ -464,24 +464,24 @@ CMakeFiles/optitrack_mocap_server.dir/apps/mocap_server.cpp.o: \
  /usr/include/c++/11/bits/gslice_array.h \
  /usr/include/c++/11/bits/mask_array.h \
  /usr/include/c++/11/bits/indirect_array.h \
- /home/suanfa/miniconda3/include/nlohmann/detail/exceptions.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/value_t.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/macro_scope.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/meta/detected.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/meta/void_t.hpp \
- /home/suanfa/miniconda3/include/nlohmann/thirdparty/hedley/hedley.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/exceptions.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/value_t.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/macro_scope.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/meta/detected.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/meta/void_t.hpp \
+ /home/weili/miniconda3/include/nlohmann/thirdparty/hedley/hedley.hpp \
  /usr/include/c++/11/version \
- /home/suanfa/miniconda3/include/nlohmann/detail/string_escape.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/input/position_t.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/meta/cpp_future.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/meta/type_traits.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/iterators/iterator_traits.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/meta/call_std/begin.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/meta/call_std/end.hpp \
- /home/suanfa/miniconda3/include/nlohmann/json_fwd.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/string_concat.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/meta/identity_tag.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/meta/std_fs.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/string_escape.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/input/position_t.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/meta/cpp_future.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/meta/type_traits.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/iterators/iterator_traits.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/meta/call_std/begin.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/meta/call_std/end.hpp \
+ /home/weili/miniconda3/include/nlohmann/json_fwd.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/string_concat.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/meta/identity_tag.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/meta/std_fs.hpp \
  /usr/include/c++/11/filesystem /usr/include/c++/11/bits/fs_fwd.h \
  /usr/include/c++/11/bits/fs_path.h /usr/include/c++/11/locale \
  /usr/include/c++/11/bits/locale_facets_nonio.h \
@@ -492,40 +492,40 @@ CMakeFiles/optitrack_mocap_server.dir/apps/mocap_server.cpp.o: \
  /usr/include/c++/11/bits/locale_conv.h /usr/include/c++/11/iomanip \
  /usr/include/c++/11/bits/quoted_string.h /usr/include/c++/11/codecvt \
  /usr/include/c++/11/bits/fs_dir.h /usr/include/c++/11/bits/fs_ops.h \
- /home/suanfa/miniconda3/include/nlohmann/detail/conversions/to_json.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/iterators/iteration_proxy.hpp \
- /home/suanfa/miniconda3/include/nlohmann/byte_container_with_subtype.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/hash.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/input/binary_reader.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/input/input_adapters.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/input/json_sax.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/input/lexer.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/meta/is_sax.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/input/parser.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/iterators/internal_iterator.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/iterators/primitive_iterator.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/iterators/iter_impl.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/json_pointer.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/json_ref.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/output/binary_writer.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/output/output_adapters.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/output/serializer.hpp \
- /home/suanfa/miniconda3/include/nlohmann/detail/conversions/to_chars.hpp \
- /home/suanfa/miniconda3/include/nlohmann/ordered_map.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/conversions/to_json.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/iterators/iteration_proxy.hpp \
+ /home/weili/miniconda3/include/nlohmann/byte_container_with_subtype.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/hash.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/input/binary_reader.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/input/input_adapters.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/input/json_sax.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/input/lexer.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/meta/is_sax.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/input/parser.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/iterators/internal_iterator.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/iterators/primitive_iterator.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/iterators/iter_impl.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/json_pointer.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/json_ref.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/output/binary_writer.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/output/output_adapters.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/output/serializer.hpp \
+ /home/weili/miniconda3/include/nlohmann/detail/conversions/to_chars.hpp \
+ /home/weili/miniconda3/include/nlohmann/ordered_map.hpp \
  /usr/include/c++/11/any \
- /home/suanfa/miniconda3/include/nlohmann/detail/macro_unscope.hpp \
- /home/suanfa/miniconda3/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/api.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/daqp.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/factorization.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/types.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/constants.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/auxiliary.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/daqp_prox.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/bnb.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/hierarchical.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/types.h \
+ /home/weili/miniconda3/include/nlohmann/detail/macro_unscope.hpp \
+ /home/weili/miniconda3/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/api.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/daqp.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/factorization.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/types.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/constants.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/auxiliary.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/daqp_prox.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/bnb.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/hierarchical.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/types.h \
  /usr/include/c++/11/fstream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
@@ -533,18 +533,18 @@ CMakeFiles/optitrack_mocap_server.dir/apps/mocap_server.cpp.o: \
  /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
  /usr/include/c++/11/optional \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/include/gmr/mujoco_viewer.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/mujoco_viewer.hpp \
  /usr/include/GLFW/glfw3.h /usr/include/GL/gl.h /usr/include/GL/glext.h \
  /usr/include/KHR/khrplatform.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/include/gmr/redis_publisher.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/redis_publisher.hpp \
  /usr/include/hiredis/hiredis.h /usr/include/hiredis/read.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/hiredis/sds.h \
  /usr/include/hiredis/alloc.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/optitrack_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetClient.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetTypes.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetCAPI.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/optitrack_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetClient.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetTypes.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetCAPI.h \
  /usr/include/c++/11/csignal /usr/include/signal.h \
  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
  /usr/include/x86_64-linux-gnu/bits/signum-arch.h \

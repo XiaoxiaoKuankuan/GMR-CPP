@@ -1,10 +1,10 @@
 CMakeFiles/xsens_mocap_server.dir/readers/xsens_reader.cpp.o: \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/xsens_reader.cpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/xsens_reader.cpp \
  /usr/include/stdc-predef.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/xsens_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/frame_queue.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/body_map.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/xsens_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/frame_queue.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/body_map.hpp \
  /usr/include/eigen3/Eigen/Dense /usr/include/eigen3/Eigen/Core \
  /usr/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
  /usr/include/eigen3/Eigen/src/Core/util/Macros.h \

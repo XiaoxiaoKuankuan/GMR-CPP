@@ -1,10 +1,10 @@
 CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o: \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.cpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.cpp \
  /usr/include/stdc-predef.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/frame_queue.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/body_map.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/frame_queue.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/body_map.hpp \
  /usr/include/eigen3/Eigen/Dense /usr/include/eigen3/Eigen/Core \
  /usr/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
  /usr/include/eigen3/Eigen/src/Core/util/Macros.h \
@@ -426,14 +426,14 @@ CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o: \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/ext/concurrence.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/LuMoSDK/include/LuMoSDKBase.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/LuMoSDK/include/LuMoSDKBase.hpp \
  /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
  /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
  /usr/include/c++/11/bits/shared_ptr_atomic.h \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/LuMoSDK/include/LuMoDataStruct.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/LuMoSDK/include/LuMoDataStruct.hpp \
  /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
  /usr/include/c++/11/iostream

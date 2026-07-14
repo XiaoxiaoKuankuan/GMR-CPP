@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi
+CMAKE_SOURCE_DIR = /home/weili/GMR-CPP_e1jump_lowdpi
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build
+CMAKE_BINARY_DIR = /home/weili/GMR-CPP_e1jump_lowdpi/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/fzmotion_mocap_server.dir/depend.make
@@ -72,30 +72,30 @@ include CMakeFiles/fzmotion_mocap_server.dir/flags.make
 CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o: CMakeFiles/fzmotion_mocap_server.dir/flags.make
 CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o: ../apps/fzmotion_server.cpp
 CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o: CMakeFiles/fzmotion_mocap_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o -MF CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o.d -o CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o -c /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/apps/fzmotion_server.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o -MF CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o.d -o CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o -c /home/weili/GMR-CPP_e1jump_lowdpi/apps/fzmotion_server.cpp
 
 CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/apps/fzmotion_server.cpp > CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/weili/GMR-CPP_e1jump_lowdpi/apps/fzmotion_server.cpp > CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.i
 
 CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/apps/fzmotion_server.cpp -o CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/weili/GMR-CPP_e1jump_lowdpi/apps/fzmotion_server.cpp -o CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.s
 
 CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o: CMakeFiles/fzmotion_mocap_server.dir/flags.make
 CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o: ../readers/fzmotion_reader.cpp
 CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o: CMakeFiles/fzmotion_mocap_server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o -MF CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o.d -o CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o -c /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o -MF CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o.d -o CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.o -c /home/weili/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.cpp
 
 CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.cpp > CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/weili/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.cpp > CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.i
 
 CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.cpp -o CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/weili/GMR-CPP_e1jump_lowdpi/readers/fzmotion_reader.cpp -o CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.s
 
 # Object files for target fzmotion_mocap_server
 fzmotion_mocap_server_OBJECTS = \
@@ -114,7 +114,7 @@ fzmotion_mocap_server: /usr/lib/x86_64-linux-gnu/libglfw.so
 fzmotion_mocap_server: /usr/lib/x86_64-linux-gnu/libhiredis.so
 fzmotion_mocap_server: ../third_party/daqp/build/libdaqpstat.a
 fzmotion_mocap_server: CMakeFiles/fzmotion_mocap_server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable fzmotion_mocap_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable fzmotion_mocap_server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/fzmotion_mocap_server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -126,6 +126,6 @@ CMakeFiles/fzmotion_mocap_server.dir/clean:
 .PHONY : CMakeFiles/fzmotion_mocap_server.dir/clean
 
 CMakeFiles/fzmotion_mocap_server.dir/depend:
-	cd /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/fzmotion_mocap_server.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/weili/GMR-CPP_e1jump_lowdpi/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/weili/GMR-CPP_e1jump_lowdpi /home/weili/GMR-CPP_e1jump_lowdpi /home/weili/GMR-CPP_e1jump_lowdpi/build /home/weili/GMR-CPP_e1jump_lowdpi/build /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/fzmotion_mocap_server.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/fzmotion_mocap_server.dir/depend
 

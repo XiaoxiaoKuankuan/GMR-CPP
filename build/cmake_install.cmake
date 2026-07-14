@@ -1,4 +1,4 @@
-# Install script for directory: /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi
+# Install script for directory: /home/weili/GMR-CPP_e1jump_lowdpi
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/weili/GMR-CPP_e1jump_lowdpi/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,10 +1,10 @@
 CMakeFiles/pico_mocap_server.dir/readers/pico_reader.cpp.o: \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/pico_reader.cpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/pico_reader.cpp \
  /usr/include/stdc-predef.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/pico_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/frame_queue.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/body_map.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/pico_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/frame_queue.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/body_map.hpp \
  /usr/include/eigen3/Eigen/Dense /usr/include/eigen3/Eigen/Core \
  /usr/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
  /usr/include/eigen3/Eigen/src/Core/util/Macros.h \
@@ -426,7 +426,7 @@ CMakeFiles/pico_mocap_server.dir/readers/pico_reader.cpp.o: \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/ext/concurrence.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/pico_sdk/include/nlohmann/json.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/pico_sdk/include/nlohmann/json.hpp \
  /usr/include/c++/11/iterator /usr/include/c++/11/bits/stream_iterator.h \
  /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
@@ -457,7 +457,7 @@ CMakeFiles/pico_mocap_server.dir/readers/pico_reader.cpp.o: \
  /usr/include/c++/11/bits/fs_dir.h /usr/include/c++/11/bits/fs_ops.h \
  /usr/include/c++/11/numeric /usr/include/c++/11/bits/stl_numeric.h \
  /usr/include/c++/11/pstl/glue_numeric_defs.h /usr/include/c++/11/any \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/pico_sdk/include/PXREARobotSDK.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/pico_sdk/include/PXREARobotSDK.h \
  /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
  /usr/include/c++/11/iostream

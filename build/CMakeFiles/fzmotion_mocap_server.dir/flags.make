@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi -I/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/include -I/home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers -isystem /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/LuMoSDK/include -isystem /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include -isystem /usr/include/eigen3 -isystem /home/suanfa/miniconda3/include
+CXX_INCLUDES = -I/home/weili/GMR-CPP_e1jump_lowdpi -I/home/weili/GMR-CPP_e1jump_lowdpi/include -I/home/weili/GMR-CPP_e1jump_lowdpi/readers -isystem /home/weili/GMR-CPP_e1jump_lowdpi/third_party/LuMoSDK/include -isystem /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include -isystem /usr/include/eigen3 -isystem /home/weili/miniconda3/include
 
 CXX_FLAGS = -O3 -DNDEBUG -O2 -Wall -Wextra -Wno-unused-parameter -std=c++17
 

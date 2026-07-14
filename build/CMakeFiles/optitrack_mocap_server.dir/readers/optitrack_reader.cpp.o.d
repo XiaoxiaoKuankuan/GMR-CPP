@@ -1,10 +1,10 @@
 CMakeFiles/optitrack_mocap_server.dir/readers/optitrack_reader.cpp.o: \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/optitrack_reader.cpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/optitrack_reader.cpp \
  /usr/include/stdc-predef.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/optitrack_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/frame_queue.hpp \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/body_map.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/optitrack_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/frame_queue.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/readers/../include/gmr/body_map.hpp \
  /usr/include/eigen3/Eigen/Dense /usr/include/eigen3/Eigen/Core \
  /usr/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
  /usr/include/eigen3/Eigen/src/Core/util/Macros.h \
@@ -426,9 +426,9 @@ CMakeFiles/optitrack_mocap_server.dir/readers/optitrack_reader.cpp.o: \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/ext/concurrence.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetClient.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetTypes.h \
- /home/suanfa/桌面/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetCAPI.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetClient.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetTypes.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/third_party/NatNet_SDK_4.4_ubuntu/include/NatNetCAPI.h \
  /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
  /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
