@@ -87,6 +87,7 @@ struct Config {
     bool        vis           = false;
     int         viewer_width  = 640;
     int         viewer_height = 480;
+    std::string viewer_follow_body = "pelvis";
     bool        offset_to_ground = false;
     bool        require_buttons = true;
 
@@ -121,6 +122,7 @@ void usage(const char* program) {
         "  --vis                     open MuJoCo viewer\n"
         "  --viewer-width <px>       default 640\n"
         "  --viewer-height <px>      default 480\n"
+        "  --viewer-follow-body <b>  camera follow body (default pelvis)\n"
         "  --help\n",
         program);
 }
@@ -171,6 +173,7 @@ Config parseArgs(int argc, char** argv) {
         else if (arg == "--vis")               cfg.vis = true;
         else if (arg == "--viewer-width")      cfg.viewer_width = std::stoi(next());
         else if (arg == "--viewer-height")     cfg.viewer_height = std::stoi(next());
+        else if (arg == "--viewer-follow-body") cfg.viewer_follow_body = next();
         else if (arg == "--help" || arg == "-h") {
             usage(argv[0]);
             std::exit(0);
@@ -253,6 +256,7 @@ int main(int argc, char** argv) {
 
         gmr::MotionBuffer buffer(max_frames, kFrameTimeoutSec);
         buffer.setOffsetToGround(cfg.offset_to_ground);
+        buffer.setCaptureTargetData(cfg.vis);
 
         std::cout << "[Init] collecting " << kSeedFrames << " seed frames...\n";
         buffer.seedSync(kSeedFrames, queue, &gmr);
@@ -279,7 +283,8 @@ int main(int argc, char** argv) {
         std::unique_ptr<gmr::MujocoViewer> viewer;
         if (cfg.vis)
             viewer = std::make_unique<gmr::MujocoViewer>(
-                cfg.xml_file, cfg.viewer_width, cfg.viewer_height);
+                cfg.xml_file, cfg.viewer_width, cfg.viewer_height,
+                cfg.viewer_follow_body);
 
         const auto period =
             std::chrono::duration<double>(1.0 / cfg.publish_hz);
@@ -385,7 +390,8 @@ int main(int argc, char** argv) {
             if (viewer) {
                 auto frame = buffer.latestProcessedFrame();
                 if (frame && frame->qpos.size() > 0)
-                    viewer->render(frame->qpos);
+                    viewer->render(
+                        frame->qpos, &frame->body_data, &frame->target_data);
                 if (viewer->shouldClose()) break;
                 std::this_thread::sleep_until(
                     t0 + std::chrono::milliseconds(5));

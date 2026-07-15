@@ -16,6 +16,7 @@ struct ProcessedFrame {
     double          frame_time = 0.0;
     Eigen::VectorXd qpos;
     BodyMap         body_data;
+    BodyMap         target_data;  // Display-only scaled+offset GMR targets.
 };
 
 class MotionBuffer {
@@ -32,6 +33,7 @@ public:
 
     void setPreprocessFn(PreprocessFn fn) { preprocess_fn_ = std::move(fn); }
     void setOffsetToGround(bool v) { offset_to_ground_ = v; }
+    void setCaptureTargetData(bool v) { capture_target_data_ = v; }
 
     void seedSync(int n, FrameQueue& queue, gmr_mink::GMR* gmr) {
         for (int i = 0; i < n;) {
@@ -123,6 +125,8 @@ private:
                 }
             }
             pf.qpos      = gmr->retarget(raw.body_data, offset_to_ground_);
+            if (capture_target_data_)
+                pf.target_data = gmr->getScaledHumanData();
             pf.body_data = std::move(raw.body_data);
             return pf;
         } catch (const std::exception& e) {
@@ -196,6 +200,7 @@ private:
     double              frame_timeout_;
     PreprocessFn        preprocess_fn_;
     bool                offset_to_ground_ = false;  // default false，不影响mocap_server
+    bool                capture_target_data_ = false;
     std::atomic<bool>   running_{false};
     std::atomic<int>    dropped_{0};
     std::thread         thread_;

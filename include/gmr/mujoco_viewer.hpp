@@ -10,10 +10,14 @@
 #include <mujoco/mujoco.h>
 #include <GLFW/glfw3.h>
 #include <Eigen/Dense>
+#include "gmr/body_map.hpp"
+#include <array>
 #include <string>
 #include <stdexcept>
 #include <algorithm>
 #include <atomic>
+#include <map>
+#include <vector>
 
 extern std::atomic<bool> g_stop;  // defined in main
 
@@ -23,7 +27,8 @@ class MujocoViewer {
 public:
     explicit MujocoViewer(const std::string& xml_path,
                           int render_width = 640,
-                          int render_height = 480) {
+                          int render_height = 480,
+                          const std::string& follow_body = "pelvis") {
         render_width_ = std::max(160, render_width);
         render_height_ = std::max(120, render_height);
 
@@ -64,7 +69,7 @@ public:
         cam_.elevation = -20.0;
         cam_.type      = mjCAMERA_FREE;
 
-        pelvis_id_ = mj_name2id(model_, mjOBJ_BODY, "pelvis");
+        follow_body_id_ = mj_name2id(model_, mjOBJ_BODY, follow_body.c_str());
     }
 
     ~MujocoViewer() {
@@ -77,7 +82,9 @@ public:
     }
 
     // Render one frame. Returns false if window was closed.
-    bool render(const Eigen::VectorXd& qpos) {
+    bool render(const Eigen::VectorXd& qpos,
+                const BodyMap* raw_targets = nullptr,
+                const BodyMap* scaled_targets = nullptr) {
         if (!window_ || glfwWindowShouldClose(window_)) {
             g_stop = true; return false;
         }
@@ -86,9 +93,9 @@ public:
         for (int i = 0; i < n; ++i) data_->qpos[i] = qpos[i];
         mj_forward(model_, data_);
 
-        // Camera follows pelvis when not dragging
-        if (pelvis_id_ >= 0 && !mouse_left_ && !mouse_right_ && !mouse_middle_) {
-            mjtNum* xpos = data_->xpos + 3 * pelvis_id_;
+        // Camera follows the requested body when not dragging.
+        if (follow_body_id_ >= 0 && !mouse_left_ && !mouse_right_ && !mouse_middle_) {
+            mjtNum* xpos = data_->xpos + 3 * follow_body_id_;
             cam_.lookat[0] = xpos[0];
             cam_.lookat[1] = xpos[1];
             cam_.lookat[2] = xpos[2];
@@ -103,6 +110,8 @@ public:
         glClearColor(0.f, 0.f, 0.f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         mjv_updateScene(model_, data_, &opt_, nullptr, &cam_, mjCAT_ALL, &scn_);
+        if (raw_targets && scaled_targets)
+            appendTargetOverlay(*raw_targets, *scaled_targets);
         mjr_render(vp, &scn_, &con_);
         glfwSwapBuffers(window_);
         glfwPollEvents();
@@ -121,7 +130,7 @@ private:
     mjvOption   opt_;
     mjvScene    scn_;
     mjrContext  con_;
-    int         pelvis_id_ = -1;
+    int         follow_body_id_ = -1;
     int         render_width_ = 640;
     int         render_height_ = 480;
 
@@ -130,6 +139,108 @@ private:
     bool   mouse_middle_ = false;
     double mouse_x_      = 0.0;
     double mouse_y_      = 0.0;
+
+    static const std::vector<std::pair<std::string, std::string>>& humanEdges() {
+        static const std::vector<std::pair<std::string, std::string>> edges = {
+            {"Pelvis", "Chest"},
+            {"Pelvis", "Left_UpperLeg"},
+            {"Left_UpperLeg", "Left_LowerLeg"},
+            {"Left_LowerLeg", "Left_Foot"},
+            {"Pelvis", "Right_UpperLeg"},
+            {"Right_UpperLeg", "Right_LowerLeg"},
+            {"Right_LowerLeg", "Right_Foot"},
+            {"Chest", "Left_UpperArm"},
+            {"Left_UpperArm", "Left_Forearm"},
+            {"Left_Forearm", "Left_Hand"},
+            {"Chest", "Right_UpperArm"},
+            {"Right_UpperArm", "Right_Forearm"},
+            {"Right_Forearm", "Right_Hand"},
+        };
+        return edges;
+    }
+
+    static const std::map<std::string, std::string>& robotBodies() {
+        static const std::map<std::string, std::string> bodies = {
+            {"Pelvis", "base_link"},
+            {"Chest", "waist_roll_link"},
+            {"Left_UpperLeg", "l_leg_hip_pitch_link"},
+            {"Left_LowerLeg", "l_leg_knee_link"},
+            {"Left_Foot", "l_leg_ankle_roll_link"},
+            {"Right_UpperLeg", "r_leg_hip_pitch_link"},
+            {"Right_LowerLeg", "r_leg_knee_link"},
+            {"Right_Foot", "r_leg_ankle_roll_link"},
+            {"Left_UpperArm", "l_arm_shoulder_roll_link"},
+            {"Left_Forearm", "l_arm_elbow_pitch_link"},
+            {"Left_Hand", "l_arm_elbow_yaw_link"},
+            {"Right_UpperArm", "r_arm_shoulder_roll_link"},
+            {"Right_Forearm", "r_arm_elbow_pitch_link"},
+            {"Right_Hand", "r_arm_elbow_yaw_link"},
+        };
+        return bodies;
+    }
+
+    void appendSphere(const Eigen::Vector3d& position,
+                      const std::array<float, 4>& color,
+                      double radius) {
+        if (scn_.ngeom >= scn_.maxgeom) return;
+        mjtNum size[3] = {radius, radius, radius};
+        mjtNum pos[3] = {position.x(), position.y(), position.z()};
+        mjvGeom* geom = &scn_.geoms[scn_.ngeom++];
+        mjv_initGeom(geom, mjGEOM_SPHERE, size, pos, nullptr, color.data());
+        geom->category = mjCAT_DECOR;
+    }
+
+    void appendLine(const Eigen::Vector3d& first,
+                    const Eigen::Vector3d& second,
+                    const std::array<float, 4>& color,
+                    double width) {
+        if (scn_.ngeom >= scn_.maxgeom) return;
+        mjvGeom* geom = &scn_.geoms[scn_.ngeom++];
+        mjv_makeConnector(
+            geom, mjGEOM_CAPSULE, width,
+            first.x(), first.y(), first.z(),
+            second.x(), second.y(), second.z());
+        std::copy(color.begin(), color.end(), geom->rgba);
+        geom->category = mjCAT_DECOR;
+    }
+
+    void appendSkeleton(const BodyMap& poses,
+                        const std::array<float, 4>& color,
+                        double radius) {
+        for (const auto& [name, pose] : poses) {
+            (void)name;
+            appendSphere(pose.position, color, radius);
+        }
+        for (const auto& [first, second] : humanEdges()) {
+            auto a = poses.find(first);
+            auto b = poses.find(second);
+            if (a != poses.end() && b != poses.end())
+                appendLine(a->second.position, b->second.position, color, radius * 0.45);
+        }
+    }
+
+    BodyMap currentRobotBodies() const {
+        BodyMap poses;
+        for (const auto& [human_name, robot_name] : robotBodies()) {
+            int body_id = mj_name2id(model_, mjOBJ_BODY, robot_name.c_str());
+            if (body_id < 0) continue;
+            const mjtNum* position = data_->xpos + 3 * body_id;
+            BodyData pose;
+            pose.position = Eigen::Vector3d(position[0], position[1], position[2]);
+            poses.emplace(human_name, pose);
+        }
+        return poses;
+    }
+
+    void appendTargetOverlay(const BodyMap& raw_targets,
+                             const BodyMap& scaled_targets) {
+        const std::array<float, 4> blue   = {0.10F, 0.35F, 1.00F, 0.85F};
+        const std::array<float, 4> yellow = {1.00F, 0.80F, 0.10F, 0.90F};
+        const std::array<float, 4> white  = {1.00F, 1.00F, 1.00F, 0.90F};
+        appendSkeleton(raw_targets, blue, 0.018);
+        appendSkeleton(scaled_targets, yellow, 0.022);
+        appendSkeleton(currentRobotBodies(), white, 0.014);
+    }
 
     static MujocoViewer* get(GLFWwindow* w) {
         return static_cast<MujocoViewer*>(glfwGetWindowUserPointer(w));
