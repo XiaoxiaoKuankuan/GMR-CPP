@@ -440,9 +440,8 @@ CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o: \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjsan.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjspec.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjui.h \
- /home/weili/miniconda3/include/nlohmann/json.hpp \
- /usr/include/c++/11/iterator /usr/include/c++/11/bits/stream_iterator.h \
- /usr/include/c++/11/memory \
+ /usr/include/nlohmann/json.hpp /usr/include/c++/11/iterator \
+ /usr/include/c++/11/bits/stream_iterator.h /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
  /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
  /usr/include/c++/11/bits/shared_ptr_atomic.h \
@@ -450,9 +449,8 @@ CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o: \
  /usr/include/c++/11/pstl/glue_memory_defs.h /usr/include/c++/11/numeric \
  /usr/include/c++/11/bits/stl_numeric.h \
  /usr/include/c++/11/pstl/glue_numeric_defs.h \
- /home/weili/miniconda3/include/nlohmann/adl_serializer.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/abi_macros.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/conversions/from_json.hpp \
+ /usr/include/nlohmann/adl_serializer.hpp \
+ /usr/include/nlohmann/detail/conversions/from_json.hpp \
  /usr/include/c++/11/forward_list /usr/include/c++/11/bits/forward_list.h \
  /usr/include/c++/11/bits/forward_list.tcc /usr/include/c++/11/valarray \
  /usr/include/c++/11/bits/valarray_array.h \
@@ -464,26 +462,23 @@ CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o: \
  /usr/include/c++/11/bits/gslice_array.h \
  /usr/include/c++/11/bits/mask_array.h \
  /usr/include/c++/11/bits/indirect_array.h \
- /home/weili/miniconda3/include/nlohmann/detail/exceptions.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/value_t.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/macro_scope.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/meta/detected.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/meta/void_t.hpp \
- /home/weili/miniconda3/include/nlohmann/thirdparty/hedley/hedley.hpp \
- /usr/include/c++/11/version \
- /home/weili/miniconda3/include/nlohmann/detail/string_escape.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/input/position_t.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/meta/cpp_future.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/meta/type_traits.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/iterators/iterator_traits.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/meta/call_std/begin.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/meta/call_std/end.hpp \
- /home/weili/miniconda3/include/nlohmann/json_fwd.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/string_concat.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/meta/identity_tag.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/meta/std_fs.hpp \
- /usr/include/c++/11/filesystem /usr/include/c++/11/bits/fs_fwd.h \
- /usr/include/c++/11/bits/fs_path.h /usr/include/c++/11/locale \
+ /usr/include/nlohmann/detail/exceptions.hpp \
+ /usr/include/nlohmann/detail/value_t.hpp \
+ /usr/include/nlohmann/detail/string_escape.hpp \
+ /usr/include/nlohmann/detail/macro_scope.hpp \
+ /usr/include/nlohmann/thirdparty/hedley/hedley.hpp \
+ /usr/include/nlohmann/detail/meta/detected.hpp \
+ /usr/include/nlohmann/detail/meta/void_t.hpp \
+ /usr/include/nlohmann/detail/input/position_t.hpp \
+ /usr/include/nlohmann/detail/meta/cpp_future.hpp \
+ /usr/include/nlohmann/detail/meta/identity_tag.hpp \
+ /usr/include/nlohmann/detail/meta/type_traits.hpp \
+ /usr/include/nlohmann/detail/iterators/iterator_traits.hpp \
+ /usr/include/nlohmann/detail/meta/call_std/begin.hpp \
+ /usr/include/nlohmann/detail/meta/call_std/end.hpp \
+ /usr/include/nlohmann/json_fwd.hpp /usr/include/c++/11/filesystem \
+ /usr/include/c++/11/bits/fs_fwd.h /usr/include/c++/11/bits/fs_path.h \
+ /usr/include/c++/11/locale \
  /usr/include/c++/11/bits/locale_facets_nonio.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
@@ -492,30 +487,29 @@ CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.o: \
  /usr/include/c++/11/bits/locale_conv.h /usr/include/c++/11/iomanip \
  /usr/include/c++/11/bits/quoted_string.h /usr/include/c++/11/codecvt \
  /usr/include/c++/11/bits/fs_dir.h /usr/include/c++/11/bits/fs_ops.h \
- /home/weili/miniconda3/include/nlohmann/detail/conversions/to_json.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/iterators/iteration_proxy.hpp \
- /home/weili/miniconda3/include/nlohmann/byte_container_with_subtype.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/hash.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/input/binary_reader.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/input/input_adapters.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/input/json_sax.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/input/lexer.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/meta/is_sax.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/input/parser.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/iterators/internal_iterator.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/iterators/primitive_iterator.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/iterators/iter_impl.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/json_pointer.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/json_ref.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/output/binary_writer.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/output/output_adapters.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/output/serializer.hpp \
- /home/weili/miniconda3/include/nlohmann/detail/conversions/to_chars.hpp \
- /home/weili/miniconda3/include/nlohmann/ordered_map.hpp \
- /usr/include/c++/11/any \
- /home/weili/miniconda3/include/nlohmann/detail/macro_unscope.hpp \
- /home/weili/miniconda3/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+ /usr/include/nlohmann/detail/conversions/to_json.hpp \
+ /usr/include/nlohmann/detail/iterators/iteration_proxy.hpp \
+ /usr/include/nlohmann/byte_container_with_subtype.hpp \
+ /usr/include/nlohmann/detail/hash.hpp \
+ /usr/include/nlohmann/detail/input/binary_reader.hpp \
+ /usr/include/nlohmann/detail/input/input_adapters.hpp \
+ /usr/include/nlohmann/detail/input/json_sax.hpp \
+ /usr/include/nlohmann/detail/input/lexer.hpp \
+ /usr/include/nlohmann/detail/meta/is_sax.hpp \
+ /usr/include/nlohmann/detail/input/parser.hpp \
+ /usr/include/nlohmann/detail/iterators/internal_iterator.hpp \
+ /usr/include/nlohmann/detail/iterators/primitive_iterator.hpp \
+ /usr/include/nlohmann/detail/iterators/iter_impl.hpp \
+ /usr/include/nlohmann/detail/iterators/json_reverse_iterator.hpp \
+ /usr/include/nlohmann/detail/json_pointer.hpp \
+ /usr/include/nlohmann/detail/json_ref.hpp \
+ /usr/include/nlohmann/detail/output/binary_writer.hpp \
+ /usr/include/nlohmann/detail/output/output_adapters.hpp \
+ /usr/include/nlohmann/detail/output/serializer.hpp \
+ /usr/include/nlohmann/detail/conversions/to_chars.hpp \
+ /usr/include/nlohmann/ordered_map.hpp \
+ /usr/include/nlohmann/detail/macro_unscope.hpp \
+ /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/api.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/daqp.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/factorization.h \

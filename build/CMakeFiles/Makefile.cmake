@@ -10,9 +10,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "../CMakeLists.txt"
   "CMakeFiles/3.22.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.22.1/CMakeSystem.cmake"
-  "/home/weili/miniconda3/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake"
-  "/home/weili/miniconda3/share/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake"
-  "/home/weili/miniconda3/share/cmake/nlohmann_json/nlohmann_jsonTargets.cmake"
+  "/usr/lib/cmake/nlohmann_json/nlohmann_jsonConfig.cmake"
+  "/usr/lib/cmake/nlohmann_json/nlohmann_jsonConfigVersion.cmake"
+  "/usr/lib/cmake/nlohmann_json/nlohmann_jsonTargets.cmake"
   "/usr/share/cmake-3.22/Modules/CMakeCXXCompiler.cmake.in"
   "/usr/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp"
   "/usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake"
@@ -109,4 +109,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/xsens_mocap_server.dir/DependInfo.cmake"
   "CMakeFiles/fzmotion_mocap_server.dir/DependInfo.cmake"
   "CMakeFiles/gem_mocap_server.dir/DependInfo.cmake"
+  "CMakeFiles/gem_reader_protocol_test.dir/DependInfo.cmake"
   )

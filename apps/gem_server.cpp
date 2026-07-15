@@ -85,11 +85,13 @@ struct Config {
     double      publish_hz    = 50.0;
     double      stale_ms      = 250.0;
     bool        vis           = false;
+    bool        vis_smpl_targets = false;
     int         viewer_width  = 640;
     int         viewer_height = 480;
     std::string viewer_follow_body = "pelvis";
     bool        offset_to_ground = false;
     bool        require_buttons = true;
+    gmr::GemProtocol gem_protocol = gmr::GemProtocol::Any;
 
     gmr::RedisPublisher::Config redis;
 };
@@ -99,6 +101,7 @@ void usage(const char* program) {
         "Usage: %s [options]\n"
         "  --bind <IPv4>             UDP bind address (default 0.0.0.0)\n"
         "  --port <port>             GEM UDP port (default 7001)\n"
+        "  --gem-protocol <mode>     auto|gem1|gem2 (default auto)\n"
         "  --xml <path>              MuJoCo robot XML\n"
         "  --ik-config <path>        human-to-E1 IK JSON\n"
         "  --preset <e1>             robot preset (default e1)\n"
@@ -120,6 +123,7 @@ void usage(const char* program) {
         "  --no-offset-to-ground     keep sender's initial ground (default)\n"
         "  --always                  bypass A+R1 joystick publish gate\n"
         "  --vis                     open MuJoCo viewer\n"
+        "  --vis-smpl-targets        show GEM2 raw/IK/robot target overlay\n"
         "  --viewer-width <px>       default 640\n"
         "  --viewer-height <px>      default 480\n"
         "  --viewer-follow-body <b>  camera follow body (default pelvis)\n"
@@ -150,6 +154,14 @@ Config parseArgs(int argc, char** argv) {
 
         if      (arg == "--bind")              cfg.bind_ip = next();
         else if (arg == "--port")              cfg.port = std::stoi(next());
+        else if (arg == "--gem-protocol") {
+            const std::string value = next();
+            if (value == "auto") cfg.gem_protocol = gmr::GemProtocol::Any;
+            else if (value == "gem1") cfg.gem_protocol = gmr::GemProtocol::Gem1;
+            else if (value == "gem2") cfg.gem_protocol = gmr::GemProtocol::Gem2;
+            else throw std::runtime_error(
+                "--gem-protocol must be auto, gem1, or gem2");
+        }
         else if (arg == "--xml")               cfg.xml_file = next();
         else if (arg == "--ik-config")         cfg.ik_config = next();
         else if (arg == "--preset")            cfg.preset = next();
@@ -171,6 +183,10 @@ Config parseArgs(int argc, char** argv) {
         else if (arg == "--no-offset-to-ground") cfg.offset_to_ground = false;
         else if (arg == "--always")            cfg.require_buttons = false;
         else if (arg == "--vis")               cfg.vis = true;
+        else if (arg == "--vis-smpl-targets")  {
+            cfg.vis_smpl_targets = true;
+            cfg.vis = true;
+        }
         else if (arg == "--viewer-width")      cfg.viewer_width = std::stoi(next());
         else if (arg == "--viewer-height")     cfg.viewer_height = std::stoi(next());
         else if (arg == "--viewer-follow-body") cfg.viewer_follow_body = next();
@@ -228,11 +244,14 @@ int main(int argc, char** argv) {
             "[Config] ik=%s\n"
             "[Config] redis=%s:%d/%d key=%s\n"
             "[Config] joints=24 frame=38 floats / 152 bytes\n"
-            "[Config] bind=%s:%d stale_ms=%.0f offset_to_ground=%s\n",
+            "[Config] bind=%s:%d protocol=%s stale_ms=%.0f "
+            "offset_to_ground=%s vis_smpl_targets=%s\n",
             cfg.xml_file.c_str(), cfg.ik_config.c_str(),
             cfg.redis.host.c_str(), cfg.redis.port, cfg.redis.db,
             cfg.redis.key.c_str(), cfg.bind_ip.c_str(), cfg.port,
-            cfg.stale_ms, cfg.offset_to_ground ? "on" : "off");
+            gmr::GemReader::protocolName(cfg.gem_protocol), cfg.stale_ms,
+            cfg.offset_to_ground ? "on" : "off",
+            cfg.vis_smpl_targets ? "on" : "off");
 
         gmr::FrameQueue queue(300);
 
@@ -240,6 +259,7 @@ int main(int argc, char** argv) {
         reader_cfg.bind_ip = cfg.bind_ip;
         reader_cfg.port = cfg.port;
         reader_cfg.verbose = true;
+        reader_cfg.expected_protocol = cfg.gem_protocol;
         gmr::GemReader reader(queue, reader_cfg);
         reader.connect();
 
@@ -256,7 +276,7 @@ int main(int argc, char** argv) {
 
         gmr::MotionBuffer buffer(max_frames, kFrameTimeoutSec);
         buffer.setOffsetToGround(cfg.offset_to_ground);
-        buffer.setCaptureTargetData(cfg.vis);
+        buffer.setCaptureTargetData(cfg.vis_smpl_targets);
 
         std::cout << "[Init] collecting " << kSeedFrames << " seed frames...\n";
         buffer.seedSync(kSeedFrames, queue, &gmr);
@@ -376,22 +396,29 @@ int main(int argc, char** argv) {
 
         std::printf(
             "[Run] GEM UDP=%s:%d preset=%s Redis=%s:%d/%d key=%s "
-            "publish=%.1fHz stale=%.0fms ttl=%dms offset_to_ground=%s gate=%s vis=%s\n",
+            "publish=%.1fHz stale=%.0fms ttl=%dms offset_to_ground=%s "
+            "gate=%s vis=%s targets=%s\n",
             cfg.bind_ip.c_str(), cfg.port, cfg.preset.c_str(),
             cfg.redis.host.c_str(), cfg.redis.port, cfg.redis.db,
             cfg.redis.key.c_str(), cfg.publish_hz, cfg.stale_ms,
             cfg.redis.ttl_ms,
             cfg.offset_to_ground ? "on" : "off",
             cfg.require_buttons ? "A+R1" : "off",
-            cfg.vis ? "on" : "off");
+            cfg.vis ? "on" : "off",
+            cfg.vis_smpl_targets ? "on" : "off");
 
         while (!g_stop) {
             const auto t0 = std::chrono::steady_clock::now();
             if (viewer) {
                 auto frame = buffer.latestProcessedFrame();
-                if (frame && frame->qpos.size() > 0)
-                    viewer->render(
-                        frame->qpos, &frame->body_data, &frame->target_data);
+                if (frame && frame->qpos.size() > 0) {
+                    if (cfg.vis_smpl_targets) {
+                        viewer->render(
+                            frame->qpos, &frame->body_data, &frame->target_data);
+                    } else {
+                        viewer->render(frame->qpos);
+                    }
+                }
                 if (viewer->shouldClose()) break;
                 std::this_thread::sleep_until(
                     t0 + std::chrono::milliseconds(5));

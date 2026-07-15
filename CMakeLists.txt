@@ -286,3 +286,27 @@ target_compile_options(gem_mocap_server PRIVATE
     -O2 -Wall -Wextra -Wno-unused-parameter)
 
 message(STATUS "=== gem_mocap_server ENABLED ===")
+
+# ==============================================================================
+#  Fixed-size GEM protocol parser self-test (no camera or Redis required)
+# ==============================================================================
+option(BUILD_TESTING "Build local protocol self-tests" ON)
+if(BUILD_TESTING)
+    enable_testing()
+    add_executable(gem_reader_protocol_test
+        tests/gem_reader_protocol_test.cpp
+        readers/gem_reader.cpp
+    )
+    target_include_directories(gem_reader_protocol_test PRIVATE
+        ${GMR_ROOT}
+        ${GMR_ROOT}/include
+        ${GMR_ROOT}/readers
+    )
+    target_link_libraries(gem_reader_protocol_test PRIVATE
+        Eigen3::Eigen
+        pthread
+    )
+    target_compile_options(gem_reader_protocol_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME gem_reader_protocol_test COMMAND gem_reader_protocol_test)
+endif()

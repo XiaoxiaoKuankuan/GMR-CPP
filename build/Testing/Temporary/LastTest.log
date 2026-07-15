@@ -1,0 +1,19 @@
+Start testing: Jul 15 16:07 CST
+----------------------------------------------------------
+1/1 Testing: gem_reader_protocol_test
+1/1 Test: gem_reader_protocol_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/gem_reader_protocol_test"
+Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
+"gem_reader_protocol_test" start time: Jul 15 16:07 CST
+Output:
+----------------------------------------------------------
+GEM1/GEM2 parser self-test passed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"gem_reader_protocol_test" end time: Jul 15 16:07 CST
+"gem_reader_protocol_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jul 15 16:07 CST

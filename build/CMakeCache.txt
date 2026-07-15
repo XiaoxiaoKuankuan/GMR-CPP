@@ -14,6 +14,9 @@
 # EXTERNAL cache entries
 ########################
 
+//Build local protocol self-tests
+BUILD_TESTING:BOOL=ON
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
 
@@ -202,7 +205,7 @@ HIREDIS_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libhiredis.so
 PICO_SDK_DIR:PATH=/home/weili/GMR-CPP_e1jump_lowdpi/third_party/pico_sdk
 
 //The directory containing a CMake configuration file for nlohmann_json.
-nlohmann_json_DIR:PATH=/home/weili/miniconda3/share/cmake/nlohmann_json
+nlohmann_json_DIR:PATH=/usr/lib/cmake/nlohmann_json
 
 //Value Computed by CMake
 optitrack_mocap_server_BINARY_DIR:STATIC=/home/weili/GMR-CPP_e1jump_lowdpi/build

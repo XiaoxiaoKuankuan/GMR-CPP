@@ -159,6 +159,25 @@ private:
         return edges;
     }
 
+    static const std::vector<std::pair<std::string, std::string>>& smplEdges() {
+        static const std::vector<std::pair<std::string, std::string>> edges = {
+            {"SMPL_Pelvis", "SMPL_Chest"},
+            {"SMPL_Pelvis", "SMPL_LeftHip"},
+            {"SMPL_LeftHip", "SMPL_LeftKnee"},
+            {"SMPL_LeftKnee", "SMPL_LeftAnkle"},
+            {"SMPL_Pelvis", "SMPL_RightHip"},
+            {"SMPL_RightHip", "SMPL_RightKnee"},
+            {"SMPL_RightKnee", "SMPL_RightAnkle"},
+            {"SMPL_Chest", "SMPL_LeftShoulder"},
+            {"SMPL_LeftShoulder", "SMPL_LeftElbow"},
+            {"SMPL_LeftElbow", "SMPL_LeftWrist"},
+            {"SMPL_Chest", "SMPL_RightShoulder"},
+            {"SMPL_RightShoulder", "SMPL_RightElbow"},
+            {"SMPL_RightElbow", "SMPL_RightWrist"},
+        };
+        return edges;
+    }
+
     static const std::map<std::string, std::string>& robotBodies() {
         static const std::map<std::string, std::string> bodies = {
             {"Pelvis", "base_link"},
@@ -179,10 +198,30 @@ private:
         return bodies;
     }
 
+    static const std::map<std::string, std::string>& smplRobotBodies() {
+        static const std::map<std::string, std::string> bodies = {
+            {"SMPL_Pelvis", "base_link"},
+            {"SMPL_Chest", "waist_roll_link"},
+            {"SMPL_LeftHip", "l_leg_hip_pitch_link"},
+            {"SMPL_LeftKnee", "l_leg_knee_link"},
+            {"SMPL_LeftAnkle", "l_leg_ankle_roll_link"},
+            {"SMPL_RightHip", "r_leg_hip_pitch_link"},
+            {"SMPL_RightKnee", "r_leg_knee_link"},
+            {"SMPL_RightAnkle", "r_leg_ankle_roll_link"},
+            {"SMPL_LeftShoulder", "l_arm_shoulder_roll_link"},
+            {"SMPL_LeftElbow", "l_arm_elbow_pitch_link"},
+            {"SMPL_LeftWrist", "l_arm_elbow_yaw_link"},
+            {"SMPL_RightShoulder", "r_arm_shoulder_roll_link"},
+            {"SMPL_RightElbow", "r_arm_elbow_pitch_link"},
+            {"SMPL_RightWrist", "r_arm_elbow_yaw_link"},
+        };
+        return bodies;
+    }
+
     void appendSphere(const Eigen::Vector3d& position,
                       const std::array<float, 4>& color,
                       double radius) {
-        if (scn_.ngeom >= scn_.maxgeom) return;
+        if (scn_.ngeom >= scn_.maxgeom || !validOverlayPosition(position)) return;
         mjtNum size[3] = {radius, radius, radius};
         mjtNum pos[3] = {position.x(), position.y(), position.z()};
         mjvGeom* geom = &scn_.geoms[scn_.ngeom++];
@@ -194,14 +233,31 @@ private:
                     const Eigen::Vector3d& second,
                     const std::array<float, 4>& color,
                     double width) {
-        if (scn_.ngeom >= scn_.maxgeom) return;
+        if (scn_.ngeom >= scn_.maxgeom ||
+            !validOverlayPosition(first) || !validOverlayPosition(second) ||
+            (second - first).squaredNorm() < 1e-12) {
+            return;
+        }
+
+        // MuJoCo requires mjv_initGeom before mjv_makeConnector.  Calling the
+        // latter on an unused scene slot leaves fields such as objtype/segid
+        // uninitialized and can crash mjr_render depending on the frame data.
+        mjtNum size[3] = {width, width, width};
+        mjtNum pos[3] = {0.0, 0.0, 0.0};
         mjvGeom* geom = &scn_.geoms[scn_.ngeom++];
+        mjv_initGeom(
+            geom, mjGEOM_CAPSULE, size, pos, nullptr, color.data());
         mjv_makeConnector(
             geom, mjGEOM_CAPSULE, width,
             first.x(), first.y(), first.z(),
             second.x(), second.y(), second.z());
-        std::copy(color.begin(), color.end(), geom->rgba);
         geom->category = mjCAT_DECOR;
+    }
+
+    static bool validOverlayPosition(const Eigen::Vector3d& position) {
+        constexpr double kMaxOverlayCoordinate = 100.0;
+        return position.allFinite() &&
+               position.cwiseAbs().maxCoeff() <= kMaxOverlayCoordinate;
     }
 
     void appendSkeleton(const BodyMap& poses,
@@ -211,7 +267,8 @@ private:
             (void)name;
             appendSphere(pose.position, color, radius);
         }
-        for (const auto& [first, second] : humanEdges()) {
+        const auto& edges = poses.count("SMPL_Pelvis") ? smplEdges() : humanEdges();
+        for (const auto& [first, second] : edges) {
             auto a = poses.find(first);
             auto b = poses.find(second);
             if (a != poses.end() && b != poses.end())
@@ -219,9 +276,10 @@ private:
         }
     }
 
-    BodyMap currentRobotBodies() const {
+    BodyMap currentRobotBodies(bool smpl_names) const {
         BodyMap poses;
-        for (const auto& [human_name, robot_name] : robotBodies()) {
+        const auto& bodies = smpl_names ? smplRobotBodies() : robotBodies();
+        for (const auto& [human_name, robot_name] : bodies) {
             int body_id = mj_name2id(model_, mjOBJ_BODY, robot_name.c_str());
             if (body_id < 0) continue;
             const mjtNum* position = data_->xpos + 3 * body_id;
@@ -237,9 +295,10 @@ private:
         const std::array<float, 4> blue   = {0.10F, 0.35F, 1.00F, 0.85F};
         const std::array<float, 4> yellow = {1.00F, 0.80F, 0.10F, 0.90F};
         const std::array<float, 4> white  = {1.00F, 1.00F, 1.00F, 0.90F};
+        const bool smpl_names = raw_targets.count("SMPL_Pelvis") != 0;
         appendSkeleton(raw_targets, blue, 0.018);
         appendSkeleton(scaled_targets, yellow, 0.022);
-        appendSkeleton(currentRobotBodies(), white, 0.014);
+        appendSkeleton(currentRobotBodies(smpl_names), white, 0.014);
     }
 
     static MujocoViewer* get(GLFWwindow* w) {

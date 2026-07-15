@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = /home/weili/GMR-CPP_e1jump_lowdpi/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -180,6 +190,19 @@ gem_mocap_server: cmake_check_build_system
 gem_mocap_server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/build
 .PHONY : gem_mocap_server/fast
+
+#=============================================================================
+# Target rules for targets named gem_reader_protocol_test
+
+# Build rule for target.
+gem_reader_protocol_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gem_reader_protocol_test
+.PHONY : gem_reader_protocol_test
+
+# fast build rule for target.
+gem_reader_protocol_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/build
+.PHONY : gem_reader_protocol_test/fast
 
 apps/fzmotion_server.o: apps/fzmotion_server.cpp.o
 .PHONY : apps/fzmotion_server.o
@@ -331,6 +354,7 @@ readers/gem_reader.o: readers/gem_reader.cpp.o
 # target to build an object file
 readers/gem_reader.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/readers/gem_reader.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/readers/gem_reader.cpp.o
 .PHONY : readers/gem_reader.cpp.o
 
 readers/gem_reader.i: readers/gem_reader.cpp.i
@@ -339,6 +363,7 @@ readers/gem_reader.i: readers/gem_reader.cpp.i
 # target to preprocess a source file
 readers/gem_reader.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/readers/gem_reader.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/readers/gem_reader.cpp.i
 .PHONY : readers/gem_reader.cpp.i
 
 readers/gem_reader.s: readers/gem_reader.cpp.s
@@ -347,6 +372,7 @@ readers/gem_reader.s: readers/gem_reader.cpp.s
 # target to generate assembly for a file
 readers/gem_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/readers/gem_reader.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/readers/gem_reader.cpp.s
 .PHONY : readers/gem_reader.cpp.s
 
 readers/optitrack_reader.o: readers/optitrack_reader.cpp.o
@@ -421,6 +447,30 @@ readers/xsens_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xsens_mocap_server.dir/build.make CMakeFiles/xsens_mocap_server.dir/readers/xsens_reader.cpp.s
 .PHONY : readers/xsens_reader.cpp.s
 
+tests/gem_reader_protocol_test.o: tests/gem_reader_protocol_test.cpp.o
+.PHONY : tests/gem_reader_protocol_test.o
+
+# target to build an object file
+tests/gem_reader_protocol_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/tests/gem_reader_protocol_test.cpp.o
+.PHONY : tests/gem_reader_protocol_test.cpp.o
+
+tests/gem_reader_protocol_test.i: tests/gem_reader_protocol_test.cpp.i
+.PHONY : tests/gem_reader_protocol_test.i
+
+# target to preprocess a source file
+tests/gem_reader_protocol_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/tests/gem_reader_protocol_test.cpp.i
+.PHONY : tests/gem_reader_protocol_test.cpp.i
+
+tests/gem_reader_protocol_test.s: tests/gem_reader_protocol_test.cpp.s
+.PHONY : tests/gem_reader_protocol_test.s
+
+# target to generate assembly for a file
+tests/gem_reader_protocol_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/tests/gem_reader_protocol_test.cpp.s
+.PHONY : tests/gem_reader_protocol_test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -429,8 +479,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... test"
 	@echo "... fzmotion_mocap_server"
 	@echo "... gem_mocap_server"
+	@echo "... gem_reader_protocol_test"
 	@echo "... optitrack_mocap_server"
 	@echo "... pico_mocap_server"
 	@echo "... xsens_mocap_server"
@@ -464,6 +516,9 @@ help:
 	@echo "... readers/xsens_reader.o"
 	@echo "... readers/xsens_reader.i"
 	@echo "... readers/xsens_reader.s"
+	@echo "... tests/gem_reader_protocol_test.o"
+	@echo "... tests/gem_reader_protocol_test.i"
+	@echo "... tests/gem_reader_protocol_test.s"
 .PHONY : help
 
 

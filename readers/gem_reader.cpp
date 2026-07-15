@@ -23,12 +23,13 @@ constexpr size_t   kHeaderBytes = 20;
 constexpr size_t   kBoneCount   = 14;
 constexpr size_t   kFloatsPerBone = 7;
 constexpr size_t   kPacketBytes = kHeaderBytes + kBoneCount * kFloatsPerBone * 4;
-constexpr uint16_t kVersion     = 1;
+constexpr uint16_t kGem1Version = 1;
+constexpr uint16_t kGem2Version = 2;
 constexpr double   kMaxAbsPositionM = 20.0;
 
-static_assert(kPacketBytes == 412, "GEM1 packet must be exactly 412 bytes");
+static_assert(kPacketBytes == 412, "GEM1/GEM2 packet must be exactly 412 bytes");
 
-const std::array<const char*, kBoneCount> kBoneNames = {
+const std::array<const char*, kBoneCount> kGem1Names = {
     "Pelvis",
     "Chest",
     "Left_UpperLeg",
@@ -43,6 +44,23 @@ const std::array<const char*, kBoneCount> kBoneNames = {
     "Right_Forearm",
     "Left_Hand",
     "Right_Hand",
+};
+
+const std::array<const char*, kBoneCount> kGem2Names = {
+    "SMPL_Pelvis",
+    "SMPL_Chest",
+    "SMPL_LeftHip",
+    "SMPL_RightHip",
+    "SMPL_LeftKnee",
+    "SMPL_RightKnee",
+    "SMPL_LeftAnkle",
+    "SMPL_RightAnkle",
+    "SMPL_LeftShoulder",
+    "SMPL_RightShoulder",
+    "SMPL_LeftElbow",
+    "SMPL_RightElbow",
+    "SMPL_LeftWrist",
+    "SMPL_RightWrist",
 };
 
 uint16_t readU16LE(const uint8_t* p) {
@@ -76,6 +94,15 @@ bool finiteAndBounded(double value) {
 } // namespace
 
 namespace gmr {
+
+const char* GemReader::protocolName(GemProtocol protocol) {
+    switch (protocol) {
+    case GemProtocol::Gem1: return "GEM1";
+    case GemProtocol::Gem2: return "GEM2";
+    case GemProtocol::Any: return "auto";
+    }
+    return "unknown";
+}
 
 GemReader::GemReader(FrameQueue& queue, Config cfg)
     : BaseReader(queue), cfg_(std::move(cfg)) {}
@@ -145,6 +172,8 @@ void GemReader::connect() {
 
     have_sequence_ = false;
     last_sequence_ = 0;
+    last_protocol_ = GemProtocol::Any;
+    current_protocol_ = GemProtocol::Any;
     last_receive_ns_ = 0;
     packets_received_ = 0;
     packets_dropped_ = 0;
@@ -193,9 +222,59 @@ double GemReader::lastReceiveAgeMs() const {
 }
 
 bool GemReader::parsePacket(const uint8_t* data, size_t len, RawFrame& out) {
+    RawFrame parsed;
+    GemProtocol protocol = GemProtocol::Any;
+    if (!decodePacket(data, len, parsed, protocol)) return false;
+    if (cfg_.expected_protocol != GemProtocol::Any &&
+        protocol != cfg_.expected_protocol) {
+        return false;
+    }
+
+    const uint32_t sequence = readU32LE(data + 8);
+    if (protocol != last_protocol_) {
+        have_sequence_ = false;
+        last_protocol_ = protocol;
+        current_protocol_ = protocol;
+        if (cfg_.verbose) {
+            std::printf(
+                "[GemReader] protocol=%s version=%u targets=%s\n",
+                protocolName(protocol),
+                static_cast<unsigned>(readU16LE(data + 4)),
+                protocol == GemProtocol::Gem2 ? "SMPL_* joint centers" :
+                                                "legacy segment names");
+        }
+    }
+
+    // RFC-1982-style serial arithmetic: [1, 2^31-1] is forward, including
+    // uint32 wrap; zero is duplicate, and the upper half-range is old/reordered.
+    if (have_sequence_) {
+        const uint32_t delta = sequence - last_sequence_;
+        if (delta == 0 || delta >= 0x80000000U) return false;
+        if (delta > 1)
+            packets_dropped_.fetch_add(static_cast<uint64_t>(delta - 1));
+    }
+
+    have_sequence_ = true;
+    last_sequence_ = sequence;
+    parsed.stamp_ns = steadyNowNs();
+    out = std::move(parsed);
+    return true;
+}
+
+bool GemReader::decodePacket(const uint8_t* data, size_t len,
+                             RawFrame& out, GemProtocol& protocol) {
     if (data == nullptr || len != kPacketBytes) return false;
-    if (std::memcmp(data, "GEM1", 4) != 0) return false;
-    if (readU16LE(data + 4) != kVersion) return false;
+    const uint16_t version = readU16LE(data + 4);
+    const std::array<const char*, kBoneCount>* names = nullptr;
+    if (std::memcmp(data, "GEM1", 4) == 0 && version == kGem1Version) {
+        protocol = GemProtocol::Gem1;
+        names = &kGem1Names;
+    } else if (std::memcmp(data, "GEM2", 4) == 0 && version == kGem2Version) {
+        protocol = GemProtocol::Gem2;
+        names = &kGem2Names;
+    } else {
+        return false;
+    }
     if (readU16LE(data + 6) != kBoneCount) return false;
 
     const uint32_t sequence = readU32LE(data + 8);
@@ -232,21 +311,8 @@ bool GemReader::parsePacket(const uint8_t* data, size_t len, RawFrame& out) {
         pose.rot_wxyz = Eigen::Vector4d(
             values[3] / norm, values[4] / norm,
             values[5] / norm, values[6] / norm);
-        parsed.body_data.emplace(kBoneNames[bone], std::move(pose));
+        parsed.body_data.emplace((*names)[bone], std::move(pose));
     }
-
-    // RFC-1982-style serial arithmetic: [1, 2^31-1] is forward, including
-    // uint32 wrap; zero is duplicate, and the upper half-range is old/reordered.
-    if (have_sequence_) {
-        const uint32_t delta = sequence - last_sequence_;
-        if (delta == 0 || delta >= 0x80000000U) return false;
-        if (delta > 1)
-            packets_dropped_.fetch_add(static_cast<uint64_t>(delta - 1));
-    }
-
-    have_sequence_ = true;
-    last_sequence_ = sequence;
-    parsed.stamp_ns = steadyNowNs();
     out = std::move(parsed);
     return true;
 }
