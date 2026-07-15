@@ -3,7 +3,10 @@
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/xsens_mocap_server.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/fzmotion_mocap_server.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/gem_mocap_server.dir
+/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/smplx_g1_server.dir
+/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/smplx_e1_server.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/gem_reader_protocol_test.dir
+/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/smplx_reader_protocol_test.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/test.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/edit_cache.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/rebuild_cache.dir

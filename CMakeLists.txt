@@ -288,6 +288,40 @@ target_compile_options(gem_mocap_server PRIVATE
 message(STATUS "=== gem_mocap_server ENABLED ===")
 
 # ==============================================================================
+#  Original-GMR SMPL-X SMP1 servers (separate G1 and E1 defaults)
+# ==============================================================================
+foreach(SMPLX_TARGET smplx_g1_server smplx_e1_server)
+    add_executable(${SMPLX_TARGET}
+        apps/smplx_server.cpp
+        readers/smplx_reader.cpp
+    )
+    target_include_directories(${SMPLX_TARGET} PRIVATE
+        ${GMR_ROOT}
+        ${GMR_ROOT}/include
+        ${GMR_ROOT}/readers
+        ${MUJOCO_INCLUDE_DIR}
+    )
+    target_link_libraries(${SMPLX_TARGET} PRIVATE
+        mujoco::mujoco
+        glfw
+        hiredis::hiredis
+        Eigen3::Eigen
+        nlohmann_json::nlohmann_json
+        pthread
+        GL
+        ${DAQP_LIB}
+    )
+    target_compile_options(${SMPLX_TARGET} PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+endforeach()
+target_compile_definitions(smplx_g1_server PRIVATE
+    SMPLX_DEFAULT_PRESET="g1" SMPLX_DEFAULT_PORT=7004)
+target_compile_definitions(smplx_e1_server PRIVATE
+    SMPLX_DEFAULT_PRESET="e1" SMPLX_DEFAULT_PORT=7005)
+
+message(STATUS "=== smplx_g1_server / smplx_e1_server ENABLED ===")
+
+# ==============================================================================
 #  Fixed-size GEM protocol parser self-test (no camera or Redis required)
 # ==============================================================================
 option(BUILD_TESTING "Build local protocol self-tests" ON)
@@ -309,4 +343,21 @@ if(BUILD_TESTING)
     target_compile_options(gem_reader_protocol_test PRIVATE
         -O2 -Wall -Wextra -Wno-unused-parameter)
     add_test(NAME gem_reader_protocol_test COMMAND gem_reader_protocol_test)
+
+    add_executable(smplx_reader_protocol_test
+        tests/smplx_reader_protocol_test.cpp
+        readers/smplx_reader.cpp
+    )
+    target_include_directories(smplx_reader_protocol_test PRIVATE
+        ${GMR_ROOT}
+        ${GMR_ROOT}/include
+        ${GMR_ROOT}/readers
+    )
+    target_link_libraries(smplx_reader_protocol_test PRIVATE
+        Eigen3::Eigen
+        pthread
+    )
+    target_compile_options(smplx_reader_protocol_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME smplx_reader_protocol_test COMMAND smplx_reader_protocol_test)
 endif()

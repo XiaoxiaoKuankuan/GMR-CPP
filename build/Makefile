@@ -192,6 +192,32 @@ gem_mocap_server/fast:
 .PHONY : gem_mocap_server/fast
 
 #=============================================================================
+# Target rules for targets named smplx_g1_server
+
+# Build rule for target.
+smplx_g1_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 smplx_g1_server
+.PHONY : smplx_g1_server
+
+# fast build rule for target.
+smplx_g1_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/build
+.PHONY : smplx_g1_server/fast
+
+#=============================================================================
+# Target rules for targets named smplx_e1_server
+
+# Build rule for target.
+smplx_e1_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 smplx_e1_server
+.PHONY : smplx_e1_server
+
+# fast build rule for target.
+smplx_e1_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/build
+.PHONY : smplx_e1_server/fast
+
+#=============================================================================
 # Target rules for targets named gem_reader_protocol_test
 
 # Build rule for target.
@@ -203,6 +229,19 @@ gem_reader_protocol_test: cmake_check_build_system
 gem_reader_protocol_test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/build
 .PHONY : gem_reader_protocol_test/fast
+
+#=============================================================================
+# Target rules for targets named smplx_reader_protocol_test
+
+# Build rule for target.
+smplx_reader_protocol_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 smplx_reader_protocol_test
+.PHONY : smplx_reader_protocol_test
+
+# fast build rule for target.
+smplx_reader_protocol_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/build
+.PHONY : smplx_reader_protocol_test/fast
 
 apps/fzmotion_server.o: apps/fzmotion_server.cpp.o
 .PHONY : apps/fzmotion_server.o
@@ -299,6 +338,33 @@ apps/pico_mocap_server.s: apps/pico_mocap_server.cpp.s
 apps/pico_mocap_server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pico_mocap_server.dir/build.make CMakeFiles/pico_mocap_server.dir/apps/pico_mocap_server.cpp.s
 .PHONY : apps/pico_mocap_server.cpp.s
+
+apps/smplx_server.o: apps/smplx_server.cpp.o
+.PHONY : apps/smplx_server.o
+
+# target to build an object file
+apps/smplx_server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/apps/smplx_server.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/apps/smplx_server.cpp.o
+.PHONY : apps/smplx_server.cpp.o
+
+apps/smplx_server.i: apps/smplx_server.cpp.i
+.PHONY : apps/smplx_server.i
+
+# target to preprocess a source file
+apps/smplx_server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/apps/smplx_server.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/apps/smplx_server.cpp.i
+.PHONY : apps/smplx_server.cpp.i
+
+apps/smplx_server.s: apps/smplx_server.cpp.s
+.PHONY : apps/smplx_server.s
+
+# target to generate assembly for a file
+apps/smplx_server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/apps/smplx_server.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/apps/smplx_server.cpp.s
+.PHONY : apps/smplx_server.cpp.s
 
 apps/xsens_server.o: apps/xsens_server.cpp.o
 .PHONY : apps/xsens_server.o
@@ -423,6 +489,36 @@ readers/pico_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pico_mocap_server.dir/build.make CMakeFiles/pico_mocap_server.dir/readers/pico_reader.cpp.s
 .PHONY : readers/pico_reader.cpp.s
 
+readers/smplx_reader.o: readers/smplx_reader.cpp.o
+.PHONY : readers/smplx_reader.o
+
+# target to build an object file
+readers/smplx_reader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/readers/smplx_reader.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/readers/smplx_reader.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/readers/smplx_reader.cpp.o
+.PHONY : readers/smplx_reader.cpp.o
+
+readers/smplx_reader.i: readers/smplx_reader.cpp.i
+.PHONY : readers/smplx_reader.i
+
+# target to preprocess a source file
+readers/smplx_reader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/readers/smplx_reader.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/readers/smplx_reader.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/readers/smplx_reader.cpp.i
+.PHONY : readers/smplx_reader.cpp.i
+
+readers/smplx_reader.s: readers/smplx_reader.cpp.s
+.PHONY : readers/smplx_reader.s
+
+# target to generate assembly for a file
+readers/smplx_reader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/readers/smplx_reader.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/readers/smplx_reader.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/readers/smplx_reader.cpp.s
+.PHONY : readers/smplx_reader.cpp.s
+
 readers/xsens_reader.o: readers/xsens_reader.cpp.o
 .PHONY : readers/xsens_reader.o
 
@@ -471,6 +567,30 @@ tests/gem_reader_protocol_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/tests/gem_reader_protocol_test.cpp.s
 .PHONY : tests/gem_reader_protocol_test.cpp.s
 
+tests/smplx_reader_protocol_test.o: tests/smplx_reader_protocol_test.cpp.o
+.PHONY : tests/smplx_reader_protocol_test.o
+
+# target to build an object file
+tests/smplx_reader_protocol_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/tests/smplx_reader_protocol_test.cpp.o
+.PHONY : tests/smplx_reader_protocol_test.cpp.o
+
+tests/smplx_reader_protocol_test.i: tests/smplx_reader_protocol_test.cpp.i
+.PHONY : tests/smplx_reader_protocol_test.i
+
+# target to preprocess a source file
+tests/smplx_reader_protocol_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/tests/smplx_reader_protocol_test.cpp.i
+.PHONY : tests/smplx_reader_protocol_test.cpp.i
+
+tests/smplx_reader_protocol_test.s: tests/smplx_reader_protocol_test.cpp.s
+.PHONY : tests/smplx_reader_protocol_test.s
+
+# target to generate assembly for a file
+tests/smplx_reader_protocol_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/tests/smplx_reader_protocol_test.cpp.s
+.PHONY : tests/smplx_reader_protocol_test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -485,6 +605,9 @@ help:
 	@echo "... gem_reader_protocol_test"
 	@echo "... optitrack_mocap_server"
 	@echo "... pico_mocap_server"
+	@echo "... smplx_e1_server"
+	@echo "... smplx_g1_server"
+	@echo "... smplx_reader_protocol_test"
 	@echo "... xsens_mocap_server"
 	@echo "... apps/fzmotion_server.o"
 	@echo "... apps/fzmotion_server.i"
@@ -498,6 +621,9 @@ help:
 	@echo "... apps/pico_mocap_server.o"
 	@echo "... apps/pico_mocap_server.i"
 	@echo "... apps/pico_mocap_server.s"
+	@echo "... apps/smplx_server.o"
+	@echo "... apps/smplx_server.i"
+	@echo "... apps/smplx_server.s"
 	@echo "... apps/xsens_server.o"
 	@echo "... apps/xsens_server.i"
 	@echo "... apps/xsens_server.s"
@@ -513,12 +639,18 @@ help:
 	@echo "... readers/pico_reader.o"
 	@echo "... readers/pico_reader.i"
 	@echo "... readers/pico_reader.s"
+	@echo "... readers/smplx_reader.o"
+	@echo "... readers/smplx_reader.i"
+	@echo "... readers/smplx_reader.s"
 	@echo "... readers/xsens_reader.o"
 	@echo "... readers/xsens_reader.i"
 	@echo "... readers/xsens_reader.s"
 	@echo "... tests/gem_reader_protocol_test.o"
 	@echo "... tests/gem_reader_protocol_test.i"
 	@echo "... tests/gem_reader_protocol_test.s"
+	@echo "... tests/smplx_reader_protocol_test.o"
+	@echo "... tests/smplx_reader_protocol_test.i"
+	@echo "... tests/smplx_reader_protocol_test.s"
 .PHONY : help
 
 

@@ -178,6 +178,25 @@ private:
         return edges;
     }
 
+    static const std::vector<std::pair<std::string, std::string>>& smplxEdges() {
+        static const std::vector<std::pair<std::string, std::string>> edges = {
+            {"pelvis", "spine3"},
+            {"pelvis", "left_hip"},
+            {"left_hip", "left_knee"},
+            {"left_knee", "left_foot"},
+            {"pelvis", "right_hip"},
+            {"right_hip", "right_knee"},
+            {"right_knee", "right_foot"},
+            {"spine3", "left_shoulder"},
+            {"left_shoulder", "left_elbow"},
+            {"left_elbow", "left_wrist"},
+            {"spine3", "right_shoulder"},
+            {"right_shoulder", "right_elbow"},
+            {"right_elbow", "right_wrist"},
+        };
+        return edges;
+    }
+
     static const std::map<std::string, std::string>& robotBodies() {
         static const std::map<std::string, std::string> bodies = {
             {"Pelvis", "base_link"},
@@ -216,6 +235,55 @@ private:
             {"SMPL_RightWrist", "r_arm_elbow_yaw_link"},
         };
         return bodies;
+    }
+
+    static const std::map<std::string, std::string>& smplxRobotBodiesE1() {
+        static const std::map<std::string, std::string> bodies = {
+            {"pelvis", "base_link"},
+            {"spine3", "waist_roll_link"},
+            {"left_hip", "l_leg_hip_pitch_link"},
+            {"left_knee", "l_leg_knee_link"},
+            {"left_foot", "l_leg_ankle_roll_link"},
+            {"right_hip", "r_leg_hip_pitch_link"},
+            {"right_knee", "r_leg_knee_link"},
+            {"right_foot", "r_leg_ankle_roll_link"},
+            {"left_shoulder", "l_arm_shoulder_roll_link"},
+            {"left_elbow", "l_arm_elbow_pitch_link"},
+            {"left_wrist", "l_arm_elbow_yaw_link"},
+            {"right_shoulder", "r_arm_shoulder_roll_link"},
+            {"right_elbow", "r_arm_elbow_pitch_link"},
+            {"right_wrist", "r_arm_elbow_yaw_link"},
+        };
+        return bodies;
+    }
+
+    static const std::map<std::string, std::string>& smplxRobotBodiesG1() {
+        static const std::map<std::string, std::string> bodies = {
+            {"pelvis", "pelvis"},
+            {"spine3", "torso_link"},
+            {"left_hip", "left_hip_roll_link"},
+            {"left_knee", "left_knee_link"},
+            {"left_foot", "left_toe_link"},
+            {"right_hip", "right_hip_roll_link"},
+            {"right_knee", "right_knee_link"},
+            {"right_foot", "right_toe_link"},
+            {"left_shoulder", "left_shoulder_yaw_link"},
+            {"left_elbow", "left_elbow_link"},
+            {"left_wrist", "left_wrist_yaw_link"},
+            {"right_shoulder", "right_shoulder_yaw_link"},
+            {"right_elbow", "right_elbow_link"},
+            {"right_wrist", "right_wrist_yaw_link"},
+        };
+        return bodies;
+    }
+
+    enum class TargetSchema { Legacy, SmplDirect, SmplxReference };
+
+    static TargetSchema targetSchema(const BodyMap& poses) {
+        if (poses.count("SMPL_Pelvis")) return TargetSchema::SmplDirect;
+        if (poses.count("pelvis") && poses.count("spine3"))
+            return TargetSchema::SmplxReference;
+        return TargetSchema::Legacy;
     }
 
     void appendSphere(const Eigen::Vector3d& position,
@@ -267,7 +335,10 @@ private:
             (void)name;
             appendSphere(pose.position, color, radius);
         }
-        const auto& edges = poses.count("SMPL_Pelvis") ? smplEdges() : humanEdges();
+        const auto schema = targetSchema(poses);
+        const auto& edges = schema == TargetSchema::SmplDirect ? smplEdges() :
+                            schema == TargetSchema::SmplxReference ? smplxEdges() :
+                            humanEdges();
         for (const auto& [first, second] : edges) {
             auto a = poses.find(first);
             auto b = poses.find(second);
@@ -276,10 +347,16 @@ private:
         }
     }
 
-    BodyMap currentRobotBodies(bool smpl_names) const {
+    BodyMap currentRobotBodies(TargetSchema schema) const {
         BodyMap poses;
-        const auto& bodies = smpl_names ? smplRobotBodies() : robotBodies();
-        for (const auto& [human_name, robot_name] : bodies) {
+        const std::map<std::string, std::string>* bodies = &robotBodies();
+        if (schema == TargetSchema::SmplDirect) {
+            bodies = &smplRobotBodies();
+        } else if (schema == TargetSchema::SmplxReference) {
+            const bool is_e1 = mj_name2id(model_, mjOBJ_BODY, "base_link") >= 0;
+            bodies = is_e1 ? &smplxRobotBodiesE1() : &smplxRobotBodiesG1();
+        }
+        for (const auto& [human_name, robot_name] : *bodies) {
             int body_id = mj_name2id(model_, mjOBJ_BODY, robot_name.c_str());
             if (body_id < 0) continue;
             const mjtNum* position = data_->xpos + 3 * body_id;
@@ -295,10 +372,10 @@ private:
         const std::array<float, 4> blue   = {0.10F, 0.35F, 1.00F, 0.85F};
         const std::array<float, 4> yellow = {1.00F, 0.80F, 0.10F, 0.90F};
         const std::array<float, 4> white  = {1.00F, 1.00F, 1.00F, 0.90F};
-        const bool smpl_names = raw_targets.count("SMPL_Pelvis") != 0;
+        const auto schema = targetSchema(raw_targets);
         appendSkeleton(raw_targets, blue, 0.018);
         appendSkeleton(scaled_targets, yellow, 0.022);
-        appendSkeleton(currentRobotBodies(smpl_names), white, 0.014);
+        appendSkeleton(currentRobotBodies(schema), white, 0.014);
     }
 
     static MujocoViewer* get(GLFWwindow* w) {

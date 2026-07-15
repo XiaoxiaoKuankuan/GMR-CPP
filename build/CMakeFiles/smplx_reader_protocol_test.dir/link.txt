@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/smplx_reader_protocol_test.dir/tests/smplx_reader_protocol_test.cpp.o CMakeFiles/smplx_reader_protocol_test.dir/readers/smplx_reader.cpp.o -o smplx_reader_protocol_test  -lpthread 
