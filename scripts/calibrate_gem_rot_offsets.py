@@ -93,7 +93,7 @@ def main() -> None:
     parser.add_argument("--redis-host", default="127.0.0.1")
     parser.add_argument("--redis-port", type=int, default=6379)
     parser.add_argument("--redis-db", type=int, default=0)
-    parser.add_argument("--redis-key", default="mmocap_motion_frame_g1")
+    parser.add_argument("--redis-key", default="gmt_online_frame_e1")
     parser.add_argument("--duration", type=float, default=3.0)
     parser.add_argument("--sample-hz", type=float, default=30.0)
     args = parser.parse_args()
@@ -138,6 +138,11 @@ def main() -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(config, indent=2) + "\n")
     print(f"Wrote {output} ({changed} table entries updated).")
+    print(
+        "Keep use_ik_match_table1=false. When enabling table2 rotations, "
+        "start other rotation weights at 1 and feet at 2-5; keep position "
+        "weights dominant."
+    )
 
 
 if __name__ == "__main__":

@@ -131,7 +131,8 @@ Config parseArgs(int argc, char** argv) {
     const fs::path executable_dir = fs::canonical(argv[0]).parent_path();
     const fs::path repo_root = executable_dir.parent_path();
     cfg.xml_file = (repo_root / "assets/e1/mjcf/e1_24dof.xml").string();
-    cfg.ik_config = (repo_root / "config/ik_configs/xsens_to_e1.json").string();
+    cfg.ik_config =
+        (repo_root / "config/ik_configs/gem_to_e1_position.json").string();
 
     bool explicit_key = false;
     std::string requested_key;

@@ -9,7 +9,7 @@ BIND="0.0.0.0"
 PORT="7001"
 PRESET="e1"
 XML="$ROOT/assets/e1/mjcf/e1_24dof.xml"
-IK_CONFIG="$ROOT/config/ik_configs/xsens_to_e1.json"
+IK_CONFIG="$ROOT/config/ik_configs/gem_to_e1_position.json"
 REDIS_HOST="127.0.0.1"
 REDIS_PORT="6379"
 REDIS_DB="0"
@@ -41,7 +41,7 @@ GEM input:
 E1/GMR:
   --preset <e1>             E1 only (default: e1)
   --xml <path>              E1 MuJoCo XML
-  --ik-config <path>        E1 IK config
+  --ik-config <path>        E1 IK config (default: GEM position-only)
   --human-height <m>        human-height assumption (default: 1.8)
   --damping <value>         IK damping (default: 1.0)
   --offset-to-ground        enable per-frame grounding (off by default)
