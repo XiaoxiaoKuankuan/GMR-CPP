@@ -16,7 +16,12 @@
 #include <stdexcept>
 #include <algorithm>
 #include <atomic>
+#include <chrono>
+#include <cmath>
+#include <cstdio>
+#include <limits>
 #include <map>
+#include <set>
 #include <vector>
 
 extern std::atomic<bool> g_stop;  // defined in main
@@ -84,7 +89,8 @@ public:
     // Render one frame. Returns false if window was closed.
     bool render(const Eigen::VectorXd& qpos,
                 const BodyMap* raw_targets = nullptr,
-                const BodyMap* scaled_targets = nullptr) {
+                const BodyMap* scaled_targets = nullptr,
+                bool draw_smplx_frames = false) {
         if (!window_ || glfwWindowShouldClose(window_)) {
             g_stop = true; return false;
         }
@@ -110,8 +116,13 @@ public:
         glClearColor(0.f, 0.f, 0.f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         mjv_updateScene(model_, data_, &opt_, nullptr, &cam_, mjCAT_ALL, &scn_);
-        if (raw_targets && scaled_targets)
+        if (raw_targets && scaled_targets) {
             appendTargetOverlay(*raw_targets, *scaled_targets);
+            if (draw_smplx_frames) {
+                appendSmplxFrameAxes(*scaled_targets);
+                printReadonlyE1Diagnostics();
+            }
+        }
         mjr_render(vp, &scn_, &con_);
         glfwSwapBuffers(window_);
         glfwPollEvents();
@@ -139,6 +150,8 @@ private:
     bool   mouse_middle_ = false;
     double mouse_x_      = 0.0;
     double mouse_y_      = 0.0;
+    std::chrono::steady_clock::time_point last_diagnostic_print_ =
+        std::chrono::steady_clock::now() - std::chrono::seconds(1);
 
     static const std::vector<std::pair<std::string, std::string>>& humanEdges() {
         static const std::vector<std::pair<std::string, std::string>> edges = {
@@ -376,6 +389,94 @@ private:
         appendSkeleton(raw_targets, blue, 0.018);
         appendSkeleton(scaled_targets, yellow, 0.022);
         appendSkeleton(currentRobotBodies(schema), white, 0.014);
+    }
+
+    static Eigen::Vector3d rotateByQuaternion(
+        const Eigen::Vector4d& quaternion,
+        const Eigen::Vector3d& vector) {
+        Eigen::Quaterniond q(
+            quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
+        const double norm = q.norm();
+        if (!std::isfinite(norm) || norm < 1e-9) return vector;
+        q.normalize();
+        return q * vector;
+    }
+
+    void appendSmplxFrameAxes(const BodyMap& scaled_targets) {
+        static const std::set<std::string> selected = {
+            "pelvis",
+            "left_foot", "right_foot",
+            "left_shoulder", "right_shoulder",
+            "left_elbow", "right_elbow",
+            "left_wrist", "right_wrist",
+        };
+        const std::array<float, 4> red   = {1.0F, 0.1F, 0.1F, 0.95F};
+        const std::array<float, 4> green = {0.1F, 1.0F, 0.1F, 0.95F};
+        const std::array<float, 4> blue  = {0.1F, 0.3F, 1.0F, 0.95F};
+        constexpr double axis_length = 0.10;
+        constexpr double axis_width = 0.006;
+        for (const auto& name : selected) {
+            const auto found = scaled_targets.find(name);
+            if (found == scaled_targets.end()) continue;
+            const auto& pose = found->second;
+            appendLine(
+                pose.position,
+                pose.position + axis_length * rotateByQuaternion(
+                    pose.rot_wxyz, Eigen::Vector3d::UnitX()),
+                red, axis_width);
+            appendLine(
+                pose.position,
+                pose.position + axis_length * rotateByQuaternion(
+                    pose.rot_wxyz, Eigen::Vector3d::UnitY()),
+                green, axis_width);
+            appendLine(
+                pose.position,
+                pose.position + axis_length * rotateByQuaternion(
+                    pose.rot_wxyz, Eigen::Vector3d::UnitZ()),
+                blue, axis_width);
+        }
+    }
+
+    double jointPosition(const char* name) const {
+        const int joint_id = mj_name2id(model_, mjOBJ_JOINT, name);
+        if (joint_id < 0) return std::numeric_limits<double>::quiet_NaN();
+        const int address = model_->jnt_qposadr[joint_id];
+        return address >= 0 && address < model_->nq ? data_->qpos[address] :
+            std::numeric_limits<double>::quiet_NaN();
+    }
+
+    double bodyHeight(const char* name) const {
+        const int body_id = mj_name2id(model_, mjOBJ_BODY, name);
+        return body_id >= 0 ? data_->xpos[3 * body_id + 2] :
+            std::numeric_limits<double>::quiet_NaN();
+    }
+
+    void printReadonlyE1Diagnostics() {
+        const auto now = std::chrono::steady_clock::now();
+        if (now - last_diagnostic_print_ < std::chrono::milliseconds(500)) return;
+        last_diagnostic_print_ = now;
+        std::printf(
+            "[SMPLX frame diag] "
+            "L shoulder(p/r/y)=%.3f/%.3f/%.3f elbow(p/y)=%.3f/%.3f | "
+            "R shoulder(p/r/y)=%.3f/%.3f/%.3f elbow(p/y)=%.3f/%.3f\n",
+            jointPosition("l_arm_shoulder_pitch_joint"),
+            jointPosition("l_arm_shoulder_roll_joint"),
+            jointPosition("l_arm_shoulder_yaw_joint"),
+            jointPosition("l_arm_elbow_pitch_joint"),
+            jointPosition("l_arm_elbow_yaw_joint"),
+            jointPosition("r_arm_shoulder_pitch_joint"),
+            jointPosition("r_arm_shoulder_roll_joint"),
+            jointPosition("r_arm_shoulder_yaw_joint"),
+            jointPosition("r_arm_elbow_pitch_joint"),
+            jointPosition("r_arm_elbow_yaw_joint"));
+        std::printf(
+            "[SMPLX frame diag] knee(L/R)=%.3f/%.3f "
+            "body_z(base/Lfoot/Rfoot)=%.3f/%.3f/%.3f (read-only)\n",
+            jointPosition("l_leg_knee_joint"),
+            jointPosition("r_leg_knee_joint"),
+            bodyHeight("base_link"),
+            bodyHeight("l_leg_ankle_roll_link"),
+            bodyHeight("r_leg_ankle_roll_link"));
     }
 
     static MujocoViewer* get(GLFWwindow* w) {

@@ -92,6 +92,7 @@ struct Config {
     double      stale_ms      = 250.0;
     bool        vis           = false;
     bool        vis_smplx_targets = false;
+    bool        vis_smplx_frames = false;
     int         viewer_width  = 640;
     int         viewer_height = 480;
     std::string viewer_follow_body = "pelvis";
@@ -127,6 +128,7 @@ void usage(const char* program) {
         "  --always                  bypass A+R1 joystick publish gate\n"
         "  --vis                     open MuJoCo viewer\n"
         "  --vis-smplx-targets       show raw/scaled/robot target overlay\n"
+        "  --vis-smplx-frames        add read-only SMPL-X frame axes/console diagnostics\n"
         "  --viewer-width <px>       default 640\n"
         "  --viewer-height <px>      default 480\n"
         "  --viewer-follow-body <b>  override camera follow body\n"
@@ -187,6 +189,11 @@ Config parseArgs(int argc, char** argv) {
         else if (arg == "--always")            cfg.require_buttons = false;
         else if (arg == "--vis")               cfg.vis = true;
         else if (arg == "--vis-smplx-targets")  {
+            cfg.vis_smplx_targets = true;
+            cfg.vis = true;
+        }
+        else if (arg == "--vis-smplx-frames")  {
+            cfg.vis_smplx_frames = true;
             cfg.vis_smplx_targets = true;
             cfg.vis = true;
         }
@@ -256,13 +263,14 @@ int main(int argc, char** argv) {
             "[Config] redis=%s:%d/%d key=%s\n"
             "[Config] joints=%d frame=%d floats / %d bytes\n"
             "[Config] bind=%s:%d stale_ms=%.0f "
-            "offset_to_ground=%s vis_smplx_targets=%s\n",
+            "offset_to_ground=%s vis_smplx_targets=%s vis_smplx_frames=%s\n",
             cfg.preset.c_str(), cfg.xml_file.c_str(), cfg.ik_config.c_str(),
             cfg.redis.host.c_str(), cfg.redis.port, cfg.redis.db,
             cfg.redis.key.c_str(), joints, frame_floats, frame_floats * 4,
             cfg.bind_ip.c_str(), cfg.port, cfg.stale_ms,
             cfg.offset_to_ground ? "on" : "off",
-            cfg.vis_smplx_targets ? "on" : "off");
+            cfg.vis_smplx_targets ? "on" : "off",
+            cfg.vis_smplx_frames ? "on" : "off");
 
         gmr::FrameQueue queue(300);
 
@@ -407,7 +415,7 @@ int main(int argc, char** argv) {
         std::printf(
             "[Run] SMP1 UDP=%s:%d preset=%s Redis=%s:%d/%d key=%s "
             "publish=%.1fHz stale=%.0fms ttl=%dms offset_to_ground=%s "
-            "gate=%s vis=%s targets=%s\n",
+            "gate=%s vis=%s targets=%s frames=%s\n",
             cfg.bind_ip.c_str(), cfg.port, cfg.preset.c_str(),
             cfg.redis.host.c_str(), cfg.redis.port, cfg.redis.db,
             cfg.redis.key.c_str(), cfg.publish_hz, cfg.stale_ms,
@@ -415,7 +423,8 @@ int main(int argc, char** argv) {
             cfg.offset_to_ground ? "on" : "off",
             cfg.require_buttons ? "A+R1" : "off",
             cfg.vis ? "on" : "off",
-            cfg.vis_smplx_targets ? "on" : "off");
+            cfg.vis_smplx_targets ? "on" : "off",
+            cfg.vis_smplx_frames ? "on" : "off");
 
         while (!g_stop) {
             const auto t0 = std::chrono::steady_clock::now();
@@ -424,7 +433,8 @@ int main(int argc, char** argv) {
                 if (frame && frame->qpos.size() > 0) {
                     if (cfg.vis_smplx_targets) {
                         viewer->render(
-                            frame->qpos, &frame->body_data, &frame->target_data);
+                            frame->qpos, &frame->body_data, &frame->target_data,
+                            cfg.vis_smplx_frames);
                     } else {
                         viewer->render(frame->qpos);
                     }
