@@ -67,10 +67,8 @@ all: CMakeFiles/optitrack_mocap_server.dir/all
 all: CMakeFiles/pico_mocap_server.dir/all
 all: CMakeFiles/xsens_mocap_server.dir/all
 all: CMakeFiles/fzmotion_mocap_server.dir/all
-all: CMakeFiles/gem_mocap_server.dir/all
 all: CMakeFiles/smplx_g1_server.dir/all
 all: CMakeFiles/smplx_e1_server.dir/all
-all: CMakeFiles/gem_reader_protocol_test.dir/all
 all: CMakeFiles/smplx_reader_protocol_test.dir/all
 .PHONY : all
 
@@ -83,10 +81,8 @@ clean: CMakeFiles/optitrack_mocap_server.dir/clean
 clean: CMakeFiles/pico_mocap_server.dir/clean
 clean: CMakeFiles/xsens_mocap_server.dir/clean
 clean: CMakeFiles/fzmotion_mocap_server.dir/clean
-clean: CMakeFiles/gem_mocap_server.dir/clean
 clean: CMakeFiles/smplx_g1_server.dir/clean
 clean: CMakeFiles/smplx_e1_server.dir/clean
-clean: CMakeFiles/gem_reader_protocol_test.dir/clean
 clean: CMakeFiles/smplx_reader_protocol_test.dir/clean
 .PHONY : clean
 
@@ -97,7 +93,7 @@ clean: CMakeFiles/smplx_reader_protocol_test.dir/clean
 CMakeFiles/optitrack_mocap_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/optitrack_mocap_server.dir/build.make CMakeFiles/optitrack_mocap_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/optitrack_mocap_server.dir/build.make CMakeFiles/optitrack_mocap_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=10,11,12 "Built target optitrack_mocap_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=4,5,6 "Built target optitrack_mocap_server"
 .PHONY : CMakeFiles/optitrack_mocap_server.dir/all
 
 # Build rule for subdir invocation for target.
@@ -123,7 +119,7 @@ CMakeFiles/optitrack_mocap_server.dir/clean:
 CMakeFiles/pico_mocap_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pico_mocap_server.dir/build.make CMakeFiles/pico_mocap_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pico_mocap_server.dir/build.make CMakeFiles/pico_mocap_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=13,14,15 "Built target pico_mocap_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=7,8,9 "Built target pico_mocap_server"
 .PHONY : CMakeFiles/pico_mocap_server.dir/all
 
 # Build rule for subdir invocation for target.
@@ -149,7 +145,7 @@ CMakeFiles/pico_mocap_server.dir/clean:
 CMakeFiles/xsens_mocap_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xsens_mocap_server.dir/build.make CMakeFiles/xsens_mocap_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xsens_mocap_server.dir/build.make CMakeFiles/xsens_mocap_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=25,26,27 "Built target xsens_mocap_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=19,20,21 "Built target xsens_mocap_server"
 .PHONY : CMakeFiles/xsens_mocap_server.dir/all
 
 # Build rule for subdir invocation for target.
@@ -195,39 +191,13 @@ CMakeFiles/fzmotion_mocap_server.dir/clean:
 .PHONY : CMakeFiles/fzmotion_mocap_server.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/gem_mocap_server.dir
-
-# All Build rule for target.
-CMakeFiles/gem_mocap_server.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=4,5,6 "Built target gem_mocap_server"
-.PHONY : CMakeFiles/gem_mocap_server.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/gem_mocap_server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/gem_mocap_server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
-.PHONY : CMakeFiles/gem_mocap_server.dir/rule
-
-# Convenience name for target.
-gem_mocap_server: CMakeFiles/gem_mocap_server.dir/rule
-.PHONY : gem_mocap_server
-
-# clean rule for target.
-CMakeFiles/gem_mocap_server.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/clean
-.PHONY : CMakeFiles/gem_mocap_server.dir/clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/smplx_g1_server.dir
 
 # All Build rule for target.
 CMakeFiles/smplx_g1_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=19,20,21 "Built target smplx_g1_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=13,14,15 "Built target smplx_g1_server"
 .PHONY : CMakeFiles/smplx_g1_server.dir/all
 
 # Build rule for subdir invocation for target.
@@ -253,7 +223,7 @@ CMakeFiles/smplx_g1_server.dir/clean:
 CMakeFiles/smplx_e1_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=16,17,18 "Built target smplx_e1_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=10,11,12 "Built target smplx_e1_server"
 .PHONY : CMakeFiles/smplx_e1_server.dir/all
 
 # Build rule for subdir invocation for target.
@@ -273,39 +243,13 @@ CMakeFiles/smplx_e1_server.dir/clean:
 .PHONY : CMakeFiles/smplx_e1_server.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/gem_reader_protocol_test.dir
-
-# All Build rule for target.
-CMakeFiles/gem_reader_protocol_test.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=7,8,9 "Built target gem_reader_protocol_test"
-.PHONY : CMakeFiles/gem_reader_protocol_test.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/gem_reader_protocol_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 3
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/gem_reader_protocol_test.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles 0
-.PHONY : CMakeFiles/gem_reader_protocol_test.dir/rule
-
-# Convenience name for target.
-gem_reader_protocol_test: CMakeFiles/gem_reader_protocol_test.dir/rule
-.PHONY : gem_reader_protocol_test
-
-# clean rule for target.
-CMakeFiles/gem_reader_protocol_test.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/clean
-.PHONY : CMakeFiles/gem_reader_protocol_test.dir/clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/smplx_reader_protocol_test.dir
 
 # All Build rule for target.
 CMakeFiles/smplx_reader_protocol_test.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=22,23,24 "Built target smplx_reader_protocol_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles --progress-num=16,17,18 "Built target smplx_reader_protocol_test"
 .PHONY : CMakeFiles/smplx_reader_protocol_test.dir/all
 
 # Build rule for subdir invocation for target.

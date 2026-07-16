@@ -179,19 +179,6 @@ fzmotion_mocap_server/fast:
 .PHONY : fzmotion_mocap_server/fast
 
 #=============================================================================
-# Target rules for targets named gem_mocap_server
-
-# Build rule for target.
-gem_mocap_server: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gem_mocap_server
-.PHONY : gem_mocap_server
-
-# fast build rule for target.
-gem_mocap_server/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/build
-.PHONY : gem_mocap_server/fast
-
-#=============================================================================
 # Target rules for targets named smplx_g1_server
 
 # Build rule for target.
@@ -216,19 +203,6 @@ smplx_e1_server: cmake_check_build_system
 smplx_e1_server/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/build
 .PHONY : smplx_e1_server/fast
-
-#=============================================================================
-# Target rules for targets named gem_reader_protocol_test
-
-# Build rule for target.
-gem_reader_protocol_test: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gem_reader_protocol_test
-.PHONY : gem_reader_protocol_test
-
-# fast build rule for target.
-gem_reader_protocol_test/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/build
-.PHONY : gem_reader_protocol_test/fast
 
 #=============================================================================
 # Target rules for targets named smplx_reader_protocol_test
@@ -266,30 +240,6 @@ apps/fzmotion_server.s: apps/fzmotion_server.cpp.s
 apps/fzmotion_server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.s
 .PHONY : apps/fzmotion_server.cpp.s
-
-apps/gem_server.o: apps/gem_server.cpp.o
-.PHONY : apps/gem_server.o
-
-# target to build an object file
-apps/gem_server.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/apps/gem_server.cpp.o
-.PHONY : apps/gem_server.cpp.o
-
-apps/gem_server.i: apps/gem_server.cpp.i
-.PHONY : apps/gem_server.i
-
-# target to preprocess a source file
-apps/gem_server.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/apps/gem_server.cpp.i
-.PHONY : apps/gem_server.cpp.i
-
-apps/gem_server.s: apps/gem_server.cpp.s
-.PHONY : apps/gem_server.s
-
-# target to generate assembly for a file
-apps/gem_server.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/apps/gem_server.cpp.s
-.PHONY : apps/gem_server.cpp.s
 
 apps/mocap_server.o: apps/mocap_server.cpp.o
 .PHONY : apps/mocap_server.o
@@ -414,33 +364,6 @@ readers/fzmotion_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.s
 .PHONY : readers/fzmotion_reader.cpp.s
 
-readers/gem_reader.o: readers/gem_reader.cpp.o
-.PHONY : readers/gem_reader.o
-
-# target to build an object file
-readers/gem_reader.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/readers/gem_reader.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/readers/gem_reader.cpp.o
-.PHONY : readers/gem_reader.cpp.o
-
-readers/gem_reader.i: readers/gem_reader.cpp.i
-.PHONY : readers/gem_reader.i
-
-# target to preprocess a source file
-readers/gem_reader.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/readers/gem_reader.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/readers/gem_reader.cpp.i
-.PHONY : readers/gem_reader.cpp.i
-
-readers/gem_reader.s: readers/gem_reader.cpp.s
-.PHONY : readers/gem_reader.s
-
-# target to generate assembly for a file
-readers/gem_reader.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_mocap_server.dir/build.make CMakeFiles/gem_mocap_server.dir/readers/gem_reader.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/readers/gem_reader.cpp.s
-.PHONY : readers/gem_reader.cpp.s
-
 readers/optitrack_reader.o: readers/optitrack_reader.cpp.o
 .PHONY : readers/optitrack_reader.o
 
@@ -543,30 +466,6 @@ readers/xsens_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xsens_mocap_server.dir/build.make CMakeFiles/xsens_mocap_server.dir/readers/xsens_reader.cpp.s
 .PHONY : readers/xsens_reader.cpp.s
 
-tests/gem_reader_protocol_test.o: tests/gem_reader_protocol_test.cpp.o
-.PHONY : tests/gem_reader_protocol_test.o
-
-# target to build an object file
-tests/gem_reader_protocol_test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/tests/gem_reader_protocol_test.cpp.o
-.PHONY : tests/gem_reader_protocol_test.cpp.o
-
-tests/gem_reader_protocol_test.i: tests/gem_reader_protocol_test.cpp.i
-.PHONY : tests/gem_reader_protocol_test.i
-
-# target to preprocess a source file
-tests/gem_reader_protocol_test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/tests/gem_reader_protocol_test.cpp.i
-.PHONY : tests/gem_reader_protocol_test.cpp.i
-
-tests/gem_reader_protocol_test.s: tests/gem_reader_protocol_test.cpp.s
-.PHONY : tests/gem_reader_protocol_test.s
-
-# target to generate assembly for a file
-tests/gem_reader_protocol_test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/gem_reader_protocol_test.dir/build.make CMakeFiles/gem_reader_protocol_test.dir/tests/gem_reader_protocol_test.cpp.s
-.PHONY : tests/gem_reader_protocol_test.cpp.s
-
 tests/smplx_reader_protocol_test.o: tests/smplx_reader_protocol_test.cpp.o
 .PHONY : tests/smplx_reader_protocol_test.o
 
@@ -601,8 +500,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... fzmotion_mocap_server"
-	@echo "... gem_mocap_server"
-	@echo "... gem_reader_protocol_test"
 	@echo "... optitrack_mocap_server"
 	@echo "... pico_mocap_server"
 	@echo "... smplx_e1_server"
@@ -612,9 +509,6 @@ help:
 	@echo "... apps/fzmotion_server.o"
 	@echo "... apps/fzmotion_server.i"
 	@echo "... apps/fzmotion_server.s"
-	@echo "... apps/gem_server.o"
-	@echo "... apps/gem_server.i"
-	@echo "... apps/gem_server.s"
 	@echo "... apps/mocap_server.o"
 	@echo "... apps/mocap_server.i"
 	@echo "... apps/mocap_server.s"
@@ -630,9 +524,6 @@ help:
 	@echo "... readers/fzmotion_reader.o"
 	@echo "... readers/fzmotion_reader.i"
 	@echo "... readers/fzmotion_reader.s"
-	@echo "... readers/gem_reader.o"
-	@echo "... readers/gem_reader.i"
-	@echo "... readers/gem_reader.s"
 	@echo "... readers/optitrack_reader.o"
 	@echo "... readers/optitrack_reader.i"
 	@echo "... readers/optitrack_reader.s"
@@ -645,9 +536,6 @@ help:
 	@echo "... readers/xsens_reader.o"
 	@echo "... readers/xsens_reader.i"
 	@echo "... readers/xsens_reader.s"
-	@echo "... tests/gem_reader_protocol_test.o"
-	@echo "... tests/gem_reader_protocol_test.i"
-	@echo "... tests/gem_reader_protocol_test.s"
 	@echo "... tests/smplx_reader_protocol_test.o"
 	@echo "... tests/smplx_reader_protocol_test.i"
 	@echo "... tests/smplx_reader_protocol_test.s"

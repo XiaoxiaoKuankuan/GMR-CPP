@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/gem_reader_protocol_test.dir/tests/gem_reader_protocol_test.cpp.o CMakeFiles/gem_reader_protocol_test.dir/readers/gem_reader.cpp.o -o gem_reader_protocol_test  -lpthread 

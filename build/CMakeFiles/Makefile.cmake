@@ -51,9 +51,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/pico_mocap_server.dir/DependInfo.cmake"
   "CMakeFiles/xsens_mocap_server.dir/DependInfo.cmake"
   "CMakeFiles/fzmotion_mocap_server.dir/DependInfo.cmake"
-  "CMakeFiles/gem_mocap_server.dir/DependInfo.cmake"
   "CMakeFiles/smplx_g1_server.dir/DependInfo.cmake"
   "CMakeFiles/smplx_e1_server.dir/DependInfo.cmake"
-  "CMakeFiles/gem_reader_protocol_test.dir/DependInfo.cmake"
   "CMakeFiles/smplx_reader_protocol_test.dir/DependInfo.cmake"
   )

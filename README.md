@@ -18,6 +18,7 @@ Python GMR（General Motion Retargeting）流水线的 C++ 移植版。将多种
 | `xsens_mocap_server` | Xsens MVN（UDP） | `run_xsens.sh` / `run_xsens_e1.sh` | 无 |
 | `pico_mocap_server` | Pico / XRobot | `run_pico.sh` | `third_party/pico_sdk` |
 | `fzmotion_mocap_server` | FZMotion | `run_fzmotion_g1.sh` / `run_fzmotion_e1.sh` | `third_party/LuMoSDK` |
+| `smplx_e1_server` | GEM / SMPL-X（SMP1 UDP） | `run_smplx_e1.sh` | `/home/weili/GENMO` |
 
 支持的机器人模型：
 
@@ -108,6 +109,33 @@ cd GMR-CPP
 ./run_fzmotion_g1.sh --always
 ./run_fzmotion_e1.sh --always
 ```
+
+### GEM / SMPL-X → E1（当前标准链路）
+
+终端一启动 Redis 和 E1 接收端：
+
+```bash
+redis-server --daemonize yes
+cd /home/weili/GMR-CPP_e1jump_lowdpi
+./run_smplx_e1.sh --always --vis
+```
+
+终端二使用摄像头 2 启动 GEM 发送端：
+
+```bash
+cd /home/weili/GENMO
+source .venv/bin/activate
+python scripts/demo/demo_webcam.py \
+  --camera_id 2 \
+  --display \
+  --gmr_host 127.0.0.1 \
+  --gmr_port 7005 \
+  --gmr_protocol smplx1
+```
+
+标准 E1 参数位于 `config/ik_configs/smplx_to_e1.json`。发送端固定输出
+14 个 SMPL-X FK 目标的 412 字节 SMP1 数据包；E1 接收端默认监听 UDP 7005，
+输出 Redis key `smplx_online_frame_e1`。无手柄测试时必须加 `--always`。
 
 ### 直接调用可执行文件
 

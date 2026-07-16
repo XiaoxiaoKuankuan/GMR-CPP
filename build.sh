@@ -128,6 +128,8 @@ echo "  Executables:"
     echo "    build/pico_mocap_server"
 [ -f "$SCRIPT_DIR/build/fzmotion_mocap_server" ] && \
     echo "    build/fzmotion_mocap_server"
-[ -f "$SCRIPT_DIR/build/gem_mocap_server" ] && \
-    echo "    build/gem_mocap_server"
+[ -f "$SCRIPT_DIR/build/smplx_g1_server" ] && \
+    echo "    build/smplx_g1_server"
+[ -f "$SCRIPT_DIR/build/smplx_e1_server" ] && \
+    echo "    build/smplx_e1_server"
 echo "=============================================="

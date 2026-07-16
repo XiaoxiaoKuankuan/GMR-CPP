@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Original-GMR SMPL-X SMP1 -> E1.
+# Standard GEM SMPL-X SMP1 -> E1 chain.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -17,4 +17,8 @@ done
 
 export LD_LIBRARY_PATH="$ROOT/third_party/mujoco/lib:${LD_LIBRARY_PATH:-}"
 echo "[run_smplx_e1] SMP1 0.0.0.0:7005 -> E1; IK=$IK_CONFIG"
-exec "$EXECUTABLE" --xml "$XML" --ik-config "$IK_CONFIG" "$@"
+exec "$EXECUTABLE" \
+    --xml "$XML" \
+    --ik-config "$IK_CONFIG" \
+    --no-offset-to-ground \
+    "$@"

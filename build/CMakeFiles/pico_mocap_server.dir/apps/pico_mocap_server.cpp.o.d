@@ -490,7 +490,9 @@ CMakeFiles/pico_mocap_server.dir/apps/pico_mocap_server.cpp.o: \
  /usr/include/c++/11/optional \
  /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/mujoco_viewer.hpp \
  /usr/include/GLFW/glfw3.h /usr/include/GL/gl.h /usr/include/GL/glext.h \
- /usr/include/KHR/khrplatform.h \
+ /usr/include/KHR/khrplatform.h /usr/include/c++/11/set \
+ /usr/include/c++/11/bits/stl_set.h \
+ /usr/include/c++/11/bits/stl_multiset.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/redis_publisher.hpp \
  /usr/include/hiredis/hiredis.h /usr/include/hiredis/read.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/hiredis/sds.h \

@@ -1,26 +1,10 @@
-Start testing: Jul 15 18:59 CST
+Start testing: Jul 16 16:35 CST
 ----------------------------------------------------------
-1/2 Testing: gem_reader_protocol_test
-1/2 Test: gem_reader_protocol_test
-Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/gem_reader_protocol_test"
-Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
-"gem_reader_protocol_test" start time: Jul 15 18:59 CST
-Output:
-----------------------------------------------------------
-GEM1/GEM2 parser self-test passed
-<end of output>
-Test time =   0.00 sec
-----------------------------------------------------------
-Test Passed.
-"gem_reader_protocol_test" end time: Jul 15 18:59 CST
-"gem_reader_protocol_test" time elapsed: 00:00:00
-----------------------------------------------------------
-
-2/2 Testing: smplx_reader_protocol_test
-2/2 Test: smplx_reader_protocol_test
+1/1 Testing: smplx_reader_protocol_test
+1/1 Test: smplx_reader_protocol_test
 Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/smplx_reader_protocol_test"
 Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
-"smplx_reader_protocol_test" start time: Jul 15 18:59 CST
+"smplx_reader_protocol_test" start time: Jul 16 16:35 CST
 Output:
 ----------------------------------------------------------
 SMP1 parser self-test passed
@@ -28,8 +12,8 @@ SMP1 parser self-test passed
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"smplx_reader_protocol_test" end time: Jul 15 18:59 CST
+"smplx_reader_protocol_test" end time: Jul 16 16:35 CST
 "smplx_reader_protocol_test" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Jul 15 18:59 CST
+End testing: Jul 16 16:35 CST
