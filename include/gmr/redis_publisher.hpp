@@ -88,6 +88,19 @@ inline RobotPreset presetE1() {
     return p;
 }
 
+// BUMI3 has 21 actuated hinge joints in MuJoCo qpos order.  Its downstream
+// controller publish order has not been verified, so an empty reorder map is
+// intentionally identity/viewer-test-only.  The BUMI3 launch script disables
+// Redis unless the operator explicitly passes --redis.
+inline RobotPreset presetBumi3ViewerTestOnly() {
+    RobotPreset p;
+    p.num_joints       = 21;
+    p.default_key      = "smplx_online_frame_bumi3";
+    p.pelvis_z_offset  = 0.0;
+    p.joint_ids_map.clear();
+    return p;
+}
+
 // ── RedisPublisher ───────────────────────────────────────────────────────
 class RedisPublisher {
 public:

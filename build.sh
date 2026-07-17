@@ -132,4 +132,6 @@ echo "  Executables:"
     echo "    build/smplx_g1_server"
 [ -f "$SCRIPT_DIR/build/smplx_e1_server" ] && \
     echo "    build/smplx_e1_server"
+[ -f "$SCRIPT_DIR/build/smplx_bumi3_server" ] && \
+    echo "    build/smplx_bumi3_server"
 echo "=============================================="

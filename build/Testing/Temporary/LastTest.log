@@ -1,19 +1,48 @@
-Start testing: Jul 16 16:35 CST
+Start testing: Jul 17 13:42 CST
 ----------------------------------------------------------
-1/1 Testing: smplx_reader_protocol_test
-1/1 Test: smplx_reader_protocol_test
-Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/smplx_reader_protocol_test"
+2/2 Testing: smplx_bumi3_config_test
+2/2 Test: smplx_bumi3_config_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/smplx_bumi3_config_test"
 Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
-"smplx_reader_protocol_test" start time: Jul 16 16:35 CST
+"smplx_bumi3_config_test" start time: Jul 17 13:42 CST
 Output:
 ----------------------------------------------------------
-SMP1 parser self-test passed
+[BUMI3 config] value-identical source/runtime, targets=12, XML=/home/weili/GMR-CPP_e1jump_lowdpi/assets/bumi3/mjcf/bumi3.xml
+[fixed-pose] stand
+  qpos=  0.0186771    0.130705     1.00759    0.557382   -0.355904   -0.547787   -0.512432    -1.33928    -1.30041    0.386467    -1.08927           0    -1.19676        1.04        1.57       -2.26     1.11836    -0.29964   -0.286172 3.20262e-18       -0.96    0.139131    0.969993  -0.0597806   0.0230665           0       -0.96       -0.17
+  joint_limit_hits=9 target_position_error_mean=0.28368 target_rotation_error_mean=0.795903
+  body_z(base/left_foot/right_foot)=1.00759/0.58787/0.579627
+[fixed-pose] T-pose
+  qpos=   0.0187474     0.130996      1.00724     0.569902    -0.344646    -0.540105    -0.514507     -1.31648     -1.31519     0.385227     -1.05414 -1.87025e-18     -1.15963         1.04         1.57        -2.26      1.08351    -0.300073    -0.293985            0        -0.96     0.134916     0.937071   -0.0633823    0.0117831            0        -0.96        -0.17
+  joint_limit_hits=9 target_position_error_mean=0.308965 target_rotation_error_mean=0.80344
+  body_z(base/left_foot/right_foot)=1.00724/0.5889/0.580376
+[fixed-pose] arms-down
+  qpos=  0.0186771    0.130705     1.00759    0.557382   -0.355904   -0.547787   -0.512432    -1.33928    -1.30041    0.386467    -1.08927           0    -1.19676        1.04        1.57       -2.26     1.11836    -0.29964   -0.286172 3.20262e-18       -0.96    0.139131    0.969993  -0.0597806   0.0230665           0       -0.96       -0.17
+  joint_limit_hits=9 target_position_error_mean=0.28368 target_rotation_error_mean=0.795903
+  body_z(base/left_foot/right_foot)=1.00759/0.58787/0.579627
+[fixed-pose] left-arm-raise
+  qpos=   0.0187451     0.130873      1.00736     0.567687     -0.34713    -0.540466    -0.514906     -1.32412     -1.31339     0.347544     -1.06093 -2.18196e-18     -1.17548         1.04         1.57        -2.26      1.08877    -0.298557    -0.291159  5.40288e-17        -0.96      0.13612     0.941697   -0.0607807    0.0154351  7.41615e-18        -0.96        -0.17
+  joint_limit_hits=9 target_position_error_mean=0.306426 target_rotation_error_mean=0.806873
+  body_z(base/left_foot/right_foot)=1.00736/0.588634/0.580417
+[fixed-pose] right-arm-raise
+  qpos= 0.0188443    0.13108    1.00754   0.565199  -0.348972  -0.543106   -0.51362   -1.32052    -1.2864   0.395476   -1.06211          0   -1.18234       1.04       1.57      -2.26    1.09604  -0.300408  -0.291842          0      -0.96   0.137415    0.94926 -0.0625333   0.015907          0      -0.96      -0.17
+  joint_limit_hits=9 target_position_error_mean=0.298899 target_rotation_error_mean=0.798388
+  body_z(base/left_foot/right_foot)=1.00754/0.588807/0.580342
+[fixed-pose] squat
+  qpos=  0.0131661    0.148335    0.759839    0.572425   -0.329212   -0.516553   -0.545088    -1.45366    -1.33832    0.330314    -1.00996           0    -1.19893        1.04        1.57    -2.20566    0.957314   -0.310322   -0.219323 1.58396e-18       -0.96    0.122443    0.790027  -0.0402175   0.0744035 2.93114e-17       -0.96       -0.17
+  joint_limit_hits=8 target_position_error_mean=0.267897 target_rotation_error_mean=0.768569
+  body_z(base/left_foot/right_foot)=0.759839/0.353419/0.351494
+[fixed-pose] single-leg-raise
+  qpos=   0.0118666     0.136445       1.0654     0.526747    -0.164161    -0.631733     -0.54452     -1.56948     -1.01445     0.416709    -0.954334 -9.75782e-19    -0.889754         1.04         1.57        -2.26     0.874525    -0.372671    0.0550395            0        -0.96        -0.17     0.920173    -0.510107  -0.00931398            0        -0.96    -0.169404
+  joint_limit_hits=9 target_position_error_mean=0.259849 target_rotation_error_mean=0.837583
+  body_z(base/left_foot/right_foot)=1.0654/0.721419/0.602516
+smplx_bumi3_config_test: PASS
 <end of output>
-Test time =   0.00 sec
+Test time =   2.63 sec
 ----------------------------------------------------------
 Test Passed.
-"smplx_reader_protocol_test" end time: Jul 16 16:35 CST
-"smplx_reader_protocol_test" time elapsed: 00:00:00
+"smplx_bumi3_config_test" end time: Jul 17 13:42 CST
+"smplx_bumi3_config_test" time elapsed: 00:00:02
 ----------------------------------------------------------
 
-End testing: Jul 16 16:35 CST
+End testing: Jul 17 13:42 CST

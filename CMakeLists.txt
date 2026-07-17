@@ -257,9 +257,9 @@ message(STATUS "  Run:")
 message(STATUS "    ./run.sh --server <motive_ip> --client <this_ip> --always --vis")
 message(STATUS "")
 # ==============================================================================
-#  Original-GMR SMPL-X SMP1 servers (separate G1 and E1 defaults)
+#  Original-GMR SMPL-X SMP1 servers (separate G1, E1 and BUMI3 defaults)
 # ==============================================================================
-foreach(SMPLX_TARGET smplx_g1_server smplx_e1_server)
+foreach(SMPLX_TARGET smplx_g1_server smplx_e1_server smplx_bumi3_server)
     add_executable(${SMPLX_TARGET}
         apps/smplx_server.cpp
         readers/smplx_reader.cpp
@@ -287,8 +287,10 @@ target_compile_definitions(smplx_g1_server PRIVATE
     SMPLX_DEFAULT_PRESET="g1" SMPLX_DEFAULT_PORT=7004)
 target_compile_definitions(smplx_e1_server PRIVATE
     SMPLX_DEFAULT_PRESET="e1" SMPLX_DEFAULT_PORT=7005)
+target_compile_definitions(smplx_bumi3_server PRIVATE
+    SMPLX_DEFAULT_PRESET="bumi3" SMPLX_DEFAULT_PORT=7006)
 
-message(STATUS "=== smplx_g1_server / smplx_e1_server ENABLED ===")
+message(STATUS "=== smplx_g1_server / smplx_e1_server / smplx_bumi3_server ENABLED ===")
 
 # ==============================================================================
 #  Fixed-size SMP1 protocol parser self-test (no camera or Redis required)
@@ -312,4 +314,24 @@ if(BUILD_TESTING)
     target_compile_options(smplx_reader_protocol_test PRIVATE
         -O2 -Wall -Wextra -Wno-unused-parameter)
     add_test(NAME smplx_reader_protocol_test COMMAND smplx_reader_protocol_test)
+
+    add_executable(smplx_bumi3_config_test
+        tests/smplx_bumi3_config_test.cpp
+    )
+    target_include_directories(smplx_bumi3_config_test PRIVATE
+        ${GMR_ROOT}
+        ${GMR_ROOT}/include
+        ${MUJOCO_INCLUDE_DIR}
+    )
+    target_link_libraries(smplx_bumi3_config_test PRIVATE
+        mujoco::mujoco
+        Eigen3::Eigen
+        nlohmann_json::nlohmann_json
+        ${DAQP_LIB}
+    )
+    target_compile_definitions(smplx_bumi3_config_test PRIVATE
+        BUMI3_REPO_ROOT="${GMR_ROOT}")
+    target_compile_options(smplx_bumi3_config_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME smplx_bumi3_config_test COMMAND smplx_bumi3_config_test)
 endif()

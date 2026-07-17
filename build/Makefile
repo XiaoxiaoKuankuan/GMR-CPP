@@ -205,6 +205,19 @@ smplx_e1_server/fast:
 .PHONY : smplx_e1_server/fast
 
 #=============================================================================
+# Target rules for targets named smplx_bumi3_server
+
+# Build rule for target.
+smplx_bumi3_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 smplx_bumi3_server
+.PHONY : smplx_bumi3_server
+
+# fast build rule for target.
+smplx_bumi3_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_server.dir/build.make CMakeFiles/smplx_bumi3_server.dir/build
+.PHONY : smplx_bumi3_server/fast
+
+#=============================================================================
 # Target rules for targets named smplx_reader_protocol_test
 
 # Build rule for target.
@@ -216,6 +229,19 @@ smplx_reader_protocol_test: cmake_check_build_system
 smplx_reader_protocol_test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/build
 .PHONY : smplx_reader_protocol_test/fast
+
+#=============================================================================
+# Target rules for targets named smplx_bumi3_config_test
+
+# Build rule for target.
+smplx_bumi3_config_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 smplx_bumi3_config_test
+.PHONY : smplx_bumi3_config_test
+
+# fast build rule for target.
+smplx_bumi3_config_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_config_test.dir/build.make CMakeFiles/smplx_bumi3_config_test.dir/build
+.PHONY : smplx_bumi3_config_test/fast
 
 apps/fzmotion_server.o: apps/fzmotion_server.cpp.o
 .PHONY : apps/fzmotion_server.o
@@ -296,6 +322,7 @@ apps/smplx_server.o: apps/smplx_server.cpp.o
 apps/smplx_server.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/apps/smplx_server.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/apps/smplx_server.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_server.dir/build.make CMakeFiles/smplx_bumi3_server.dir/apps/smplx_server.cpp.o
 .PHONY : apps/smplx_server.cpp.o
 
 apps/smplx_server.i: apps/smplx_server.cpp.i
@@ -305,6 +332,7 @@ apps/smplx_server.i: apps/smplx_server.cpp.i
 apps/smplx_server.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/apps/smplx_server.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/apps/smplx_server.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_server.dir/build.make CMakeFiles/smplx_bumi3_server.dir/apps/smplx_server.cpp.i
 .PHONY : apps/smplx_server.cpp.i
 
 apps/smplx_server.s: apps/smplx_server.cpp.s
@@ -314,6 +342,7 @@ apps/smplx_server.s: apps/smplx_server.cpp.s
 apps/smplx_server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/apps/smplx_server.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/apps/smplx_server.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_server.dir/build.make CMakeFiles/smplx_bumi3_server.dir/apps/smplx_server.cpp.s
 .PHONY : apps/smplx_server.cpp.s
 
 apps/xsens_server.o: apps/xsens_server.cpp.o
@@ -419,6 +448,7 @@ readers/smplx_reader.o: readers/smplx_reader.cpp.o
 readers/smplx_reader.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/readers/smplx_reader.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/readers/smplx_reader.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_server.dir/build.make CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/readers/smplx_reader.cpp.o
 .PHONY : readers/smplx_reader.cpp.o
 
@@ -429,6 +459,7 @@ readers/smplx_reader.i: readers/smplx_reader.cpp.i
 readers/smplx_reader.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/readers/smplx_reader.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/readers/smplx_reader.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_server.dir/build.make CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/readers/smplx_reader.cpp.i
 .PHONY : readers/smplx_reader.cpp.i
 
@@ -439,6 +470,7 @@ readers/smplx_reader.s: readers/smplx_reader.cpp.s
 readers/smplx_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_g1_server.dir/build.make CMakeFiles/smplx_g1_server.dir/readers/smplx_reader.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_e1_server.dir/build.make CMakeFiles/smplx_e1_server.dir/readers/smplx_reader.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_server.dir/build.make CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/readers/smplx_reader.cpp.s
 .PHONY : readers/smplx_reader.cpp.s
 
@@ -465,6 +497,30 @@ readers/xsens_reader.s: readers/xsens_reader.cpp.s
 readers/xsens_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xsens_mocap_server.dir/build.make CMakeFiles/xsens_mocap_server.dir/readers/xsens_reader.cpp.s
 .PHONY : readers/xsens_reader.cpp.s
+
+tests/smplx_bumi3_config_test.o: tests/smplx_bumi3_config_test.cpp.o
+.PHONY : tests/smplx_bumi3_config_test.o
+
+# target to build an object file
+tests/smplx_bumi3_config_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_config_test.dir/build.make CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o
+.PHONY : tests/smplx_bumi3_config_test.cpp.o
+
+tests/smplx_bumi3_config_test.i: tests/smplx_bumi3_config_test.cpp.i
+.PHONY : tests/smplx_bumi3_config_test.i
+
+# target to preprocess a source file
+tests/smplx_bumi3_config_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_config_test.dir/build.make CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.i
+.PHONY : tests/smplx_bumi3_config_test.cpp.i
+
+tests/smplx_bumi3_config_test.s: tests/smplx_bumi3_config_test.cpp.s
+.PHONY : tests/smplx_bumi3_config_test.s
+
+# target to generate assembly for a file
+tests/smplx_bumi3_config_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_config_test.dir/build.make CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.s
+.PHONY : tests/smplx_bumi3_config_test.cpp.s
 
 tests/smplx_reader_protocol_test.o: tests/smplx_reader_protocol_test.cpp.o
 .PHONY : tests/smplx_reader_protocol_test.o
@@ -502,6 +558,8 @@ help:
 	@echo "... fzmotion_mocap_server"
 	@echo "... optitrack_mocap_server"
 	@echo "... pico_mocap_server"
+	@echo "... smplx_bumi3_config_test"
+	@echo "... smplx_bumi3_server"
 	@echo "... smplx_e1_server"
 	@echo "... smplx_g1_server"
 	@echo "... smplx_reader_protocol_test"
@@ -536,6 +594,9 @@ help:
 	@echo "... readers/xsens_reader.o"
 	@echo "... readers/xsens_reader.i"
 	@echo "... readers/xsens_reader.s"
+	@echo "... tests/smplx_bumi3_config_test.o"
+	@echo "... tests/smplx_bumi3_config_test.i"
+	@echo "... tests/smplx_bumi3_config_test.s"
 	@echo "... tests/smplx_reader_protocol_test.o"
 	@echo "... tests/smplx_reader_protocol_test.i"
 	@echo "... tests/smplx_reader_protocol_test.s"

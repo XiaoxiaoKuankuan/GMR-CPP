@@ -22,6 +22,7 @@
 #include <limits>
 #include <map>
 #include <set>
+#include <utility>
 #include <vector>
 
 extern std::atomic<bool> g_stop;  // defined in main
@@ -30,10 +31,18 @@ namespace gmr {
 
 class MujocoViewer {
 public:
+    using RobotBodyMap = std::map<std::string, std::string>;
+
     explicit MujocoViewer(const std::string& xml_path,
                           int render_width = 640,
                           int render_height = 480,
-                          const std::string& follow_body = "pelvis") {
+                          const std::string& follow_body = "pelvis",
+                          RobotBodyMap smplx_robot_body_map = {},
+                          std::vector<std::string> diagnostics_joint_names = {},
+                          std::vector<std::string> diagnostics_body_names = {})
+        : smplx_robot_body_map_(std::move(smplx_robot_body_map)),
+          diagnostics_joint_names_(std::move(diagnostics_joint_names)),
+          diagnostics_body_names_(std::move(diagnostics_body_names)) {
         render_width_ = std::max(160, render_width);
         render_height_ = std::max(120, render_height);
 
@@ -120,7 +129,7 @@ public:
             appendTargetOverlay(*raw_targets, *scaled_targets);
             if (draw_smplx_frames) {
                 appendSmplxFrameAxes(*scaled_targets);
-                printReadonlyE1Diagnostics();
+                printReadonlyRobotDiagnostics();
             }
         }
         mjr_render(vp, &scn_, &con_);
@@ -144,6 +153,9 @@ private:
     int         follow_body_id_ = -1;
     int         render_width_ = 640;
     int         render_height_ = 480;
+    RobotBodyMap smplx_robot_body_map_;
+    std::vector<std::string> diagnostics_joint_names_;
+    std::vector<std::string> diagnostics_body_names_;
 
     bool   mouse_left_   = false;
     bool   mouse_right_  = false;
@@ -250,46 +262,6 @@ private:
         return bodies;
     }
 
-    static const std::map<std::string, std::string>& smplxRobotBodiesE1() {
-        static const std::map<std::string, std::string> bodies = {
-            {"pelvis", "base_link"},
-            {"spine3", "waist_roll_link"},
-            {"left_hip", "l_leg_hip_pitch_link"},
-            {"left_knee", "l_leg_knee_link"},
-            {"left_foot", "l_leg_ankle_roll_link"},
-            {"right_hip", "r_leg_hip_pitch_link"},
-            {"right_knee", "r_leg_knee_link"},
-            {"right_foot", "r_leg_ankle_roll_link"},
-            {"left_shoulder", "l_arm_shoulder_roll_link"},
-            {"left_elbow", "l_arm_elbow_pitch_link"},
-            {"left_wrist", "l_arm_elbow_yaw_link"},
-            {"right_shoulder", "r_arm_shoulder_roll_link"},
-            {"right_elbow", "r_arm_elbow_pitch_link"},
-            {"right_wrist", "r_arm_elbow_yaw_link"},
-        };
-        return bodies;
-    }
-
-    static const std::map<std::string, std::string>& smplxRobotBodiesG1() {
-        static const std::map<std::string, std::string> bodies = {
-            {"pelvis", "pelvis"},
-            {"spine3", "torso_link"},
-            {"left_hip", "left_hip_roll_link"},
-            {"left_knee", "left_knee_link"},
-            {"left_foot", "left_toe_link"},
-            {"right_hip", "right_hip_roll_link"},
-            {"right_knee", "right_knee_link"},
-            {"right_foot", "right_toe_link"},
-            {"left_shoulder", "left_shoulder_yaw_link"},
-            {"left_elbow", "left_elbow_link"},
-            {"left_wrist", "left_wrist_yaw_link"},
-            {"right_shoulder", "right_shoulder_yaw_link"},
-            {"right_elbow", "right_elbow_link"},
-            {"right_wrist", "right_wrist_yaw_link"},
-        };
-        return bodies;
-    }
-
     enum class TargetSchema { Legacy, SmplDirect, SmplxReference };
 
     static TargetSchema targetSchema(const BodyMap& poses) {
@@ -366,8 +338,8 @@ private:
         if (schema == TargetSchema::SmplDirect) {
             bodies = &smplRobotBodies();
         } else if (schema == TargetSchema::SmplxReference) {
-            const bool is_e1 = mj_name2id(model_, mjOBJ_BODY, "base_link") >= 0;
-            bodies = is_e1 ? &smplxRobotBodiesE1() : &smplxRobotBodiesG1();
+            if (smplx_robot_body_map_.empty()) return poses;
+            bodies = &smplx_robot_body_map_;
         }
         for (const auto& [human_name, robot_name] : *bodies) {
             int body_id = mj_name2id(model_, mjOBJ_BODY, robot_name.c_str());
@@ -437,46 +409,31 @@ private:
         }
     }
 
-    double jointPosition(const char* name) const {
-        const int joint_id = mj_name2id(model_, mjOBJ_JOINT, name);
+    double jointPosition(const std::string& name) const {
+        const int joint_id = mj_name2id(model_, mjOBJ_JOINT, name.c_str());
         if (joint_id < 0) return std::numeric_limits<double>::quiet_NaN();
         const int address = model_->jnt_qposadr[joint_id];
         return address >= 0 && address < model_->nq ? data_->qpos[address] :
             std::numeric_limits<double>::quiet_NaN();
     }
 
-    double bodyHeight(const char* name) const {
-        const int body_id = mj_name2id(model_, mjOBJ_BODY, name);
+    double bodyHeight(const std::string& name) const {
+        const int body_id = mj_name2id(model_, mjOBJ_BODY, name.c_str());
         return body_id >= 0 ? data_->xpos[3 * body_id + 2] :
             std::numeric_limits<double>::quiet_NaN();
     }
 
-    void printReadonlyE1Diagnostics() {
+    void printReadonlyRobotDiagnostics() {
         const auto now = std::chrono::steady_clock::now();
         if (now - last_diagnostic_print_ < std::chrono::milliseconds(500)) return;
         last_diagnostic_print_ = now;
-        std::printf(
-            "[SMPLX frame diag] "
-            "L shoulder(p/r/y)=%.3f/%.3f/%.3f elbow(p/y)=%.3f/%.3f | "
-            "R shoulder(p/r/y)=%.3f/%.3f/%.3f elbow(p/y)=%.3f/%.3f\n",
-            jointPosition("l_arm_shoulder_pitch_joint"),
-            jointPosition("l_arm_shoulder_roll_joint"),
-            jointPosition("l_arm_shoulder_yaw_joint"),
-            jointPosition("l_arm_elbow_pitch_joint"),
-            jointPosition("l_arm_elbow_yaw_joint"),
-            jointPosition("r_arm_shoulder_pitch_joint"),
-            jointPosition("r_arm_shoulder_roll_joint"),
-            jointPosition("r_arm_shoulder_yaw_joint"),
-            jointPosition("r_arm_elbow_pitch_joint"),
-            jointPosition("r_arm_elbow_yaw_joint"));
-        std::printf(
-            "[SMPLX frame diag] knee(L/R)=%.3f/%.3f "
-            "body_z(base/Lfoot/Rfoot)=%.3f/%.3f/%.3f (read-only)\n",
-            jointPosition("l_leg_knee_joint"),
-            jointPosition("r_leg_knee_joint"),
-            bodyHeight("base_link"),
-            bodyHeight("l_leg_ankle_roll_link"),
-            bodyHeight("r_leg_ankle_roll_link"));
+        std::printf("[SMPLX frame diag] joints");
+        for (const auto& name : diagnostics_joint_names_)
+            std::printf(" %s=%.3f", name.c_str(), jointPosition(name));
+        std::printf("\n[SMPLX frame diag] body_z");
+        for (const auto& name : diagnostics_body_names_)
+            std::printf(" %s=%.3f", name.c_str(), bodyHeight(name));
+        std::printf(" (read-only)\n");
     }
 
     static MujocoViewer* get(GLFWwindow* w) {
