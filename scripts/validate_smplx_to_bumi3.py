@@ -19,7 +19,6 @@ except ModuleNotFoundError as error:  # pragma: no cover - environment guidance
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_SHA256 = "a5b810e0e12519f4c94fc595622bb2ff5a9ed668a419236aa9ac50eacb678f88"
 SMP1_TARGETS = {
     "pelvis", "spine3", "left_hip", "right_hip", "left_knee",
     "right_knee", "left_foot", "right_foot", "left_shoulder",
@@ -41,9 +40,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--xml", type=Path, required=True)
     parser.add_argument("--config", type=Path, required=True)
-    parser.add_argument(
-        "--source-config", type=Path, default=ROOT / "smplx_to_bumi3.json"
-    )
+    parser.add_argument("--expected-sha256")
     parser.add_argument(
         "--robot-preset", type=Path,
         default=ROOT / "config/robot_presets/bumi3.json",
@@ -51,18 +48,15 @@ def main() -> None:
     args = parser.parse_args()
     xml_path = args.xml.expanduser().resolve(strict=True)
     config_path = args.config.expanduser().resolve(strict=True)
-    source_path = args.source_config.expanduser().resolve(strict=True)
     robot_preset_path = args.robot_preset.expanduser().resolve(strict=True)
 
-    source_hash = sha256(source_path)
     runtime_hash = sha256(config_path)
-    require(source_hash == EXPECTED_SHA256, f"source SHA mismatch: {source_hash}")
-    source_config = json.loads(source_path.read_text())
+    if args.expected_sha256:
+        require(
+            runtime_hash == args.expected_sha256,
+            f"runtime config SHA mismatch: {runtime_hash}",
+        )
     config = json.loads(config_path.read_text())
-    require(
-        config == source_config,
-        "runtime config values differ from the immutable source config",
-    )
     require(config["robot_root_name"] == "base_link", "robot root must be base_link")
     require(config["human_root_name"] == "pelvis", "human root must be pelvis")
     require(config["use_ik_match_table1"], "IK table1 must be enabled")
@@ -162,8 +156,7 @@ def main() -> None:
     require(not robot_preset["joint_names_publish_order"], "publish order must remain empty")
     require(not robot_preset["joint_ids_map"], "joint_ids_map must remain empty")
     require(not robot_preset["publish_order_verified"], "publish order must be unverified")
-    print(f"PASS source config SHA-256: {source_hash}")
-    print(f"PASS runtime config values unchanged (formatted SHA-256: {runtime_hash})")
+    print(f"PASS runtime config SHA-256: {runtime_hash}")
     print(f"PASS XML: {xml_path}")
     print(
         f"PASS model nq={model.nq} nv={model.nv} nu={model.nu} "

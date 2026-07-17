@@ -174,7 +174,17 @@ public:
     }
 
     const BodyMap& getScaledHumanData() const { return scaled_human_data_; }
-    void setGroundOffset(double g) { ground_offset_ = g; }
+    void setGroundOffset(double offset) {
+        if (!std::isfinite(offset))
+            throw std::runtime_error("ground offset must be finite");
+        ground_offset_ = offset;
+    }
+    void setGroundClearance(double clearance) {
+        if (!std::isfinite(clearance) || clearance < 0.0)
+            throw std::runtime_error(
+                "ground clearance must be finite and >= 0");
+        ground_clearance_ = clearance;
+    }
 
 private:
     mjModel* model_ = nullptr;
@@ -186,6 +196,7 @@ private:
     std::string human_root_name_;
     double ground_height_ = 0.0;
     double ground_offset_ = 0.0;
+    double ground_clearance_ = 0.06;
     bool use_table1_ = false, use_table2_ = false;
 
     std::map<std::string,double>          human_scale_table_;
@@ -264,7 +275,8 @@ private:
         }
         if (!std::isinf(lowest))
             for (auto& [name,bd] : src)
-                bd.position[2] = bd.position[2] - lowest + 0.06;
+                bd.position[2] =
+                    bd.position[2] - lowest + ground_clearance_;
         return src;
     }
 

@@ -113,4 +113,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/smplx_bumi3_server.dir/DependInfo.cmake"
   "CMakeFiles/smplx_reader_protocol_test.dir/DependInfo.cmake"
   "CMakeFiles/smplx_bumi3_config_test.dir/DependInfo.cmake"
+  "CMakeFiles/ground_clearance_test.dir/DependInfo.cmake"
   )

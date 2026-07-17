@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <cmath>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
@@ -101,6 +102,8 @@ struct Config {
     int         viewer_height = 480;
     std::string viewer_follow_body = "pelvis";
     bool        offset_to_ground = false;
+    double      fixed_ground_offset = 0.0;
+    double      ground_clearance = 0.06;
     bool        require_buttons = true;
     bool        redis_enabled = true;
     bool        redis_order_verified = true;
@@ -279,6 +282,8 @@ void usage(const char* program) {
         "  --redis                   explicitly enable Redis publisher\n"
         "  --offset-to-ground        per-frame lowest-foot grounding\n"
         "  --no-offset-to-ground     preserve sender ground (default)\n"
+        "  --fixed-ground-offset <m> fixed Z amount subtracted from every target\n"
+        "  --ground-clearance <m>    fixed lowest-foot clearance (G1/E1 0.06, BUMI3 0.02)\n"
         "  --always                  bypass A+R1 joystick publish gate\n"
         "  --vis                     open MuJoCo viewer\n"
         "  --vis-smplx-targets       show raw/scaled/robot target overlay\n"
@@ -311,6 +316,7 @@ Config parseArgs(int argc, char** argv) {
         cfg.ik_config =
             (repo_root / "config/ik_configs/smplx_to_bumi3.json").string();
         cfg.viewer_follow_body = "base_link";
+        cfg.ground_clearance = 0.02;
         cfg.redis_order_verified = false;
     } else {
         throw std::runtime_error("SMPL-X server preset must be g1, e1 or bumi3");
@@ -355,6 +361,8 @@ Config parseArgs(int argc, char** argv) {
         else if (arg == "--redis")             cfg.redis_enabled = true;
         else if (arg == "--offset-to-ground")  cfg.offset_to_ground = true;
         else if (arg == "--no-offset-to-ground") cfg.offset_to_ground = false;
+        else if (arg == "--fixed-ground-offset") cfg.fixed_ground_offset = std::stod(next());
+        else if (arg == "--ground-clearance")  cfg.ground_clearance = std::stod(next());
         else if (arg == "--always")            cfg.require_buttons = false;
         else if (arg == "--vis")               cfg.vis = true;
         else if (arg == "--vis-smplx-targets")  {
@@ -395,6 +403,10 @@ Config parseArgs(int argc, char** argv) {
 
     if (cfg.publish_hz <= 0.0) throw std::runtime_error("--hz must be > 0");
     if (cfg.stale_ms <= 0.0)   throw std::runtime_error("--stale-ms must be > 0");
+    if (!std::isfinite(cfg.fixed_ground_offset))
+        throw std::runtime_error("--fixed-ground-offset must be finite");
+    if (!std::isfinite(cfg.ground_clearance) || cfg.ground_clearance < 0.0)
+        throw std::runtime_error("--ground-clearance must be finite and >= 0");
     if (!fs::is_regular_file(cfg.xml_file))
         throw std::runtime_error("robot XML not found: " + cfg.xml_file);
     if (!fs::is_regular_file(cfg.ik_config))
@@ -438,7 +450,9 @@ int main(int argc, char** argv) {
             "[Config] redis=%s key=%s order_verified=%s\n"
             "[Config] frame=%d floats / %d bytes\n"
             "[Config] bind=%s:%d stale_ms=%.0f "
-            "offset_to_ground=%s vis_smplx_targets=%s vis_smplx_frames=%s\n",
+            "offset_to_ground=%s fixed_ground_offset=%.3f "
+            "ground_clearance=%.3f "
+            "vis_smplx_targets=%s vis_smplx_frames=%s\n",
             cfg.preset.c_str(), cfg.xml_file.c_str(), cfg.ik_config.c_str(),
             model_info.nq, model_info.nv, model_info.nu, model_info.nbody,
             model_info.actuated_joints, cfg.smplx_robot_body_map.size(),
@@ -447,6 +461,8 @@ int main(int argc, char** argv) {
             frame_floats, frame_floats * 4,
             cfg.bind_ip.c_str(), cfg.port, cfg.stale_ms,
             cfg.offset_to_ground ? "on" : "off",
+            cfg.fixed_ground_offset,
+            cfg.ground_clearance,
             cfg.vis_smplx_targets ? "on" : "off",
             cfg.vis_smplx_frames ? "on" : "off");
 
@@ -461,6 +477,8 @@ int main(int argc, char** argv) {
 
         gmr_mink::GMR gmr(
             cfg.xml_file, cfg.ik_config, cfg.human_height, cfg.damping, false);
+        gmr.setGroundOffset(cfg.fixed_ground_offset);
+        gmr.setGroundClearance(cfg.ground_clearance);
         std::cout << "[GMR] ready; waiting for SMP1 frames...\n";
 
         constexpr int    kSeedFrames = 10;
@@ -604,12 +622,15 @@ int main(int argc, char** argv) {
         std::printf(
             "[Run] SMP1 UDP=%s:%d preset=%s Redis=%s key=%s "
             "publish=%.1fHz stale=%.0fms ttl=%dms offset_to_ground=%s "
+            "fixed_ground_offset=%.3f ground_clearance=%.3f "
             "gate=%s vis=%s targets=%s frames=%s\n",
             cfg.bind_ip.c_str(), cfg.port, cfg.preset.c_str(),
             cfg.redis_enabled ? "on" : "off",
             cfg.redis.key.c_str(), cfg.publish_hz, cfg.stale_ms,
             cfg.redis.ttl_ms,
             cfg.offset_to_ground ? "on" : "off",
+            cfg.fixed_ground_offset,
+            cfg.ground_clearance,
             cfg.require_buttons ? "A+R1" : "off",
             cfg.vis ? "on" : "off",
             cfg.vis_smplx_targets ? "on" : "off",

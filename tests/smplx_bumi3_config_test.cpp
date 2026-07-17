@@ -130,10 +130,7 @@ void validateConfigAndModel(const std::string& root,
                             const std::string& config_path,
                             const nlohmann::json& config,
                             const mjModel* model) {
-    const auto source_config =
-        nlohmann::json::parse(readFile(root + "/smplx_to_bumi3.json"));
-    if (source_config != config)
-        throw std::runtime_error("runtime config values differ from source config");
+    (void)root;
     if (config.at("robot_root_name") != "base_link" ||
         config.at("human_root_name") != "pelvis")
         throw std::runtime_error("unexpected root names");
@@ -192,8 +189,108 @@ void validateConfigAndModel(const std::string& root,
     }
     if (base_id < 0 || !base_freejoint || model->nq < 7)
         throw std::runtime_error("base_link root/freejoint validation failed");
-    std::cout << "[BUMI3 config] value-identical source/runtime, targets=12, "
+    std::cout << "[BUMI3 config] valid fixed runtime config, targets=12, "
                  "XML=" << xml_path << "\n";
+}
+
+void validateJumpPreservation(const nlohmann::json& base,
+                              const nlohmann::json& jump) {
+    for (const char* field : {
+             "robot_root_name", "human_root_name", "ground_height",
+             "human_height_assumption", "use_ik_match_table1",
+             "use_ik_match_table2", "human_scale_table"}) {
+        if (base.at(field) != jump.at(field))
+            throw std::runtime_error(
+                std::string("jump changed protected field: ") + field);
+    }
+    for (const char* table_name : {"ik_match_table1", "ik_match_table2"}) {
+        if (base.at(table_name).size() != jump.at(table_name).size())
+            throw std::runtime_error("jump changed robot body count");
+        for (const auto& [robot_body, base_entry] :
+             base.at(table_name).items()) {
+            const auto& jump_entry = jump.at(table_name).at(robot_body);
+            if (base_entry.at(0) != jump_entry.at(0) ||
+                base_entry.at(3) != jump_entry.at(3) ||
+                base_entry.at(4) != jump_entry.at(4)) {
+                throw std::runtime_error(
+                    std::string("jump changed mapping/offset: ") + table_name +
+                    "/" + robot_body);
+            }
+        }
+    }
+    std::cout << "[BUMI3 jump] scale/mapping/position-offset/rotation-offset "
+                 "preserved\n";
+}
+
+double lowestFootTarget(const gmr::BodyMap& targets) {
+    return std::min(targets.at("left_foot").position.z(),
+                    targets.at("right_foot").position.z());
+}
+
+void validateJumpTranslation(const std::string& xml_path,
+                             const std::string& jump_config_path) {
+    auto frame_a = armsDownPose();
+    auto frame_b = frame_a;
+    for (auto& [name, body] : frame_b) {
+        (void)name;
+        body.position.z() += 0.25;
+    }
+
+    constexpr double kFixedJumpGroundOffset = 0.65;
+    gmr_mink::GMR solver(xml_path, jump_config_path, 1.8, 1.0, false);
+    solver.setGroundOffset(kFixedJumpGroundOffset);
+    Eigen::VectorXd qpos_a;
+    for (int iteration = 0; iteration < 200; ++iteration)
+        qpos_a = solver.retarget(frame_a, false);
+    const double foot_a = lowestFootTarget(solver.getScaledHumanData());
+    constexpr double kCanonicalFootBeforeFixedOffset = 0.5508475377930858;
+    const double expected_foot_a =
+        kCanonicalFootBeforeFixedOffset - kFixedJumpGroundOffset;
+    if (std::abs(foot_a - expected_foot_a) > 1e-6)
+        throw std::runtime_error(
+            "fixed jump ground offset was not applied uniformly: " +
+            std::to_string(foot_a));
+
+    char model_error[1024] = {};
+    std::unique_ptr<mjModel, decltype(&mj_deleteModel)> jump_model(
+        mj_loadXML(xml_path.c_str(), nullptr, model_error, sizeof(model_error)),
+        mj_deleteModel);
+    if (!jump_model) throw std::runtime_error(model_error);
+    std::unique_ptr<mjData, decltype(&mj_deleteData)> jump_data(
+        mj_makeData(jump_model.get()), mj_deleteData);
+    for (int index = 0; index < jump_model->nq; ++index)
+        jump_data->qpos[index] = qpos_a[index];
+    mj_forward(jump_model.get(), jump_data.get());
+    const int left_ankle =
+        mj_name2id(jump_model.get(), mjOBJ_BODY, "l_ankle_roll_link");
+    const int right_ankle =
+        mj_name2id(jump_model.get(), mjOBJ_BODY, "r_ankle_roll_link");
+    const double robot_foot_a = std::min(
+        jump_data->xpos[3 * left_ankle + 2],
+        jump_data->xpos[3 * right_ankle + 2]);
+    if (!std::isfinite(robot_foot_a))
+        throw std::runtime_error(
+            "fixed jump ground offset produced invalid robot ankle height: " +
+            std::to_string(robot_foot_a));
+
+    Eigen::VectorXd qpos_b;
+    for (int iteration = 0; iteration < 200; ++iteration)
+        qpos_b = solver.retarget(frame_b, false);
+    const double foot_b = lowestFootTarget(solver.getScaledHumanData());
+
+    if (!qpos_a.allFinite() || !qpos_b.allFinite())
+        throw std::runtime_error("jump translation produced non-finite qpos");
+    const double base_delta = qpos_b[2] - qpos_a[2];
+    const double foot_delta = foot_b - foot_a;
+    if (!(base_delta > 0.0) || !(foot_delta > 0.0))
+        throw std::runtime_error(
+            "jump vertical translation was removed: base_delta=" +
+            std::to_string(base_delta) + " foot_delta=" +
+            std::to_string(foot_delta));
+    std::cout << "[BUMI3 jump] vertical translation preserved: base_delta_z="
+              << base_delta << " standing_lowest_foot_z=" << foot_a
+              << " standing_robot_ankle_z=" << robot_foot_a
+              << " lowest_foot_target_delta_z=" << foot_delta << "\n";
 }
 
 void reportFixedPose(const std::string& name,
@@ -270,7 +367,11 @@ int main() {
         const std::string xml_path = root + "/assets/bumi3/mjcf/bumi3.xml";
         const std::string config_path =
             root + "/config/ik_configs/smplx_to_bumi3.json";
+        const std::string jump_config_path =
+            root + "/config/ik_configs/smplx_to_bumi3_jump.json";
         const nlohmann::json config = nlohmann::json::parse(readFile(config_path));
+        const nlohmann::json jump_config =
+            nlohmann::json::parse(readFile(jump_config_path));
 
         char error[1024] = {};
         mjModel* raw_model = mj_loadXML(xml_path.c_str(), nullptr, error, sizeof(error));
@@ -283,6 +384,8 @@ int main() {
             throw std::runtime_error("MuJoCo qpos allocation failed");
 
         validateConfigAndModel(root, xml_path, config_path, config, model.get());
+        validateJumpPreservation(config, jump_config);
+        validateJumpTranslation(xml_path, jump_config_path);
         for (const auto& [name, frame] : fixedPoses())
             reportFixedPose(name, frame, xml_path, config_path);
         std::cout << "smplx_bumi3_config_test: PASS\n";

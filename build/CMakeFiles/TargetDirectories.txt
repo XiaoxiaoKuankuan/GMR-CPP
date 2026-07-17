@@ -7,6 +7,7 @@
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/smplx_bumi3_server.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/smplx_reader_protocol_test.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/smplx_bumi3_config_test.dir
+/home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/ground_clearance_test.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/test.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/edit_cache.dir
 /home/weili/GMR-CPP_e1jump_lowdpi/build/CMakeFiles/rebuild_cache.dir

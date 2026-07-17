@@ -8,3 +8,5 @@ add_test(smplx_reader_protocol_test "/home/weili/GMR-CPP_e1jump_lowdpi/build/smp
 set_tests_properties(smplx_reader_protocol_test PROPERTIES  _BACKTRACE_TRIPLES "/home/weili/GMR-CPP_e1jump_lowdpi/CMakeLists.txt;316;add_test;/home/weili/GMR-CPP_e1jump_lowdpi/CMakeLists.txt;0;")
 add_test(smplx_bumi3_config_test "/home/weili/GMR-CPP_e1jump_lowdpi/build/smplx_bumi3_config_test")
 set_tests_properties(smplx_bumi3_config_test PROPERTIES  _BACKTRACE_TRIPLES "/home/weili/GMR-CPP_e1jump_lowdpi/CMakeLists.txt;336;add_test;/home/weili/GMR-CPP_e1jump_lowdpi/CMakeLists.txt;0;")
+add_test(ground_clearance_test "/home/weili/GMR-CPP_e1jump_lowdpi/build/ground_clearance_test")
+set_tests_properties(ground_clearance_test PROPERTIES  _BACKTRACE_TRIPLES "/home/weili/GMR-CPP_e1jump_lowdpi/CMakeLists.txt;356;add_test;/home/weili/GMR-CPP_e1jump_lowdpi/CMakeLists.txt;0;")

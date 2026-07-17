@@ -1,3 +1,4 @@
-smplx_reader_protocol_test 2 0.000975008
-smplx_bumi3_config_test 3 0.875017
+smplx_reader_protocol_test 3 0.000479989
+smplx_bumi3_config_test 5 0.689959
+ground_clearance_test 4 0.123908
 ---

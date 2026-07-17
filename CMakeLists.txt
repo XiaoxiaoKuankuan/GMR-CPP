@@ -334,4 +334,24 @@ if(BUILD_TESTING)
     target_compile_options(smplx_bumi3_config_test PRIVATE
         -O2 -Wall -Wextra -Wno-unused-parameter)
     add_test(NAME smplx_bumi3_config_test COMMAND smplx_bumi3_config_test)
+
+    add_executable(ground_clearance_test
+        tests/ground_clearance_test.cpp
+    )
+    target_include_directories(ground_clearance_test PRIVATE
+        ${GMR_ROOT}
+        ${GMR_ROOT}/include
+        ${MUJOCO_INCLUDE_DIR}
+    )
+    target_link_libraries(ground_clearance_test PRIVATE
+        mujoco::mujoco
+        Eigen3::Eigen
+        nlohmann_json::nlohmann_json
+        ${DAQP_LIB}
+    )
+    target_compile_definitions(ground_clearance_test PRIVATE
+        BUMI3_REPO_ROOT="${GMR_ROOT}")
+    target_compile_options(ground_clearance_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME ground_clearance_test COMMAND ground_clearance_test)
 endif()

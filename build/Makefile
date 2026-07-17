@@ -243,6 +243,19 @@ smplx_bumi3_config_test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_bumi3_config_test.dir/build.make CMakeFiles/smplx_bumi3_config_test.dir/build
 .PHONY : smplx_bumi3_config_test/fast
 
+#=============================================================================
+# Target rules for targets named ground_clearance_test
+
+# Build rule for target.
+ground_clearance_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ground_clearance_test
+.PHONY : ground_clearance_test
+
+# fast build rule for target.
+ground_clearance_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ground_clearance_test.dir/build.make CMakeFiles/ground_clearance_test.dir/build
+.PHONY : ground_clearance_test/fast
+
 apps/fzmotion_server.o: apps/fzmotion_server.cpp.o
 .PHONY : apps/fzmotion_server.o
 
@@ -498,6 +511,30 @@ readers/xsens_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xsens_mocap_server.dir/build.make CMakeFiles/xsens_mocap_server.dir/readers/xsens_reader.cpp.s
 .PHONY : readers/xsens_reader.cpp.s
 
+tests/ground_clearance_test.o: tests/ground_clearance_test.cpp.o
+.PHONY : tests/ground_clearance_test.o
+
+# target to build an object file
+tests/ground_clearance_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ground_clearance_test.dir/build.make CMakeFiles/ground_clearance_test.dir/tests/ground_clearance_test.cpp.o
+.PHONY : tests/ground_clearance_test.cpp.o
+
+tests/ground_clearance_test.i: tests/ground_clearance_test.cpp.i
+.PHONY : tests/ground_clearance_test.i
+
+# target to preprocess a source file
+tests/ground_clearance_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ground_clearance_test.dir/build.make CMakeFiles/ground_clearance_test.dir/tests/ground_clearance_test.cpp.i
+.PHONY : tests/ground_clearance_test.cpp.i
+
+tests/ground_clearance_test.s: tests/ground_clearance_test.cpp.s
+.PHONY : tests/ground_clearance_test.s
+
+# target to generate assembly for a file
+tests/ground_clearance_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ground_clearance_test.dir/build.make CMakeFiles/ground_clearance_test.dir/tests/ground_clearance_test.cpp.s
+.PHONY : tests/ground_clearance_test.cpp.s
+
 tests/smplx_bumi3_config_test.o: tests/smplx_bumi3_config_test.cpp.o
 .PHONY : tests/smplx_bumi3_config_test.o
 
@@ -556,6 +593,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... fzmotion_mocap_server"
+	@echo "... ground_clearance_test"
 	@echo "... optitrack_mocap_server"
 	@echo "... pico_mocap_server"
 	@echo "... smplx_bumi3_config_test"
@@ -594,6 +632,9 @@ help:
 	@echo "... readers/xsens_reader.o"
 	@echo "... readers/xsens_reader.i"
 	@echo "... readers/xsens_reader.s"
+	@echo "... tests/ground_clearance_test.o"
+	@echo "... tests/ground_clearance_test.i"
+	@echo "... tests/ground_clearance_test.s"
 	@echo "... tests/smplx_bumi3_config_test.o"
 	@echo "... tests/smplx_bumi3_config_test.i"
 	@echo "... tests/smplx_bumi3_config_test.s"

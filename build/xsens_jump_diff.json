@@ -1,0 +1,5294 @@
+{
+  "schema_version": 1,
+  "quaternion_sign_equivalent": true,
+  "robots": {
+    "g1": {
+      "name": "g1",
+      "base_path": "/home/weili/GMR-CPP_e1jump_lowdpi/config/ik_configs/xsens_to_g1.json",
+      "jump_path": "/home/weili/GMR-CPP_e1jump_lowdpi/config/ik_configs/xsens_to_g1_jump.json",
+      "base_sha256": "d02933acb0f6377afaf072f1a788c9a9ef6b3432d4783da04d1c533409087f83",
+      "jump_sha256": "e15f93362f93675a168b1d00116b38908f865f67fffc512db1b82730fa92378f",
+      "top_level": [
+        {
+          "field": "robot_root_name",
+          "base": "pelvis",
+          "jump": "pelvis",
+          "changed": false
+        },
+        {
+          "field": "human_root_name",
+          "base": "Pelvis",
+          "jump": "Pelvis",
+          "changed": false
+        },
+        {
+          "field": "ground_height",
+          "base": 0.0,
+          "jump": 0.0,
+          "changed": false
+        },
+        {
+          "field": "human_height_assumption",
+          "base": 1.8,
+          "jump": 1.8,
+          "changed": false
+        },
+        {
+          "field": "use_ik_match_table1",
+          "base": true,
+          "jump": true,
+          "changed": false
+        },
+        {
+          "field": "use_ik_match_table2",
+          "base": true,
+          "jump": true,
+          "changed": false
+        }
+      ],
+      "human_scale": [
+        {
+          "human_body": "Pelvis",
+          "base": 0.8,
+          "jump": 0.95,
+          "changed": true,
+          "delta": 0.1499999999999999,
+          "absolute_delta": 0.1499999999999999,
+          "ratio": 1.1874999999999998,
+          "direction": 1
+        },
+        {
+          "human_body": "Chest",
+          "base": 0.8,
+          "jump": 0.85,
+          "changed": true,
+          "delta": 0.04999999999999993,
+          "absolute_delta": 0.04999999999999993,
+          "ratio": 1.0625,
+          "direction": 1
+        },
+        {
+          "human_body": "Left_UpperLeg",
+          "base": 0.8,
+          "jump": 0.95,
+          "changed": true,
+          "delta": 0.1499999999999999,
+          "absolute_delta": 0.1499999999999999,
+          "ratio": 1.1874999999999998,
+          "direction": 1
+        },
+        {
+          "human_body": "Right_UpperLeg",
+          "base": 0.8,
+          "jump": 0.95,
+          "changed": true,
+          "delta": 0.1499999999999999,
+          "absolute_delta": 0.1499999999999999,
+          "ratio": 1.1874999999999998,
+          "direction": 1
+        },
+        {
+          "human_body": "Left_LowerLeg",
+          "base": 0.8,
+          "jump": 0.95,
+          "changed": true,
+          "delta": 0.1499999999999999,
+          "absolute_delta": 0.1499999999999999,
+          "ratio": 1.1874999999999998,
+          "direction": 1
+        },
+        {
+          "human_body": "Right_LowerLeg",
+          "base": 0.8,
+          "jump": 0.95,
+          "changed": true,
+          "delta": 0.1499999999999999,
+          "absolute_delta": 0.1499999999999999,
+          "ratio": 1.1874999999999998,
+          "direction": 1
+        },
+        {
+          "human_body": "Left_Foot",
+          "base": 0.8,
+          "jump": 0.95,
+          "changed": true,
+          "delta": 0.1499999999999999,
+          "absolute_delta": 0.1499999999999999,
+          "ratio": 1.1874999999999998,
+          "direction": 1
+        },
+        {
+          "human_body": "Right_Foot",
+          "base": 0.8,
+          "jump": 0.95,
+          "changed": true,
+          "delta": 0.1499999999999999,
+          "absolute_delta": 0.1499999999999999,
+          "ratio": 1.1874999999999998,
+          "direction": 1
+        },
+        {
+          "human_body": "Left_UpperArm",
+          "base": 0.75,
+          "jump": 0.75,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Right_UpperArm",
+          "base": 0.75,
+          "jump": 0.75,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Left_Forearm",
+          "base": 0.75,
+          "jump": 0.75,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Right_Forearm",
+          "base": 0.75,
+          "jump": 0.75,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Left_Hand",
+          "base": 0.75,
+          "jump": 0.75,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Right_Hand",
+          "base": 0.75,
+          "jump": 0.75,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        }
+      ],
+      "tables": {
+        "ik_match_table1": [
+          {
+            "robot_body": "pelvis",
+            "human_body": "Pelvis",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "torso_link",
+            "human_body": "Chest",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 100,
+              "jump": 100,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_hip_yaw_link",
+            "human_body": "Left_UpperLeg",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_knee_link",
+            "human_body": "Left_LowerLeg",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_ankle_roll_link",
+            "human_body": "Left_Foot",
+            "position_weight": {
+              "base": 50,
+              "jump": 50,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_hip_yaw_link",
+            "human_body": "Right_UpperLeg",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_knee_link",
+            "human_body": "Right_LowerLeg",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_ankle_roll_link",
+            "human_body": "Right_Foot",
+            "position_weight": {
+              "base": 50,
+              "jump": 50,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_shoulder_yaw_link",
+            "human_body": "Left_UpperArm",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 100,
+              "jump": 100,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_elbow_link",
+            "human_body": "Left_Forearm",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "jump": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_wrist_yaw_link",
+            "human_body": "Left_Hand",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "jump": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_shoulder_yaw_link",
+            "human_body": "Right_UpperArm",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 100,
+              "jump": 100,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                -0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                -0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_elbow_link",
+            "human_body": "Right_Forearm",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.5,
+                -0.5,
+                0.5,
+                -0.5
+              ],
+              "jump": [
+                0.5,
+                -0.5,
+                0.5,
+                -0.5
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_wrist_yaw_link",
+            "human_body": "Right_Hand",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.5,
+                -0.5,
+                0.5,
+                -0.5
+              ],
+              "jump": [
+                0.5,
+                -0.5,
+                0.5,
+                -0.5
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          }
+        ],
+        "ik_match_table2": [
+          {
+            "robot_body": "pelvis",
+            "human_body": "Pelvis",
+            "position_weight": {
+              "base": 100,
+              "jump": 150,
+              "changed": true,
+              "delta": 50.0,
+              "absolute_delta": 50.0,
+              "ratio": 1.5,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_hip_yaw_link",
+            "human_body": "Left_UpperLeg",
+            "position_weight": {
+              "base": 10,
+              "jump": 15,
+              "changed": true,
+              "delta": 5.0,
+              "absolute_delta": 5.0,
+              "ratio": 1.5,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_knee_link",
+            "human_body": "Left_LowerLeg",
+            "position_weight": {
+              "base": 10,
+              "jump": 20,
+              "changed": true,
+              "delta": 10.0,
+              "absolute_delta": 10.0,
+              "ratio": 2.0,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_ankle_roll_link",
+            "human_body": "Left_Foot",
+            "position_weight": {
+              "base": 50,
+              "jump": 80,
+              "changed": true,
+              "delta": 30.0,
+              "absolute_delta": 30.0,
+              "ratio": 1.6,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 15,
+              "changed": true,
+              "delta": 5.0,
+              "absolute_delta": 5.0,
+              "ratio": 1.5,
+              "direction": 1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_hip_yaw_link",
+            "human_body": "Right_UpperLeg",
+            "position_weight": {
+              "base": 10,
+              "jump": 15,
+              "changed": true,
+              "delta": 5.0,
+              "absolute_delta": 5.0,
+              "ratio": 1.5,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_knee_link",
+            "human_body": "Right_LowerLeg",
+            "position_weight": {
+              "base": 10,
+              "jump": 20,
+              "changed": true,
+              "delta": 10.0,
+              "absolute_delta": 10.0,
+              "ratio": 2.0,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_ankle_roll_link",
+            "human_body": "Right_Foot",
+            "position_weight": {
+              "base": 50,
+              "jump": 80,
+              "changed": true,
+              "delta": 30.0,
+              "absolute_delta": 30.0,
+              "ratio": 1.6,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 15,
+              "changed": true,
+              "delta": 5.0,
+              "absolute_delta": 5.0,
+              "ratio": 1.5,
+              "direction": 1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "torso_link",
+            "human_body": "Chest",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_shoulder_yaw_link",
+            "human_body": "Left_UpperArm",
+            "position_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 15,
+              "jump": 15,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_elbow_link",
+            "human_body": "Left_Forearm",
+            "position_weight": {
+              "base": 20,
+              "jump": 20,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "jump": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "left_wrist_yaw_link",
+            "human_body": "Left_Hand",
+            "position_weight": {
+              "base": 50,
+              "jump": 50,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "jump": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_shoulder_yaw_link",
+            "human_body": "Right_UpperArm",
+            "position_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 50,
+              "jump": 50,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                -0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                -0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_elbow_link",
+            "human_body": "Right_Forearm",
+            "position_weight": {
+              "base": 20,
+              "jump": 20,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.5,
+                -0.5,
+                0.5,
+                -0.5
+              ],
+              "jump": [
+                0.5,
+                -0.5,
+                0.5,
+                -0.5
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "right_wrist_yaw_link",
+            "human_body": "Right_Hand",
+            "position_weight": {
+              "base": 50,
+              "jump": 50,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.5,
+                -0.5,
+                0.5,
+                -0.5
+              ],
+              "jump": [
+                0.5,
+                -0.5,
+                0.5,
+                -0.5
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          }
+        ]
+      }
+    },
+    "e1": {
+      "name": "e1",
+      "base_path": "/home/weili/GMR-CPP_e1jump_lowdpi/config/ik_configs/xsens_to_e1.json",
+      "jump_path": "/home/weili/GMR-CPP_e1jump_lowdpi/config/ik_configs/xsens_to_e1_jump.json",
+      "base_sha256": "3e879a6b83845dfe4590ecaae65042b153cbee79d55429c1edbc9e3fa005448e",
+      "jump_sha256": "595e27925277f9f5a93491e8948183904888f2b37b6c6ccfcda4c2262899cc75",
+      "top_level": [
+        {
+          "field": "robot_root_name",
+          "base": "base_link",
+          "jump": "base_link",
+          "changed": false
+        },
+        {
+          "field": "human_root_name",
+          "base": "Pelvis",
+          "jump": "Pelvis",
+          "changed": false
+        },
+        {
+          "field": "ground_height",
+          "base": 0.0,
+          "jump": 0.0,
+          "changed": false
+        },
+        {
+          "field": "human_height_assumption",
+          "base": 1.8,
+          "jump": 1.8,
+          "changed": false
+        },
+        {
+          "field": "use_ik_match_table1",
+          "base": true,
+          "jump": true,
+          "changed": false
+        },
+        {
+          "field": "use_ik_match_table2",
+          "base": true,
+          "jump": true,
+          "changed": false
+        }
+      ],
+      "human_scale": [
+        {
+          "human_body": "Pelvis",
+          "base": 0.8,
+          "jump": 0.9,
+          "changed": true,
+          "delta": 0.09999999999999998,
+          "absolute_delta": 0.09999999999999998,
+          "ratio": 1.125,
+          "direction": 1
+        },
+        {
+          "human_body": "Chest",
+          "base": 0.8,
+          "jump": 0.85,
+          "changed": true,
+          "delta": 0.04999999999999993,
+          "absolute_delta": 0.04999999999999993,
+          "ratio": 1.0625,
+          "direction": 1
+        },
+        {
+          "human_body": "Left_UpperLeg",
+          "base": 0.8,
+          "jump": 0.9,
+          "changed": true,
+          "delta": 0.09999999999999998,
+          "absolute_delta": 0.09999999999999998,
+          "ratio": 1.125,
+          "direction": 1
+        },
+        {
+          "human_body": "Right_UpperLeg",
+          "base": 0.8,
+          "jump": 0.9,
+          "changed": true,
+          "delta": 0.09999999999999998,
+          "absolute_delta": 0.09999999999999998,
+          "ratio": 1.125,
+          "direction": 1
+        },
+        {
+          "human_body": "Left_LowerLeg",
+          "base": 0.8,
+          "jump": 0.9,
+          "changed": true,
+          "delta": 0.09999999999999998,
+          "absolute_delta": 0.09999999999999998,
+          "ratio": 1.125,
+          "direction": 1
+        },
+        {
+          "human_body": "Right_LowerLeg",
+          "base": 0.8,
+          "jump": 0.9,
+          "changed": true,
+          "delta": 0.09999999999999998,
+          "absolute_delta": 0.09999999999999998,
+          "ratio": 1.125,
+          "direction": 1
+        },
+        {
+          "human_body": "Left_Foot",
+          "base": 0.8,
+          "jump": 0.9,
+          "changed": true,
+          "delta": 0.09999999999999998,
+          "absolute_delta": 0.09999999999999998,
+          "ratio": 1.125,
+          "direction": 1
+        },
+        {
+          "human_body": "Right_Foot",
+          "base": 0.8,
+          "jump": 0.9,
+          "changed": true,
+          "delta": 0.09999999999999998,
+          "absolute_delta": 0.09999999999999998,
+          "ratio": 1.125,
+          "direction": 1
+        },
+        {
+          "human_body": "Left_UpperArm",
+          "base": 0.35,
+          "jump": 0.35,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Right_UpperArm",
+          "base": 0.35,
+          "jump": 0.35,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Left_Forearm",
+          "base": 0.45,
+          "jump": 0.45,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Right_Forearm",
+          "base": 0.45,
+          "jump": 0.45,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Left_Hand",
+          "base": 0.45,
+          "jump": 0.45,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        },
+        {
+          "human_body": "Right_Hand",
+          "base": 0.45,
+          "jump": 0.45,
+          "changed": false,
+          "delta": 0.0,
+          "absolute_delta": 0.0,
+          "ratio": 1.0,
+          "direction": 0
+        }
+      ],
+      "tables": {
+        "ik_match_table1": [
+          {
+            "robot_body": "base_link",
+            "human_body": "Pelvis",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "waist_roll_link",
+            "human_body": "Chest",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_leg_hip_pitch_link",
+            "human_body": "Left_UpperLeg",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_leg_knee_link",
+            "human_body": "Left_LowerLeg",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_leg_ankle_roll_link",
+            "human_body": "Left_Foot",
+            "position_weight": {
+              "base": 100,
+              "jump": 100,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 50,
+              "jump": 50,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_leg_hip_pitch_link",
+            "human_body": "Right_UpperLeg",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_leg_knee_link",
+            "human_body": "Right_LowerLeg",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_leg_ankle_roll_link",
+            "human_body": "Right_Foot",
+            "position_weight": {
+              "base": 100,
+              "jump": 100,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 50,
+              "jump": 50,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_arm_shoulder_roll_link",
+            "human_body": "Left_UpperArm",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 4,
+              "changed": true,
+              "delta": -6.0,
+              "absolute_delta": 6.0,
+              "ratio": 0.4,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_arm_elbow_pitch_link",
+            "human_body": "Left_Forearm",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 3,
+              "changed": true,
+              "delta": -7.0,
+              "absolute_delta": 7.0,
+              "ratio": 0.3,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_arm_elbow_yaw_link",
+            "human_body": "Left_Hand",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 3,
+              "changed": true,
+              "delta": -7.0,
+              "absolute_delta": 7.0,
+              "ratio": 0.3,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_arm_shoulder_roll_link",
+            "human_body": "Right_UpperArm",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 4,
+              "changed": true,
+              "delta": -6.0,
+              "absolute_delta": 6.0,
+              "ratio": 0.4,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                -0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                -0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_arm_elbow_pitch_link",
+            "human_body": "Right_Forearm",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 3,
+              "changed": true,
+              "delta": -7.0,
+              "absolute_delta": 7.0,
+              "ratio": 0.3,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                -0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                -0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_arm_elbow_yaw_link",
+            "human_body": "Right_Hand",
+            "position_weight": {
+              "base": 0,
+              "jump": 0,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": null,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 10,
+              "jump": 3,
+              "changed": true,
+              "delta": -7.0,
+              "absolute_delta": 7.0,
+              "ratio": 0.3,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                -0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                -0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          }
+        ],
+        "ik_match_table2": [
+          {
+            "robot_body": "base_link",
+            "human_body": "Pelvis",
+            "position_weight": {
+              "base": 10,
+              "jump": 100,
+              "changed": true,
+              "delta": 90.0,
+              "absolute_delta": 90.0,
+              "ratio": 10.0,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "waist_roll_link",
+            "human_body": "Chest",
+            "position_weight": {
+              "base": 10,
+              "jump": 10,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_leg_hip_pitch_link",
+            "human_body": "Left_UpperLeg",
+            "position_weight": {
+              "base": 10,
+              "jump": 20,
+              "changed": true,
+              "delta": 10.0,
+              "absolute_delta": 10.0,
+              "ratio": 2.0,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_leg_knee_link",
+            "human_body": "Left_LowerLeg",
+            "position_weight": {
+              "base": 10,
+              "jump": 40,
+              "changed": true,
+              "delta": 30.0,
+              "absolute_delta": 30.0,
+              "ratio": 4.0,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 8,
+              "changed": true,
+              "delta": 3.0,
+              "absolute_delta": 3.0,
+              "ratio": 1.6,
+              "direction": 1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_leg_ankle_roll_link",
+            "human_body": "Left_Foot",
+            "position_weight": {
+              "base": 100,
+              "jump": 120,
+              "changed": true,
+              "delta": 20.0,
+              "absolute_delta": 20.0,
+              "ratio": 1.2,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 50,
+              "jump": 50,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_leg_hip_pitch_link",
+            "human_body": "Right_UpperLeg",
+            "position_weight": {
+              "base": 10,
+              "jump": 20,
+              "changed": true,
+              "delta": 10.0,
+              "absolute_delta": 10.0,
+              "ratio": 2.0,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 5,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_leg_knee_link",
+            "human_body": "Right_LowerLeg",
+            "position_weight": {
+              "base": 10,
+              "jump": 40,
+              "changed": true,
+              "delta": 30.0,
+              "absolute_delta": 30.0,
+              "ratio": 4.0,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 8,
+              "changed": true,
+              "delta": 3.0,
+              "absolute_delta": 3.0,
+              "ratio": 1.6,
+              "direction": 1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_leg_ankle_roll_link",
+            "human_body": "Right_Foot",
+            "position_weight": {
+              "base": 100,
+              "jump": 120,
+              "changed": true,
+              "delta": 20.0,
+              "absolute_delta": 20.0,
+              "ratio": 1.2,
+              "direction": 1
+            },
+            "rotation_weight": {
+              "base": 50,
+              "jump": 50,
+              "changed": false,
+              "delta": 0.0,
+              "absolute_delta": 0.0,
+              "ratio": 1.0,
+              "direction": 0
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "jump": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_arm_shoulder_roll_link",
+            "human_body": "Left_UpperArm",
+            "position_weight": {
+              "base": 10,
+              "jump": 2,
+              "changed": true,
+              "delta": -8.0,
+              "absolute_delta": 8.0,
+              "ratio": 0.2,
+              "direction": -1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 2,
+              "changed": true,
+              "delta": -3.0,
+              "absolute_delta": 3.0,
+              "ratio": 0.4,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_arm_elbow_pitch_link",
+            "human_body": "Left_Forearm",
+            "position_weight": {
+              "base": 10,
+              "jump": 2,
+              "changed": true,
+              "delta": -8.0,
+              "absolute_delta": 8.0,
+              "ratio": 0.2,
+              "direction": -1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 2,
+              "changed": true,
+              "delta": -3.0,
+              "absolute_delta": 3.0,
+              "ratio": 0.4,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "l_arm_elbow_yaw_link",
+            "human_body": "Left_Hand",
+            "position_weight": {
+              "base": 10,
+              "jump": 2,
+              "changed": true,
+              "delta": -8.0,
+              "absolute_delta": 8.0,
+              "ratio": 0.2,
+              "direction": -1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 2,
+              "changed": true,
+              "delta": -3.0,
+              "absolute_delta": 3.0,
+              "ratio": 0.4,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_arm_shoulder_roll_link",
+            "human_body": "Right_UpperArm",
+            "position_weight": {
+              "base": 10,
+              "jump": 2,
+              "changed": true,
+              "delta": -8.0,
+              "absolute_delta": 8.0,
+              "ratio": 0.2,
+              "direction": -1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 2,
+              "changed": true,
+              "delta": -3.0,
+              "absolute_delta": 3.0,
+              "ratio": 0.4,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                0.707107,
+                -0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.707107,
+                -0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_arm_elbow_pitch_link",
+            "human_body": "Right_Forearm",
+            "position_weight": {
+              "base": 10,
+              "jump": 2,
+              "changed": true,
+              "delta": -8.0,
+              "absolute_delta": 8.0,
+              "ratio": 0.2,
+              "direction": -1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 2,
+              "changed": true,
+              "delta": -3.0,
+              "absolute_delta": 3.0,
+              "ratio": 0.4,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                -0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                -0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          },
+          {
+            "robot_body": "r_arm_elbow_yaw_link",
+            "human_body": "Right_Hand",
+            "position_weight": {
+              "base": 10,
+              "jump": 2,
+              "changed": true,
+              "delta": -8.0,
+              "absolute_delta": 8.0,
+              "ratio": 0.2,
+              "direction": -1
+            },
+            "rotation_weight": {
+              "base": 5,
+              "jump": 2,
+              "changed": true,
+              "delta": -3.0,
+              "absolute_delta": 3.0,
+              "ratio": 0.4,
+              "direction": -1
+            },
+            "position_offset": {
+              "base": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            },
+            "rotation_offset": {
+              "base": [
+                -0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "jump": [
+                -0.707107,
+                0.707107,
+                0.0,
+                0.0
+              ],
+              "relation": "equal",
+              "changed": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  "cross_robot_rules": [
+    {
+      "scope": "human_scale",
+      "human_body": "Chest",
+      "field": "scale",
+      "g1": {
+        "human_body": "Chest",
+        "base": 0.8,
+        "jump": 0.85,
+        "changed": true,
+        "delta": 0.04999999999999993,
+        "absolute_delta": 0.04999999999999993,
+        "ratio": 1.0625,
+        "direction": 1
+      },
+      "e1": {
+        "human_body": "Chest",
+        "base": 0.8,
+        "jump": 0.85,
+        "changed": true,
+        "delta": 0.04999999999999993,
+        "absolute_delta": 0.04999999999999993,
+        "ratio": 1.0625,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": true,
+      "robot_specific": false,
+      "classification": "common-exact"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Left_Foot",
+      "field": "scale",
+      "g1": {
+        "human_body": "Left_Foot",
+        "base": 0.8,
+        "jump": 0.95,
+        "changed": true,
+        "delta": 0.1499999999999999,
+        "absolute_delta": 0.1499999999999999,
+        "ratio": 1.1874999999999998,
+        "direction": 1
+      },
+      "e1": {
+        "human_body": "Left_Foot",
+        "base": 0.8,
+        "jump": 0.9,
+        "changed": true,
+        "delta": 0.09999999999999998,
+        "absolute_delta": 0.09999999999999998,
+        "ratio": 1.125,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Left_Forearm",
+      "field": "scale",
+      "g1": {
+        "human_body": "Left_Forearm",
+        "base": 0.75,
+        "jump": 0.75,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "human_body": "Left_Forearm",
+        "base": 0.45,
+        "jump": 0.45,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Left_Hand",
+      "field": "scale",
+      "g1": {
+        "human_body": "Left_Hand",
+        "base": 0.75,
+        "jump": 0.75,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "human_body": "Left_Hand",
+        "base": 0.45,
+        "jump": 0.45,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Left_LowerLeg",
+      "field": "scale",
+      "g1": {
+        "human_body": "Left_LowerLeg",
+        "base": 0.8,
+        "jump": 0.95,
+        "changed": true,
+        "delta": 0.1499999999999999,
+        "absolute_delta": 0.1499999999999999,
+        "ratio": 1.1874999999999998,
+        "direction": 1
+      },
+      "e1": {
+        "human_body": "Left_LowerLeg",
+        "base": 0.8,
+        "jump": 0.9,
+        "changed": true,
+        "delta": 0.09999999999999998,
+        "absolute_delta": 0.09999999999999998,
+        "ratio": 1.125,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Left_UpperArm",
+      "field": "scale",
+      "g1": {
+        "human_body": "Left_UpperArm",
+        "base": 0.75,
+        "jump": 0.75,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "human_body": "Left_UpperArm",
+        "base": 0.35,
+        "jump": 0.35,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Left_UpperLeg",
+      "field": "scale",
+      "g1": {
+        "human_body": "Left_UpperLeg",
+        "base": 0.8,
+        "jump": 0.95,
+        "changed": true,
+        "delta": 0.1499999999999999,
+        "absolute_delta": 0.1499999999999999,
+        "ratio": 1.1874999999999998,
+        "direction": 1
+      },
+      "e1": {
+        "human_body": "Left_UpperLeg",
+        "base": 0.8,
+        "jump": 0.9,
+        "changed": true,
+        "delta": 0.09999999999999998,
+        "absolute_delta": 0.09999999999999998,
+        "ratio": 1.125,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Pelvis",
+      "field": "scale",
+      "g1": {
+        "human_body": "Pelvis",
+        "base": 0.8,
+        "jump": 0.95,
+        "changed": true,
+        "delta": 0.1499999999999999,
+        "absolute_delta": 0.1499999999999999,
+        "ratio": 1.1874999999999998,
+        "direction": 1
+      },
+      "e1": {
+        "human_body": "Pelvis",
+        "base": 0.8,
+        "jump": 0.9,
+        "changed": true,
+        "delta": 0.09999999999999998,
+        "absolute_delta": 0.09999999999999998,
+        "ratio": 1.125,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Right_Foot",
+      "field": "scale",
+      "g1": {
+        "human_body": "Right_Foot",
+        "base": 0.8,
+        "jump": 0.95,
+        "changed": true,
+        "delta": 0.1499999999999999,
+        "absolute_delta": 0.1499999999999999,
+        "ratio": 1.1874999999999998,
+        "direction": 1
+      },
+      "e1": {
+        "human_body": "Right_Foot",
+        "base": 0.8,
+        "jump": 0.9,
+        "changed": true,
+        "delta": 0.09999999999999998,
+        "absolute_delta": 0.09999999999999998,
+        "ratio": 1.125,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Right_Forearm",
+      "field": "scale",
+      "g1": {
+        "human_body": "Right_Forearm",
+        "base": 0.75,
+        "jump": 0.75,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "human_body": "Right_Forearm",
+        "base": 0.45,
+        "jump": 0.45,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Right_Hand",
+      "field": "scale",
+      "g1": {
+        "human_body": "Right_Hand",
+        "base": 0.75,
+        "jump": 0.75,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "human_body": "Right_Hand",
+        "base": 0.45,
+        "jump": 0.45,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Right_LowerLeg",
+      "field": "scale",
+      "g1": {
+        "human_body": "Right_LowerLeg",
+        "base": 0.8,
+        "jump": 0.95,
+        "changed": true,
+        "delta": 0.1499999999999999,
+        "absolute_delta": 0.1499999999999999,
+        "ratio": 1.1874999999999998,
+        "direction": 1
+      },
+      "e1": {
+        "human_body": "Right_LowerLeg",
+        "base": 0.8,
+        "jump": 0.9,
+        "changed": true,
+        "delta": 0.09999999999999998,
+        "absolute_delta": 0.09999999999999998,
+        "ratio": 1.125,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Right_UpperArm",
+      "field": "scale",
+      "g1": {
+        "human_body": "Right_UpperArm",
+        "base": 0.75,
+        "jump": 0.75,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "human_body": "Right_UpperArm",
+        "base": 0.35,
+        "jump": 0.35,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "human_scale",
+      "human_body": "Right_UpperLeg",
+      "field": "scale",
+      "g1": {
+        "human_body": "Right_UpperLeg",
+        "base": 0.8,
+        "jump": 0.95,
+        "changed": true,
+        "delta": 0.1499999999999999,
+        "absolute_delta": 0.1499999999999999,
+        "ratio": 1.1874999999999998,
+        "direction": 1
+      },
+      "e1": {
+        "human_body": "Right_UpperLeg",
+        "base": 0.8,
+        "jump": 0.9,
+        "changed": true,
+        "delta": 0.09999999999999998,
+        "absolute_delta": 0.09999999999999998,
+        "ratio": 1.125,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Chest",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Chest",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 100,
+        "jump": 100,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_Foot",
+      "field": "position_weight",
+      "g1": {
+        "base": 50,
+        "jump": 50,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 100,
+        "jump": 100,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_Foot",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 50,
+        "jump": 50,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_Forearm",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_Forearm",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 3,
+        "changed": true,
+        "delta": -7.0,
+        "absolute_delta": 7.0,
+        "ratio": 0.3,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_Hand",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_Hand",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 3,
+        "changed": true,
+        "delta": -7.0,
+        "absolute_delta": 7.0,
+        "ratio": 0.3,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_LowerLeg",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_LowerLeg",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_UpperArm",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_UpperArm",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 100,
+        "jump": 100,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 4,
+        "changed": true,
+        "delta": -6.0,
+        "absolute_delta": 6.0,
+        "ratio": 0.4,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_UpperLeg",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Left_UpperLeg",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Pelvis",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Pelvis",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_Foot",
+      "field": "position_weight",
+      "g1": {
+        "base": 50,
+        "jump": 50,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 100,
+        "jump": 100,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_Foot",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 50,
+        "jump": 50,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_Forearm",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_Forearm",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 3,
+        "changed": true,
+        "delta": -7.0,
+        "absolute_delta": 7.0,
+        "ratio": 0.3,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_Hand",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_Hand",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 3,
+        "changed": true,
+        "delta": -7.0,
+        "absolute_delta": 7.0,
+        "ratio": 0.3,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_LowerLeg",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_LowerLeg",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_UpperArm",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_UpperArm",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 100,
+        "jump": 100,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 4,
+        "changed": true,
+        "delta": -6.0,
+        "absolute_delta": 6.0,
+        "ratio": 0.4,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_UpperLeg",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table1",
+      "human_body": "Right_UpperLeg",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Chest",
+      "field": "position_weight",
+      "g1": {
+        "base": 0,
+        "jump": 0,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": null,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Chest",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 10,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_Foot",
+      "field": "position_weight",
+      "g1": {
+        "base": 50,
+        "jump": 80,
+        "changed": true,
+        "delta": 30.0,
+        "absolute_delta": 30.0,
+        "ratio": 1.6,
+        "direction": 1
+      },
+      "e1": {
+        "base": 100,
+        "jump": 120,
+        "changed": true,
+        "delta": 20.0,
+        "absolute_delta": 20.0,
+        "ratio": 1.2,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_Foot",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 15,
+        "changed": true,
+        "delta": 5.0,
+        "absolute_delta": 5.0,
+        "ratio": 1.5,
+        "direction": 1
+      },
+      "e1": {
+        "base": 50,
+        "jump": 50,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-g1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_Forearm",
+      "field": "position_weight",
+      "g1": {
+        "base": 20,
+        "jump": 20,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 2,
+        "changed": true,
+        "delta": -8.0,
+        "absolute_delta": 8.0,
+        "ratio": 0.2,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_Forearm",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 2,
+        "changed": true,
+        "delta": -3.0,
+        "absolute_delta": 3.0,
+        "ratio": 0.4,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_Hand",
+      "field": "position_weight",
+      "g1": {
+        "base": 50,
+        "jump": 50,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 2,
+        "changed": true,
+        "delta": -8.0,
+        "absolute_delta": 8.0,
+        "ratio": 0.2,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_Hand",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 2,
+        "changed": true,
+        "delta": -3.0,
+        "absolute_delta": 3.0,
+        "ratio": 0.4,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_LowerLeg",
+      "field": "position_weight",
+      "g1": {
+        "base": 10,
+        "jump": 20,
+        "changed": true,
+        "delta": 10.0,
+        "absolute_delta": 10.0,
+        "ratio": 2.0,
+        "direction": 1
+      },
+      "e1": {
+        "base": 10,
+        "jump": 40,
+        "changed": true,
+        "delta": 30.0,
+        "absolute_delta": 30.0,
+        "ratio": 4.0,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_LowerLeg",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 8,
+        "changed": true,
+        "delta": 3.0,
+        "absolute_delta": 3.0,
+        "ratio": 1.6,
+        "direction": 1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_UpperArm",
+      "field": "position_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 2,
+        "changed": true,
+        "delta": -8.0,
+        "absolute_delta": 8.0,
+        "ratio": 0.2,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_UpperArm",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 15,
+        "jump": 15,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 2,
+        "changed": true,
+        "delta": -3.0,
+        "absolute_delta": 3.0,
+        "ratio": 0.4,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_UpperLeg",
+      "field": "position_weight",
+      "g1": {
+        "base": 10,
+        "jump": 15,
+        "changed": true,
+        "delta": 5.0,
+        "absolute_delta": 5.0,
+        "ratio": 1.5,
+        "direction": 1
+      },
+      "e1": {
+        "base": 10,
+        "jump": 20,
+        "changed": true,
+        "delta": 10.0,
+        "absolute_delta": 10.0,
+        "ratio": 2.0,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Left_UpperLeg",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Pelvis",
+      "field": "position_weight",
+      "g1": {
+        "base": 100,
+        "jump": 150,
+        "changed": true,
+        "delta": 50.0,
+        "absolute_delta": 50.0,
+        "ratio": 1.5,
+        "direction": 1
+      },
+      "e1": {
+        "base": 10,
+        "jump": 100,
+        "changed": true,
+        "delta": 90.0,
+        "absolute_delta": 90.0,
+        "ratio": 10.0,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Pelvis",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_Foot",
+      "field": "position_weight",
+      "g1": {
+        "base": 50,
+        "jump": 80,
+        "changed": true,
+        "delta": 30.0,
+        "absolute_delta": 30.0,
+        "ratio": 1.6,
+        "direction": 1
+      },
+      "e1": {
+        "base": 100,
+        "jump": 120,
+        "changed": true,
+        "delta": 20.0,
+        "absolute_delta": 20.0,
+        "ratio": 1.2,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_Foot",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 10,
+        "jump": 15,
+        "changed": true,
+        "delta": 5.0,
+        "absolute_delta": 5.0,
+        "ratio": 1.5,
+        "direction": 1
+      },
+      "e1": {
+        "base": 50,
+        "jump": 50,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-g1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_Forearm",
+      "field": "position_weight",
+      "g1": {
+        "base": 20,
+        "jump": 20,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 2,
+        "changed": true,
+        "delta": -8.0,
+        "absolute_delta": 8.0,
+        "ratio": 0.2,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_Forearm",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 2,
+        "changed": true,
+        "delta": -3.0,
+        "absolute_delta": 3.0,
+        "ratio": 0.4,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_Hand",
+      "field": "position_weight",
+      "g1": {
+        "base": 50,
+        "jump": 50,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 2,
+        "changed": true,
+        "delta": -8.0,
+        "absolute_delta": 8.0,
+        "ratio": 0.2,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_Hand",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 2,
+        "changed": true,
+        "delta": -3.0,
+        "absolute_delta": 3.0,
+        "ratio": 0.4,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_LowerLeg",
+      "field": "position_weight",
+      "g1": {
+        "base": 10,
+        "jump": 20,
+        "changed": true,
+        "delta": 10.0,
+        "absolute_delta": 10.0,
+        "ratio": 2.0,
+        "direction": 1
+      },
+      "e1": {
+        "base": 10,
+        "jump": 40,
+        "changed": true,
+        "delta": 30.0,
+        "absolute_delta": 30.0,
+        "ratio": 4.0,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_LowerLeg",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 8,
+        "changed": true,
+        "delta": 3.0,
+        "absolute_delta": 3.0,
+        "ratio": 1.6,
+        "direction": 1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_UpperArm",
+      "field": "position_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 10,
+        "jump": 2,
+        "changed": true,
+        "delta": -8.0,
+        "absolute_delta": 8.0,
+        "ratio": 0.2,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_UpperArm",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 50,
+        "jump": 50,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 2,
+        "changed": true,
+        "delta": -3.0,
+        "absolute_delta": 3.0,
+        "ratio": 0.4,
+        "direction": -1
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": true,
+      "classification": "robot-specific-e1"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_UpperLeg",
+      "field": "position_weight",
+      "g1": {
+        "base": 10,
+        "jump": 15,
+        "changed": true,
+        "delta": 5.0,
+        "absolute_delta": 5.0,
+        "ratio": 1.5,
+        "direction": 1
+      },
+      "e1": {
+        "base": 10,
+        "jump": 20,
+        "changed": true,
+        "delta": 10.0,
+        "absolute_delta": 10.0,
+        "ratio": 2.0,
+        "direction": 1
+      },
+      "both_changed": true,
+      "same_direction": true,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "common-direction-e1-ratio"
+    },
+    {
+      "scope": "ik_match_table2",
+      "human_body": "Right_UpperLeg",
+      "field": "rotation_weight",
+      "g1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "e1": {
+        "base": 5,
+        "jump": 5,
+        "changed": false,
+        "delta": 0.0,
+        "absolute_delta": 0.0,
+        "ratio": 1.0,
+        "direction": 0
+      },
+      "both_changed": false,
+      "same_direction": false,
+      "exact_same_change": false,
+      "robot_specific": false,
+      "classification": "unchanged"
+    }
+  ]
+}
