@@ -61,6 +61,15 @@ static constexpr int E1_JOINT_IDS_MAP[E1_NUM_JOINTS] = {
     17, 22, 18, 23
 };
 
+// BUMI3 source qpos order:
+//   waist, left arm(4), right arm(4), left leg(6), right leg(6)
+// GMT policy order comes from policy_gmt_mha_him_27000_0717a.onnx metadata.
+static constexpr int BUMI3_NUM_JOINTS = 21;
+static constexpr int BUMI3_GMT_JOINT_IDS_MAP[BUMI3_NUM_JOINTS] = {
+     9, 15,  0, 10, 16,  1,  5, 11, 17,  2,  6,
+    12, 18,  3,  7, 13, 19,  4,  8, 14, 20
+};
+
 struct RobotPreset {
     int              num_joints;
     std::vector<int> joint_ids_map;
@@ -88,16 +97,15 @@ inline RobotPreset presetE1() {
     return p;
 }
 
-// BUMI3 has 21 actuated hinge joints in MuJoCo qpos order.  Its downstream
-// controller publish order has not been verified, so an empty reorder map is
-// intentionally identity/viewer-test-only.  The BUMI3 launch script disables
-// Redis unless the operator explicitly passes --redis.
-inline RobotPreset presetBumi3ViewerTestOnly() {
+// Reordering applies only to the Redis joint vector. MuJoCo qpos and Viewer
+// remain in the model's native order. Redis stays opt-in in the launch script.
+inline RobotPreset presetBumi3Gmt() {
     RobotPreset p;
-    p.num_joints       = 21;
-    p.default_key      = "smplx_online_frame_bumi3";
+    p.num_joints       = BUMI3_NUM_JOINTS;
+    p.default_key      = "gmt_online_frame_bumi";
     p.pelvis_z_offset  = 0.0;
-    p.joint_ids_map.clear();
+    p.joint_ids_map.assign(BUMI3_GMT_JOINT_IDS_MAP,
+                           BUMI3_GMT_JOINT_IDS_MAP + BUMI3_NUM_JOINTS);
     return p;
 }
 

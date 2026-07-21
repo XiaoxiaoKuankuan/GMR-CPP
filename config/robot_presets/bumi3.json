@@ -46,10 +46,32 @@
     "r_ankle_pitch_joint",
     "r_ankle_roll_joint"
   ],
-  "joint_names_publish_order": [],
-  "joint_ids_map": [],
-  "default_key": "smplx_online_frame_bumi3",
+  "joint_names_publish_order": [
+    "l_leg_pitch_joint",
+    "r_leg_pitch_joint",
+    "waist_yaw_joint",
+    "l_leg_roll_joint",
+    "r_leg_roll_joint",
+    "l_arm_pitch_joint",
+    "r_arm_pitch_joint",
+    "l_leg_yaw_joint",
+    "r_leg_yaw_joint",
+    "l_arm_roll_joint",
+    "r_arm_roll_joint",
+    "l_knee_pitch_joint",
+    "r_knee_pitch_joint",
+    "l_arm_yaw_joint",
+    "r_arm_yaw_joint",
+    "l_ankle_pitch_joint",
+    "r_ankle_pitch_joint",
+    "l_elbow_pitch_joint",
+    "r_elbow_pitch_joint",
+    "l_ankle_roll_joint",
+    "r_ankle_roll_joint"
+  ],
+  "joint_ids_map": [9, 15, 0, 10, 16, 1, 5, 11, 17, 2, 6, 12, 18, 3, 7, 13, 19, 4, 8, 14, 20],
+  "default_key": "gmt_online_frame_bumi",
   "pelvis_z_offset": 0.0,
-  "publish_order_verified": false,
-  "identity_qpos_order_usage": "viewer/test only; not verified for the downstream BUMI3 controller"
+  "publish_order_verified": true,
+  "publish_order_source": "policy_gmt_mha_him_27000_0717a.onnx joint_names metadata"
 }

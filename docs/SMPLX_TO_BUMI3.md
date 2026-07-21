@@ -129,23 +129,24 @@ python scripts/demo/demo_webcam.py \
 Viewer 的白色映射由 `smplx_bumi3_server` 显式传入，不再通过“存在
 `base_link` 就当作 E1”的判断。只读诊断只查询 BUMI3 XML 中实际存在的 joint/body。
 
-## Redis 安全状态
+## Redis 关节顺序
 
-XML 已确认 MuJoCo qpos 顺序和 actuator 顺序均为 21 个关节，但尚未获得并验证
-下游 BUMI3 控制器期望的 publish order。因此：
+XML 中的 21 个 MuJoCo qpos 已按 BUMI3 GMT 策略文件
+`policy_gmt_mha_him_27000_0717a.onnx` 的 `joint_names` 元数据重排。重排只影响
+Redis 帧中的 `joint_pos`，不会改变 MuJoCo qpos、Viewer 或 IK 配置。
 
-- `config/robot_presets/bumi3.json` 记录真实 MuJoCo qpos/actuator 顺序；
-- `joint_names_publish_order` 和 `joint_ids_map` 保持为空；
-- identity qpos order 只允许 viewer/test 使用，不能声称可直接上实机；
-- `run_smplx_bumi3.sh` 默认添加 `--no-redis`，不会连接 Redis。
+- `config/robot_presets/bumi3.json` 记录 qpos、GMT publish order 和完整重排表；
+- Redis key 与部署侧统一为 `gmt_online_frame_bumi`；
+- `run_smplx_bumi3.sh` 仍默认添加 `--no-redis`，只打开 Viewer 不会发布；
+- Gazebo/GMT 联调时显式传入 `--redis`。
 
-只有在下游顺序完成验证后，才可显式启用测试 Redis：
+显式启用 Redis：
 
 ```bash
 ./run_smplx_bumi3.sh --redis --always --vis
 ```
 
-当前默认 key 为 `smplx_online_frame_bumi3`。显式启用不等于已完成实机协议验证。
+当前默认 key 为 `gmt_online_frame_bumi`。
 
 ## Grounded 与 Jump 模式
 

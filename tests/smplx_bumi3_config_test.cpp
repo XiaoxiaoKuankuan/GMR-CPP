@@ -1,5 +1,6 @@
 #include "gmr/body_map.hpp"
 #include "gmr/gmr_mink.hpp"
+#include "gmr/redis_publisher.hpp"
 
 #include <mujoco/mujoco.h>
 #include <nlohmann/json.hpp>
@@ -46,6 +47,75 @@ std::string readFile(const std::string& path) {
     std::ostringstream output;
     output << input.rdbuf();
     return output.str();
+}
+
+void validateBumi3RedisPreset(const std::string& root, const mjModel* model) {
+    const nlohmann::json recorded = nlohmann::json::parse(readFile(
+        root + "/config/robot_presets/bumi3.json"));
+    const std::vector<std::string> qpos_order =
+        recorded.at("joint_names_mujoco_qpos_order")
+            .get<std::vector<std::string>>();
+    const std::vector<std::string> publish_order =
+        recorded.at("joint_names_publish_order")
+            .get<std::vector<std::string>>();
+    const std::vector<int> recorded_map =
+        recorded.at("joint_ids_map").get<std::vector<int>>();
+
+    if (qpos_order.size() != 21 || publish_order.size() != 21 ||
+        recorded_map.size() != 21) {
+        throw std::runtime_error("BUMI3 Redis order must contain 21 joints");
+    }
+
+    std::vector<std::pair<int, std::string>> actual_qpos_entries;
+    for (int joint = 0; joint < model->njnt; ++joint) {
+        if (model->jnt_type[joint] != mjJNT_HINGE &&
+            model->jnt_type[joint] != mjJNT_SLIDE) {
+            continue;
+        }
+        const char* name = mj_id2name(model, mjOBJ_JOINT, joint);
+        actual_qpos_entries.emplace_back(
+            model->jnt_qposadr[joint], name ? name : "");
+    }
+    std::sort(actual_qpos_entries.begin(), actual_qpos_entries.end());
+    std::vector<std::string> actual_qpos_order;
+    for (const auto& [address, name] : actual_qpos_entries) {
+        (void)address;
+        actual_qpos_order.push_back(name);
+    }
+    if (actual_qpos_order != qpos_order) {
+        throw std::runtime_error(
+            "BUMI3 recorded qpos order differs from MuJoCo model");
+    }
+
+    std::set<int> indices(recorded_map.begin(), recorded_map.end());
+    if (indices.size() != 21 || *indices.begin() != 0 ||
+        *indices.rbegin() != 20) {
+        throw std::runtime_error(
+            "BUMI3 joint_ids_map is not a complete permutation");
+    }
+    for (size_t output = 0; output < recorded_map.size(); ++output) {
+        const int source = recorded_map[output];
+        if (qpos_order.at(source) != publish_order.at(output)) {
+            throw std::runtime_error(
+                "BUMI3 joint_ids_map name mismatch at output " +
+                std::to_string(output));
+        }
+    }
+
+    const gmr::RobotPreset compiled = gmr::presetBumi3Gmt();
+    if (compiled.num_joints != 21 ||
+        compiled.joint_ids_map != recorded_map ||
+        compiled.default_key != "gmt_online_frame_bumi" ||
+        !recorded.at("publish_order_verified").get<bool>()) {
+        throw std::runtime_error(
+            "compiled BUMI3 GMT preset differs from robot preset JSON");
+    }
+    std::cout << "[BUMI3 Redis] qpos->GMT reorder verified: ";
+    for (size_t index = 0; index < recorded_map.size(); ++index) {
+        if (index) std::cout << ',';
+        std::cout << recorded_map[index];
+    }
+    std::cout << " key=" << compiled.default_key << "\n";
 }
 
 gmr::BodyData pose(double x, double y, double z) {
@@ -384,6 +454,7 @@ int main() {
             throw std::runtime_error("MuJoCo qpos allocation failed");
 
         validateConfigAndModel(root, xml_path, config_path, config, model.get());
+        validateBumi3RedisPreset(root, model.get());
         validateJumpPreservation(config, jump_config);
         validateJumpTranslation(xml_path, jump_config_path);
         for (const auto& [name, frame] : fixedPoses())

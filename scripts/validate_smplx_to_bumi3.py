@@ -25,6 +25,18 @@ SMP1_TARGETS = {
     "right_shoulder", "left_elbow", "right_elbow", "left_wrist",
     "right_wrist",
 }
+GMT_JOINT_ORDER = [
+    "l_leg_pitch_joint", "r_leg_pitch_joint", "waist_yaw_joint",
+    "l_leg_roll_joint", "r_leg_roll_joint",
+    "l_arm_pitch_joint", "r_arm_pitch_joint",
+    "l_leg_yaw_joint", "r_leg_yaw_joint",
+    "l_arm_roll_joint", "r_arm_roll_joint",
+    "l_knee_pitch_joint", "r_knee_pitch_joint",
+    "l_arm_yaw_joint", "r_arm_yaw_joint",
+    "l_ankle_pitch_joint", "r_ankle_pitch_joint",
+    "l_elbow_pitch_joint", "r_elbow_pitch_joint",
+    "l_ankle_roll_joint", "r_ankle_roll_joint",
+]
 
 
 def require(condition: bool, message: str) -> None:
@@ -153,9 +165,24 @@ def main() -> None:
         robot_preset["joint_names_actuator_order"] == actuator_joint_order,
         "robot preset actuator order differs from XML",
     )
-    require(not robot_preset["joint_names_publish_order"], "publish order must remain empty")
-    require(not robot_preset["joint_ids_map"], "joint_ids_map must remain empty")
-    require(not robot_preset["publish_order_verified"], "publish order must be unverified")
+    require(
+        robot_preset["joint_names_publish_order"] == GMT_JOINT_ORDER,
+        "robot preset publish order differs from GMT policy metadata",
+    )
+    expected_joint_ids_map = [qpos_joint_order.index(name) for name in GMT_JOINT_ORDER]
+    require(
+        robot_preset["joint_ids_map"] == expected_joint_ids_map,
+        "robot preset joint_ids_map does not map MuJoCo qpos to GMT order",
+    )
+    require(
+        sorted(robot_preset["joint_ids_map"]) == list(range(actuated)),
+        "joint_ids_map must be a complete 21-joint permutation",
+    )
+    require(robot_preset["publish_order_verified"], "publish order must be verified")
+    require(
+        robot_preset["default_key"] == "gmt_online_frame_bumi",
+        "BUMI3 Redis key must match GMT",
+    )
     print(f"PASS runtime config SHA-256: {runtime_hash}")
     print(f"PASS XML: {xml_path}")
     print(
@@ -166,7 +193,7 @@ def main() -> None:
     print("PASS SMP1 input unchanged: 14 supported, 12 consumed, wrists unused")
     print("PASS offsets finite, quaternion norms valid, scales positive")
     print("PASS robot preset matches XML qpos/actuator order (21 joints)")
-    print("Redis publish order: UNVERIFIED (identity qpos order is viewer/test only)")
+    print(f"PASS Redis publish order: MuJoCo qpos -> GMT {expected_joint_ids_map}")
 
 
 if __name__ == "__main__":

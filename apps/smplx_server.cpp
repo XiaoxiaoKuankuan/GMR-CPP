@@ -317,7 +317,7 @@ Config parseArgs(int argc, char** argv) {
             (repo_root / "config/ik_configs/smplx_to_bumi3.json").string();
         cfg.viewer_follow_body = "base_link";
         cfg.ground_clearance = 0.02;
-        cfg.redis_order_verified = false;
+        cfg.redis_order_verified = true;
     } else {
         throw std::runtime_error("SMPL-X server preset must be g1, e1 or bumi3");
     }
@@ -392,8 +392,8 @@ Config parseArgs(int argc, char** argv) {
         cfg.redis.applyPreset(gmr::presetE1());
         if (!explicit_key) cfg.redis.key = "smplx_online_frame_e1";
     } else if (cfg.preset == "bumi3") {
-        cfg.redis.applyPreset(gmr::presetBumi3ViewerTestOnly());
-        if (!explicit_key) cfg.redis.key = "smplx_online_frame_bumi3";
+        cfg.redis.applyPreset(gmr::presetBumi3Gmt());
+        if (!explicit_key) cfg.redis.key = "gmt_online_frame_bumi";
     } else {
         throw std::runtime_error("SMPL-X server preset must be g1, e1 or bumi3");
     }

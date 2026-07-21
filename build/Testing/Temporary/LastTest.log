@@ -1,13 +1,30 @@
-Start testing: Jul 17 17:39 CST
+Start testing: Jul 21 14:02 CST
 ----------------------------------------------------------
+1/3 Testing: smplx_reader_protocol_test
+1/3 Test: smplx_reader_protocol_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/smplx_reader_protocol_test"
+Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
+"smplx_reader_protocol_test" start time: Jul 21 14:02 CST
+Output:
+----------------------------------------------------------
+SMP1 parser self-test passed
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"smplx_reader_protocol_test" end time: Jul 21 14:02 CST
+"smplx_reader_protocol_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
 2/3 Testing: smplx_bumi3_config_test
 2/3 Test: smplx_bumi3_config_test
 Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/smplx_bumi3_config_test"
 Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
-"smplx_bumi3_config_test" start time: Jul 17 17:39 CST
+"smplx_bumi3_config_test" start time: Jul 21 14:02 CST
 Output:
 ----------------------------------------------------------
 [BUMI3 config] valid fixed runtime config, targets=12, XML=/home/weili/GMR-CPP_e1jump_lowdpi/assets/bumi3/mjcf/bumi3.xml
+[BUMI3 Redis] qpos->GMT reorder verified: 9,15,0,10,16,1,5,11,17,2,6,12,18,3,7,13,19,4,8,14,20 key=gmt_online_frame_bumi
 [BUMI3 jump] scale/mapping/position-offset/rotation-offset preserved
 [BUMI3 jump] vertical translation preserved: base_delta_z=0.288992 standing_lowest_foot_z=-0.0991525 standing_robot_ankle_z=-0.082989 lowest_foot_target_delta_z=0.289034
 [fixed-pose] stand
@@ -40,11 +57,27 @@ Output:
   body_z(base/left_foot/right_foot)=1.07168/0.706954/0.608273
 smplx_bumi3_config_test: PASS
 <end of output>
-Test time =   3.45 sec
+Test time =   3.30 sec
 ----------------------------------------------------------
 Test Passed.
-"smplx_bumi3_config_test" end time: Jul 17 17:39 CST
+"smplx_bumi3_config_test" end time: Jul 21 14:02 CST
 "smplx_bumi3_config_test" time elapsed: 00:00:03
 ----------------------------------------------------------
 
-End testing: Jul 17 17:39 CST
+3/3 Testing: ground_clearance_test
+3/3 Test: ground_clearance_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/ground_clearance_test"
+Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
+"ground_clearance_test" start time: Jul 21 14:02 CST
+Output:
+----------------------------------------------------------
+ground_clearance_test: PASS default=0.06 bumi3=0.02 fixed_offset=0.41
+<end of output>
+Test time =   0.47 sec
+----------------------------------------------------------
+Test Passed.
+"ground_clearance_test" end time: Jul 21 14:02 CST
+"ground_clearance_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jul 21 14:02 CST
