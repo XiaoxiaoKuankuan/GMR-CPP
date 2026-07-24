@@ -8,7 +8,7 @@ EXECUTABLE="$ROOT/build/smplx_bumi3_server"
 XML="${BUMI3_XML:-$ROOT/assets/bumi3/mjcf/bumi3.xml}"
 IK_CONFIG="${BUMI3_JUMP_IK_CONFIG:-$ROOT/config/ik_configs/smplx_to_bumi3_jump.json}"
 UDP_PORT="${BUMI3_JUMP_UDP_PORT:-7007}"
-GROUND_OFFSET="${BUMI3_JUMP_GROUND_OFFSET:-0.65}"
+GROUND_OFFSET="${BUMI3_JUMP_GROUND_OFFSET:-0.6}"
 REDIS_KEY="${BUMI3_REDIS_KEY:-smplx_online_frame_bumi3_jump}"
 
 for path in "$EXECUTABLE" "$XML" "$IK_CONFIG"; do
