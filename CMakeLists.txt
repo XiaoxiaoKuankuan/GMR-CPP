@@ -293,6 +293,59 @@ target_compile_definitions(smplx_bumi3_server PRIVATE
 message(STATUS "=== smplx_g1_server / smplx_e1_server / smplx_bumi3_server ENABLED ===")
 
 # ==============================================================================
+#  OMG Unitree G1 qpos -> source FK BodyMap -> BUMI3
+# ==============================================================================
+add_library(g1_motion_source STATIC
+    readers/g1_motion_reader.cpp
+    readers/g1_redis_receiver.cpp
+    adapters/g1_motion_adapter.cpp
+)
+target_include_directories(g1_motion_source PUBLIC
+    ${GMR_ROOT}
+    ${GMR_ROOT}/include
+    ${GMR_ROOT}/readers
+    ${MUJOCO_INCLUDE_DIR}
+)
+target_link_libraries(g1_motion_source PUBLIC
+    mujoco::mujoco
+    hiredis::hiredis
+    Eigen3::Eigen
+    nlohmann_json::nlohmann_json
+    pthread
+)
+target_compile_options(g1_motion_source PRIVATE
+    -O2 -Wall -Wextra -Wno-unused-parameter)
+
+add_executable(g1_bumi3_server apps/g1_bumi3_server.cpp)
+target_include_directories(g1_bumi3_server PRIVATE
+    ${GMR_ROOT} ${GMR_ROOT}/include ${GMR_ROOT}/readers ${MUJOCO_INCLUDE_DIR})
+target_link_libraries(g1_bumi3_server PRIVATE
+    g1_motion_source mujoco::mujoco glfw hiredis::hiredis Eigen3::Eigen
+    nlohmann_json::nlohmann_json pthread GL ${DAQP_LIB})
+target_compile_options(g1_bumi3_server PRIVATE
+    -O2 -Wall -Wextra -Wno-unused-parameter)
+
+add_executable(generate_g1_to_bumi3_config
+    tools/generate_g1_to_bumi3_config.cpp)
+target_include_directories(generate_g1_to_bumi3_config PRIVATE
+    ${GMR_ROOT} ${GMR_ROOT}/include ${MUJOCO_INCLUDE_DIR})
+target_link_libraries(generate_g1_to_bumi3_config PRIVATE
+    mujoco::mujoco Eigen3::Eigen nlohmann_json::nlohmann_json)
+target_compile_options(generate_g1_to_bumi3_config PRIVATE
+    -O2 -Wall -Wextra -Wno-unused-parameter)
+
+add_executable(test_g1_to_bumi3 tools/test_g1_to_bumi3.cpp)
+target_include_directories(test_g1_to_bumi3 PRIVATE
+    ${GMR_ROOT} ${GMR_ROOT}/include ${GMR_ROOT}/readers ${MUJOCO_INCLUDE_DIR})
+target_link_libraries(test_g1_to_bumi3 PRIVATE
+    g1_motion_source mujoco::mujoco Eigen3::Eigen nlohmann_json::nlohmann_json
+    pthread ${DAQP_LIB})
+target_compile_options(test_g1_to_bumi3 PRIVATE
+    -O2 -Wall -Wextra -Wno-unused-parameter)
+
+message(STATUS "=== g1_bumi3_server / test_g1_to_bumi3 ENABLED ===")
+
+# ==============================================================================
 #  Fixed-size SMP1 protocol parser self-test (no camera or Redis required)
 # ==============================================================================
 option(BUILD_TESTING "Build local protocol self-tests" ON)
@@ -354,4 +407,30 @@ if(BUILD_TESTING)
     target_compile_options(ground_clearance_test PRIVATE
         -O2 -Wall -Wextra -Wno-unused-parameter)
     add_test(NAME ground_clearance_test COMMAND ground_clearance_test)
+
+    add_executable(g1_motion_source_test
+        tests/g1_motion_source_test.cpp)
+    target_include_directories(g1_motion_source_test PRIVATE
+        ${GMR_ROOT} ${GMR_ROOT}/include ${GMR_ROOT}/readers ${MUJOCO_INCLUDE_DIR})
+    target_link_libraries(g1_motion_source_test PRIVATE
+        g1_motion_source mujoco::mujoco Eigen3::Eigen
+        nlohmann_json::nlohmann_json pthread)
+    target_compile_definitions(g1_motion_source_test PRIVATE
+        G1_BUMI3_REPO_ROOT="${GMR_ROOT}")
+    target_compile_options(g1_motion_source_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME g1_motion_source_test COMMAND g1_motion_source_test)
+
+    add_executable(g1_to_bumi3_config_test
+        tests/g1_to_bumi3_config_test.cpp)
+    target_include_directories(g1_to_bumi3_config_test PRIVATE
+        ${GMR_ROOT} ${GMR_ROOT}/include ${GMR_ROOT}/readers ${MUJOCO_INCLUDE_DIR})
+    target_link_libraries(g1_to_bumi3_config_test PRIVATE
+        g1_motion_source mujoco::mujoco Eigen3::Eigen
+        nlohmann_json::nlohmann_json pthread ${DAQP_LIB})
+    target_compile_definitions(g1_to_bumi3_config_test PRIVATE
+        G1_BUMI3_REPO_ROOT="${GMR_ROOT}")
+    target_compile_options(g1_to_bumi3_config_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME g1_to_bumi3_config_test COMMAND g1_to_bumi3_config_test)
 endif()

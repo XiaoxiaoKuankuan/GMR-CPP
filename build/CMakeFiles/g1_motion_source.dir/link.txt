@@ -1,0 +1,2 @@
+/usr/bin/ar qc libg1_motion_source.a CMakeFiles/g1_motion_source.dir/readers/g1_motion_reader.cpp.o CMakeFiles/g1_motion_source.dir/readers/g1_redis_receiver.cpp.o CMakeFiles/g1_motion_source.dir/adapters/g1_motion_adapter.cpp.o
+/usr/bin/ranlib libg1_motion_source.a

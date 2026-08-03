@@ -218,6 +218,58 @@ smplx_bumi3_server/fast:
 .PHONY : smplx_bumi3_server/fast
 
 #=============================================================================
+# Target rules for targets named g1_motion_source
+
+# Build rule for target.
+g1_motion_source: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 g1_motion_source
+.PHONY : g1_motion_source
+
+# fast build rule for target.
+g1_motion_source/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/build
+.PHONY : g1_motion_source/fast
+
+#=============================================================================
+# Target rules for targets named g1_bumi3_server
+
+# Build rule for target.
+g1_bumi3_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 g1_bumi3_server
+.PHONY : g1_bumi3_server
+
+# fast build rule for target.
+g1_bumi3_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_bumi3_server.dir/build.make CMakeFiles/g1_bumi3_server.dir/build
+.PHONY : g1_bumi3_server/fast
+
+#=============================================================================
+# Target rules for targets named generate_g1_to_bumi3_config
+
+# Build rule for target.
+generate_g1_to_bumi3_config: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 generate_g1_to_bumi3_config
+.PHONY : generate_g1_to_bumi3_config
+
+# fast build rule for target.
+generate_g1_to_bumi3_config/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generate_g1_to_bumi3_config.dir/build.make CMakeFiles/generate_g1_to_bumi3_config.dir/build
+.PHONY : generate_g1_to_bumi3_config/fast
+
+#=============================================================================
+# Target rules for targets named test_g1_to_bumi3
+
+# Build rule for target.
+test_g1_to_bumi3: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_g1_to_bumi3
+.PHONY : test_g1_to_bumi3
+
+# fast build rule for target.
+test_g1_to_bumi3/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_g1_to_bumi3.dir/build.make CMakeFiles/test_g1_to_bumi3.dir/build
+.PHONY : test_g1_to_bumi3/fast
+
+#=============================================================================
 # Target rules for targets named smplx_reader_protocol_test
 
 # Build rule for target.
@@ -256,6 +308,56 @@ ground_clearance_test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ground_clearance_test.dir/build.make CMakeFiles/ground_clearance_test.dir/build
 .PHONY : ground_clearance_test/fast
 
+#=============================================================================
+# Target rules for targets named g1_motion_source_test
+
+# Build rule for target.
+g1_motion_source_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 g1_motion_source_test
+.PHONY : g1_motion_source_test
+
+# fast build rule for target.
+g1_motion_source_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source_test.dir/build.make CMakeFiles/g1_motion_source_test.dir/build
+.PHONY : g1_motion_source_test/fast
+
+#=============================================================================
+# Target rules for targets named g1_to_bumi3_config_test
+
+# Build rule for target.
+g1_to_bumi3_config_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 g1_to_bumi3_config_test
+.PHONY : g1_to_bumi3_config_test
+
+# fast build rule for target.
+g1_to_bumi3_config_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_to_bumi3_config_test.dir/build.make CMakeFiles/g1_to_bumi3_config_test.dir/build
+.PHONY : g1_to_bumi3_config_test/fast
+
+adapters/g1_motion_adapter.o: adapters/g1_motion_adapter.cpp.o
+.PHONY : adapters/g1_motion_adapter.o
+
+# target to build an object file
+adapters/g1_motion_adapter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/adapters/g1_motion_adapter.cpp.o
+.PHONY : adapters/g1_motion_adapter.cpp.o
+
+adapters/g1_motion_adapter.i: adapters/g1_motion_adapter.cpp.i
+.PHONY : adapters/g1_motion_adapter.i
+
+# target to preprocess a source file
+adapters/g1_motion_adapter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/adapters/g1_motion_adapter.cpp.i
+.PHONY : adapters/g1_motion_adapter.cpp.i
+
+adapters/g1_motion_adapter.s: adapters/g1_motion_adapter.cpp.s
+.PHONY : adapters/g1_motion_adapter.s
+
+# target to generate assembly for a file
+adapters/g1_motion_adapter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/adapters/g1_motion_adapter.cpp.s
+.PHONY : adapters/g1_motion_adapter.cpp.s
+
 apps/fzmotion_server.o: apps/fzmotion_server.cpp.o
 .PHONY : apps/fzmotion_server.o
 
@@ -279,6 +381,30 @@ apps/fzmotion_server.s: apps/fzmotion_server.cpp.s
 apps/fzmotion_server.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/apps/fzmotion_server.cpp.s
 .PHONY : apps/fzmotion_server.cpp.s
+
+apps/g1_bumi3_server.o: apps/g1_bumi3_server.cpp.o
+.PHONY : apps/g1_bumi3_server.o
+
+# target to build an object file
+apps/g1_bumi3_server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_bumi3_server.dir/build.make CMakeFiles/g1_bumi3_server.dir/apps/g1_bumi3_server.cpp.o
+.PHONY : apps/g1_bumi3_server.cpp.o
+
+apps/g1_bumi3_server.i: apps/g1_bumi3_server.cpp.i
+.PHONY : apps/g1_bumi3_server.i
+
+# target to preprocess a source file
+apps/g1_bumi3_server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_bumi3_server.dir/build.make CMakeFiles/g1_bumi3_server.dir/apps/g1_bumi3_server.cpp.i
+.PHONY : apps/g1_bumi3_server.cpp.i
+
+apps/g1_bumi3_server.s: apps/g1_bumi3_server.cpp.s
+.PHONY : apps/g1_bumi3_server.s
+
+# target to generate assembly for a file
+apps/g1_bumi3_server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_bumi3_server.dir/build.make CMakeFiles/g1_bumi3_server.dir/apps/g1_bumi3_server.cpp.s
+.PHONY : apps/g1_bumi3_server.cpp.s
 
 apps/mocap_server.o: apps/mocap_server.cpp.o
 .PHONY : apps/mocap_server.o
@@ -406,6 +532,54 @@ readers/fzmotion_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fzmotion_mocap_server.dir/build.make CMakeFiles/fzmotion_mocap_server.dir/readers/fzmotion_reader.cpp.s
 .PHONY : readers/fzmotion_reader.cpp.s
 
+readers/g1_motion_reader.o: readers/g1_motion_reader.cpp.o
+.PHONY : readers/g1_motion_reader.o
+
+# target to build an object file
+readers/g1_motion_reader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/readers/g1_motion_reader.cpp.o
+.PHONY : readers/g1_motion_reader.cpp.o
+
+readers/g1_motion_reader.i: readers/g1_motion_reader.cpp.i
+.PHONY : readers/g1_motion_reader.i
+
+# target to preprocess a source file
+readers/g1_motion_reader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/readers/g1_motion_reader.cpp.i
+.PHONY : readers/g1_motion_reader.cpp.i
+
+readers/g1_motion_reader.s: readers/g1_motion_reader.cpp.s
+.PHONY : readers/g1_motion_reader.s
+
+# target to generate assembly for a file
+readers/g1_motion_reader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/readers/g1_motion_reader.cpp.s
+.PHONY : readers/g1_motion_reader.cpp.s
+
+readers/g1_redis_receiver.o: readers/g1_redis_receiver.cpp.o
+.PHONY : readers/g1_redis_receiver.o
+
+# target to build an object file
+readers/g1_redis_receiver.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/readers/g1_redis_receiver.cpp.o
+.PHONY : readers/g1_redis_receiver.cpp.o
+
+readers/g1_redis_receiver.i: readers/g1_redis_receiver.cpp.i
+.PHONY : readers/g1_redis_receiver.i
+
+# target to preprocess a source file
+readers/g1_redis_receiver.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/readers/g1_redis_receiver.cpp.i
+.PHONY : readers/g1_redis_receiver.cpp.i
+
+readers/g1_redis_receiver.s: readers/g1_redis_receiver.cpp.s
+.PHONY : readers/g1_redis_receiver.s
+
+# target to generate assembly for a file
+readers/g1_redis_receiver.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source.dir/build.make CMakeFiles/g1_motion_source.dir/readers/g1_redis_receiver.cpp.s
+.PHONY : readers/g1_redis_receiver.cpp.s
+
 readers/optitrack_reader.o: readers/optitrack_reader.cpp.o
 .PHONY : readers/optitrack_reader.o
 
@@ -511,6 +685,54 @@ readers/xsens_reader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/xsens_mocap_server.dir/build.make CMakeFiles/xsens_mocap_server.dir/readers/xsens_reader.cpp.s
 .PHONY : readers/xsens_reader.cpp.s
 
+tests/g1_motion_source_test.o: tests/g1_motion_source_test.cpp.o
+.PHONY : tests/g1_motion_source_test.o
+
+# target to build an object file
+tests/g1_motion_source_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source_test.dir/build.make CMakeFiles/g1_motion_source_test.dir/tests/g1_motion_source_test.cpp.o
+.PHONY : tests/g1_motion_source_test.cpp.o
+
+tests/g1_motion_source_test.i: tests/g1_motion_source_test.cpp.i
+.PHONY : tests/g1_motion_source_test.i
+
+# target to preprocess a source file
+tests/g1_motion_source_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source_test.dir/build.make CMakeFiles/g1_motion_source_test.dir/tests/g1_motion_source_test.cpp.i
+.PHONY : tests/g1_motion_source_test.cpp.i
+
+tests/g1_motion_source_test.s: tests/g1_motion_source_test.cpp.s
+.PHONY : tests/g1_motion_source_test.s
+
+# target to generate assembly for a file
+tests/g1_motion_source_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_motion_source_test.dir/build.make CMakeFiles/g1_motion_source_test.dir/tests/g1_motion_source_test.cpp.s
+.PHONY : tests/g1_motion_source_test.cpp.s
+
+tests/g1_to_bumi3_config_test.o: tests/g1_to_bumi3_config_test.cpp.o
+.PHONY : tests/g1_to_bumi3_config_test.o
+
+# target to build an object file
+tests/g1_to_bumi3_config_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_to_bumi3_config_test.dir/build.make CMakeFiles/g1_to_bumi3_config_test.dir/tests/g1_to_bumi3_config_test.cpp.o
+.PHONY : tests/g1_to_bumi3_config_test.cpp.o
+
+tests/g1_to_bumi3_config_test.i: tests/g1_to_bumi3_config_test.cpp.i
+.PHONY : tests/g1_to_bumi3_config_test.i
+
+# target to preprocess a source file
+tests/g1_to_bumi3_config_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_to_bumi3_config_test.dir/build.make CMakeFiles/g1_to_bumi3_config_test.dir/tests/g1_to_bumi3_config_test.cpp.i
+.PHONY : tests/g1_to_bumi3_config_test.cpp.i
+
+tests/g1_to_bumi3_config_test.s: tests/g1_to_bumi3_config_test.cpp.s
+.PHONY : tests/g1_to_bumi3_config_test.s
+
+# target to generate assembly for a file
+tests/g1_to_bumi3_config_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/g1_to_bumi3_config_test.dir/build.make CMakeFiles/g1_to_bumi3_config_test.dir/tests/g1_to_bumi3_config_test.cpp.s
+.PHONY : tests/g1_to_bumi3_config_test.cpp.s
+
 tests/ground_clearance_test.o: tests/ground_clearance_test.cpp.o
 .PHONY : tests/ground_clearance_test.o
 
@@ -583,6 +805,54 @@ tests/smplx_reader_protocol_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smplx_reader_protocol_test.dir/build.make CMakeFiles/smplx_reader_protocol_test.dir/tests/smplx_reader_protocol_test.cpp.s
 .PHONY : tests/smplx_reader_protocol_test.cpp.s
 
+tools/generate_g1_to_bumi3_config.o: tools/generate_g1_to_bumi3_config.cpp.o
+.PHONY : tools/generate_g1_to_bumi3_config.o
+
+# target to build an object file
+tools/generate_g1_to_bumi3_config.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generate_g1_to_bumi3_config.dir/build.make CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp.o
+.PHONY : tools/generate_g1_to_bumi3_config.cpp.o
+
+tools/generate_g1_to_bumi3_config.i: tools/generate_g1_to_bumi3_config.cpp.i
+.PHONY : tools/generate_g1_to_bumi3_config.i
+
+# target to preprocess a source file
+tools/generate_g1_to_bumi3_config.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generate_g1_to_bumi3_config.dir/build.make CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp.i
+.PHONY : tools/generate_g1_to_bumi3_config.cpp.i
+
+tools/generate_g1_to_bumi3_config.s: tools/generate_g1_to_bumi3_config.cpp.s
+.PHONY : tools/generate_g1_to_bumi3_config.s
+
+# target to generate assembly for a file
+tools/generate_g1_to_bumi3_config.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/generate_g1_to_bumi3_config.dir/build.make CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp.s
+.PHONY : tools/generate_g1_to_bumi3_config.cpp.s
+
+tools/test_g1_to_bumi3.o: tools/test_g1_to_bumi3.cpp.o
+.PHONY : tools/test_g1_to_bumi3.o
+
+# target to build an object file
+tools/test_g1_to_bumi3.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_g1_to_bumi3.dir/build.make CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o
+.PHONY : tools/test_g1_to_bumi3.cpp.o
+
+tools/test_g1_to_bumi3.i: tools/test_g1_to_bumi3.cpp.i
+.PHONY : tools/test_g1_to_bumi3.i
+
+# target to preprocess a source file
+tools/test_g1_to_bumi3.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_g1_to_bumi3.dir/build.make CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.i
+.PHONY : tools/test_g1_to_bumi3.cpp.i
+
+tools/test_g1_to_bumi3.s: tools/test_g1_to_bumi3.cpp.s
+.PHONY : tools/test_g1_to_bumi3.s
+
+# target to generate assembly for a file
+tools/test_g1_to_bumi3.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_g1_to_bumi3.dir/build.make CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.s
+.PHONY : tools/test_g1_to_bumi3.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -593,6 +863,11 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... fzmotion_mocap_server"
+	@echo "... g1_bumi3_server"
+	@echo "... g1_motion_source"
+	@echo "... g1_motion_source_test"
+	@echo "... g1_to_bumi3_config_test"
+	@echo "... generate_g1_to_bumi3_config"
 	@echo "... ground_clearance_test"
 	@echo "... optitrack_mocap_server"
 	@echo "... pico_mocap_server"
@@ -601,10 +876,17 @@ help:
 	@echo "... smplx_e1_server"
 	@echo "... smplx_g1_server"
 	@echo "... smplx_reader_protocol_test"
+	@echo "... test_g1_to_bumi3"
 	@echo "... xsens_mocap_server"
+	@echo "... adapters/g1_motion_adapter.o"
+	@echo "... adapters/g1_motion_adapter.i"
+	@echo "... adapters/g1_motion_adapter.s"
 	@echo "... apps/fzmotion_server.o"
 	@echo "... apps/fzmotion_server.i"
 	@echo "... apps/fzmotion_server.s"
+	@echo "... apps/g1_bumi3_server.o"
+	@echo "... apps/g1_bumi3_server.i"
+	@echo "... apps/g1_bumi3_server.s"
 	@echo "... apps/mocap_server.o"
 	@echo "... apps/mocap_server.i"
 	@echo "... apps/mocap_server.s"
@@ -620,6 +902,12 @@ help:
 	@echo "... readers/fzmotion_reader.o"
 	@echo "... readers/fzmotion_reader.i"
 	@echo "... readers/fzmotion_reader.s"
+	@echo "... readers/g1_motion_reader.o"
+	@echo "... readers/g1_motion_reader.i"
+	@echo "... readers/g1_motion_reader.s"
+	@echo "... readers/g1_redis_receiver.o"
+	@echo "... readers/g1_redis_receiver.i"
+	@echo "... readers/g1_redis_receiver.s"
 	@echo "... readers/optitrack_reader.o"
 	@echo "... readers/optitrack_reader.i"
 	@echo "... readers/optitrack_reader.s"
@@ -632,6 +920,12 @@ help:
 	@echo "... readers/xsens_reader.o"
 	@echo "... readers/xsens_reader.i"
 	@echo "... readers/xsens_reader.s"
+	@echo "... tests/g1_motion_source_test.o"
+	@echo "... tests/g1_motion_source_test.i"
+	@echo "... tests/g1_motion_source_test.s"
+	@echo "... tests/g1_to_bumi3_config_test.o"
+	@echo "... tests/g1_to_bumi3_config_test.i"
+	@echo "... tests/g1_to_bumi3_config_test.s"
 	@echo "... tests/ground_clearance_test.o"
 	@echo "... tests/ground_clearance_test.i"
 	@echo "... tests/ground_clearance_test.s"
@@ -641,6 +935,12 @@ help:
 	@echo "... tests/smplx_reader_protocol_test.o"
 	@echo "... tests/smplx_reader_protocol_test.i"
 	@echo "... tests/smplx_reader_protocol_test.s"
+	@echo "... tools/generate_g1_to_bumi3_config.o"
+	@echo "... tools/generate_g1_to_bumi3_config.i"
+	@echo "... tools/generate_g1_to_bumi3_config.s"
+	@echo "... tools/test_g1_to_bumi3.o"
+	@echo "... tools/test_g1_to_bumi3.i"
+	@echo "... tools/test_g1_to_bumi3.s"
 .PHONY : help
 
 

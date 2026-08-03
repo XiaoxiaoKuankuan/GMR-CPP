@@ -586,6 +586,12 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
   /usr/include/c++/11/iostream \
+  ../include/gmr/redis_publisher.hpp \
+  /usr/include/hiredis/hiredis.h \
+  /usr/include/hiredis/read.h \
+  /usr/include/x86_64-linux-gnu/sys/time.h \
+  /usr/include/hiredis/sds.h \
+  /usr/include/hiredis/alloc.h \
   /usr/include/c++/11/set \
   /usr/include/c++/11/bits/stl_set.h \
   /usr/include/c++/11/bits/stl_multiset.h
@@ -594,6 +600,16 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 /usr/include/c++/11/bits/stl_multiset.h:
 
 /usr/include/c++/11/bits/stl_set.h:
+
+/usr/include/hiredis/sds.h:
+
+/usr/include/x86_64-linux-gnu/sys/time.h:
+
+/usr/include/hiredis/read.h:
+
+/usr/include/hiredis/hiredis.h:
+
+../include/gmr/redis_publisher.hpp:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
 
@@ -914,6 +930,8 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 /usr/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h:
 
 /usr/include/c++/11/tr1/bessel_function.tcc:
+
+/usr/include/hiredis/alloc.h:
 
 /usr/include/c++/11/cwctype:
 

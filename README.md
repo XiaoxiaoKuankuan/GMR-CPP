@@ -19,6 +19,7 @@ Python GMR（General Motion Retargeting）流水线的 C++ 移植版。将多种
 | `pico_mocap_server` | Pico / XRobot | `run_pico.sh` | `third_party/pico_sdk` |
 | `fzmotion_mocap_server` | FZMotion | `run_fzmotion_g1.sh` / `run_fzmotion_e1.sh` | `third_party/LuMoSDK` |
 | `smplx_e1_server` | GEM / SMPL-X（SMP1 UDP） | `run_smplx_e1.sh` | `/home/weili/GENMO` |
+| `g1_bumi3_server` | OMG / Unitree G1 qpos36（Redis JSON） | `run_g1_bumi3.sh` | `/home/weili/OMG` |
 
 支持的机器人模型：
 
@@ -26,6 +27,11 @@ Python GMR（General Motion Retargeting）流水线的 C++ 移植版。将多种
 |---|---|---|
 | Unitree G1（29 DOF） | `assets/unitree_g1/g1_mocap_29dof.xml` | `config/ik_configs/fbx_to_g1.json` |
 | E1（23/24 DOF） | `assets/e1/mjcf/e1_23dof.xml` / `e1_24dof.xml` | `config/ik_configs/fbx_to_e1.json` |
+| BUMI3（21 DOF） | `assets/bumi3/mjcf/bumi3.xml` | `config/ik_configs/g1_to_bumi3.json` |
+
+OMG G1 → BUMI3 的离线测试、实时 Redis 链路和参数说明见
+[docs/OMG_G1_TO_BUMI3.md](docs/OMG_G1_TO_BUMI3.md)。该链路先对 G1 qpos
+执行 source FK，再将 body pose 交给现有 GMR IK，不复制 G1/BUMI3 关节角。
 
 ---
 
