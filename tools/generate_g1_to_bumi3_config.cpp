@@ -42,6 +42,13 @@ const std::vector<Mapping> kMappings = {
     {"right_elbow_link", "r_elbow_pitch_link"},
 };
 
+constexpr double kG1ToBumi3ElbowZeroOffset = -1.5707963267948966;
+
+bool isElbowMapping(const Mapping& mapping) {
+    return mapping.source == "left_elbow_link" ||
+           mapping.source == "right_elbow_link";
+}
+
 struct Pose {
     Eigen::Vector3d position;
     Eigen::Quaterniond rotation;
@@ -163,6 +170,16 @@ int main(int argc, char** argv) {
             }
             Eigen::Quaterniond rotation_offset =
                 source.rotation.conjugate() * target.rotation;
+            if (isElbowMapping(mapping)) {
+                // The G1 forearm extends along elbow-local +X at q=0, while
+                // BUMI3 extends along elbow-local -Z.  Calibrating only the
+                // body-frame rest rotations makes the IK request an impossible
+                // positive BUMI3 elbow angle and clamp at zero.  A target-local
+                // -pi/2 rotation expresses the same physical forearm direction:
+                // q_bumi ~= q_g1 - pi/2.
+                rotation_offset *= Eigen::Quaterniond(Eigen::AngleAxisd(
+                    kG1ToBumi3ElbowZeroOffset, Eigen::Vector3d::UnitY()));
+            }
             rotation_offset.normalize();
             const Eigen::Vector3d position_offset =
                 target.rotation.conjugate() * (target.position - scaled_position);
@@ -194,7 +211,23 @@ int main(int argc, char** argv) {
         output["generated_from"] = {
             {"source_model", source_xml}, {"target_model", target_xml},
             {"weight_reference", reference_path},
-            {"method", "rest-FK body alignment and model-derived scale"},
+            {"method", "rest-FK alignment, model-derived scale, and semantic forearm zero calibration"},
+        };
+        output["semantic_joint_mapping"] = {
+            {"left_elbow_joint", {
+                {"target", "l_elbow_pitch_joint"},
+                {"scale", 1.0},
+                {"offset_radians", kG1ToBumi3ElbowZeroOffset},
+                {"source_forearm_axis", "+X"},
+                {"target_forearm_axis", "-Z"},
+            }},
+            {"right_elbow_joint", {
+                {"target", "r_elbow_pitch_joint"},
+                {"scale", 1.0},
+                {"offset_radians", kG1ToBumi3ElbowZeroOffset},
+                {"source_forearm_axis", "+X"},
+                {"target_forearm_axis", "-Z"},
+            }},
         };
         output["robot_root_name"] = "base_link";
         output["human_root_name"] = "pelvis";

@@ -14,7 +14,7 @@
     "torso_link": "waist_yaw_link"
   },
   "generated_from": {
-    "method": "rest-FK body alignment and model-derived scale",
+    "method": "rest-FK alignment, model-derived scale, and semantic forearm zero calibration",
     "source_model": "assets/unitree_g1/g1_mocap_29dof.xml",
     "target_model": "assets/bumi3/mjcf/bumi3.xml",
     "weight_reference": "config/ik_configs/smplx_to_bumi3.json"
@@ -95,10 +95,10 @@
         0.10103866787768459
       ],
       [
-        0.9990495032094365,
-        0.043589909445342793,
-        -2.32669667255368e-05,
-        9.690290752541747e-05
+        0.7064182262304948,
+        0.030891241263137345,
+        -0.7064511306903932,
+        -0.03075419985708151
       ]
     ],
     "l_knee_pitch_link": [
@@ -175,10 +175,10 @@
         0.10103256256306353
       ],
       [
-        0.9990495032094365,
-        -0.043589909445342793,
-        -2.32669667255368e-05,
-        -9.690290752541747e-05
+        0.7064182262304948,
+        -0.030891241263137345,
+        -0.7064511306903932,
+        0.03075419985708151
       ]
     ],
     "r_knee_pitch_link": [
@@ -289,10 +289,10 @@
         0.10103866787768459
       ],
       [
-        0.9990495032094365,
-        0.043589909445342793,
-        -2.32669667255368e-05,
-        9.690290752541747e-05
+        0.7064182262304948,
+        0.030891241263137345,
+        -0.7064511306903932,
+        -0.03075419985708151
       ]
     ],
     "l_knee_pitch_link": [
@@ -369,10 +369,10 @@
         0.10103256256306353
       ],
       [
-        0.9990495032094365,
-        -0.043589909445342793,
-        -2.32669667255368e-05,
-        -9.690290752541747e-05
+        0.7064182262304948,
+        -0.030891241263137345,
+        -0.7064511306903932,
+        0.03075419985708151
       ]
     ],
     "r_knee_pitch_link": [
@@ -440,6 +440,22 @@
       "r_ankle_roll_link"
     ],
     "target_standing_sole_z": 0.06976702779336252
+  },
+  "semantic_joint_mapping": {
+    "left_elbow_joint": {
+      "offset_radians": -1.5707963267948966,
+      "scale": 1.0,
+      "source_forearm_axis": "+X",
+      "target": "l_elbow_pitch_joint",
+      "target_forearm_axis": "-Z"
+    },
+    "right_elbow_joint": {
+      "offset_radians": -1.5707963267948966,
+      "scale": 1.0,
+      "source_forearm_axis": "+X",
+      "target": "r_elbow_pitch_joint",
+      "target_forearm_axis": "-Z"
+    }
   },
   "source": {
     "model": "assets/unitree_g1/g1_mocap_29dof.xml",

@@ -47,6 +47,7 @@ struct Config {
     double stale_ms = 250.0;
     int ttl_ms = 200;
     double damping = 1.0;
+    double viewer_ground_penetration = 0.005;
     bool output_redis = true;
     bool vis = false;
     bool vis_targets = false;
@@ -79,6 +80,8 @@ void usage(const char* program) {
         << "  --ttl-ms <ms>               BUMI3 output key TTL (200)\n"
         << "  --stale-ms <ms>             stop output after source loss (250)\n"
         << "  --damping <value>           existing GMR constructor damping (1.0)\n"
+        << "  --viewer-ground-penetration <m>  viewer-only foot seating (0.005)\n"
+        << "  --ground-penetration <m>    compatibility alias for the option above\n"
         << "  --no-output-redis           viewer/offline inspection only\n"
         << "  --vis                       open BUMI3 MuJoCo viewer\n"
         << "  --vis-targets               show G1 FK target markers\n"
@@ -114,6 +117,9 @@ Config parseArgs(int argc, char** argv) {
         else if (arg == "--ttl-ms") config.ttl_ms = std::stoi(next());
         else if (arg == "--stale-ms") config.stale_ms = std::stod(next());
         else if (arg == "--damping") config.damping = std::stod(next());
+        else if (arg == "--viewer-ground-penetration" ||
+                 arg == "--ground-penetration")
+            config.viewer_ground_penetration = std::stod(next());
         else if (arg == "--no-output-redis" || arg == "--no-redis")
             config.output_redis = false;
         else if (arg == "--output-redis" || arg == "--redis")
@@ -134,6 +140,11 @@ Config parseArgs(int argc, char** argv) {
     if (config.publish_hz <= 0.0 || config.receiver_poll_hz <= 0.0 ||
         config.stale_ms <= 0.0)
         throw std::runtime_error("--hz, --poll-hz and --stale-ms must be > 0");
+    if (!std::isfinite(config.viewer_ground_penetration) ||
+        config.viewer_ground_penetration < 0.0 ||
+        config.viewer_ground_penetration > 0.03)
+        throw std::runtime_error(
+            "--viewer-ground-penetration must be finite and in [0, 0.03] meters");
     return config;
 }
 
@@ -206,7 +217,10 @@ int main(int argc, char** argv) {
                   << "[Config] IK=" << config.ik_config << "\n"
                   << "[Config] root ground_alignment="
                   << (ground_alignment ? "on" : "off")
-                  << " height_offset=" << height_offset << " (model geometry)\n"
+                  << " height_offset=" << height_offset
+                  << " viewer_penetration="
+                  << config.viewer_ground_penetration
+                  << "m (viewer only; GMT stays at exact geometry contact)\n"
                   << "[Config] GMT Redis="
                   << (config.output_redis ? config.output_key : "disabled")
                   << " publish=" << config.publish_hz << "Hz ttl="
@@ -214,6 +228,7 @@ int main(int argc, char** argv) {
                   << "[GMR] ready; waiting for OMG G1 frames...\n";
 
         Eigen::VectorXd latest_qpos;
+        Eigen::VectorXd latest_viewer_qpos;
         gmr::BodyMap latest_source;
         gmr::BodyMap latest_scaled;
         double latest_source_timestamp = 0.0;
@@ -235,6 +250,13 @@ int main(int argc, char** argv) {
                     latest_qpos = solver.retarget(latest_source, false);
                 warmed = true;
                 if (ground_alignment) ground.align(latest_qpos, height_offset);
+                latest_viewer_qpos = latest_qpos;
+                if (viewer && ground_alignment &&
+                    config.viewer_ground_penetration > 0.0) {
+                    ground.align(
+                        latest_viewer_qpos,
+                        height_offset - config.viewer_ground_penetration);
+                }
                 latest_scaled = solver.getScaledHumanData();
                 latest_source_timestamp = frame.timestamp;
                 latest_local_time = steadySeconds();
@@ -256,9 +278,11 @@ int main(int argc, char** argv) {
 
             if (viewer && latest_qpos.size() > 0) {
                 if (config.vis_targets)
-                    viewer->render(latest_qpos, &latest_source, &latest_scaled, false);
+                    viewer->render(
+                        latest_viewer_qpos,
+                        &latest_source, &latest_scaled, false);
                 else
-                    viewer->render(latest_qpos);
+                    viewer->render(latest_viewer_qpos);
                 if (viewer->shouldClose()) break;
             } else if (!viewer) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));

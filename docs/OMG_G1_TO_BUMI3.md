@@ -41,6 +41,71 @@ scale/offset/rotation offset：
 
 仅在 G1/BUMI3 模型或参考权重发生变化时重新生成。
 
+## 肘部语义坐标修正
+
+最初版本只在两个机器人 `q=0` 时对齐 elbow body frame：
+
+```cpp
+rotation_offset = source_rest_rotation.conjugate() * target_rest_rotation;
+```
+
+这对膝、踝等 link frame 足够，但对前臂不成立：
+
+- G1 的物理前臂纵轴是 elbow-local `+X`；
+- BUMI3 的物理前臂纵轴是 elbow-local `-Z`；
+- 两个 body frame 看似接近，实际前臂零位相差 `90°`；
+- BUMI3 肘限位为 `[-2.26, 0] rad`，旧 target 会把常用的 G1 正肘角推向
+  BUMI3 正方向，最后裁剪到 0。
+
+生成器现在只对左右肘的 rotation offset 追加 target-local `Ry(-pi/2)`：
+
+```cpp
+rotation_offset *= Quaternion(AngleAxis(-pi / 2, UnitY));
+```
+
+对应的物理关节关系是：
+
+```text
+q_bumi_elbow = 1.0 * q_g1_elbow - pi/2
+```
+
+这不是简单取负号。配置中的 `semantic_joint_mapping` 显式记录 scale、offset 和
+两边的前臂纵轴；table1/table2 使用同一个修正，其他 body 的 scale、position
+offset、rotation offset 和权重保持不变。原 GEM/SMPL-X→BUMI3 配置
+`smplx_to_bumi3.json` 没有修改。
+
+默认 seed 单帧验证结果：
+
+| 关节 | G1 | 旧 BUMI3 | 修正后 BUMI3 | 期望 `G1-90°` |
+|---|---:|---:|---:|---:|
+| 左肘 | +31.17° | 0.00°（限位） | -59.67° | -58.83° |
+| 右肘 | +25.61° | 0.00°（限位） | -65.27° | -64.39° |
+
+对 G1 肘角 `-22.9°、0°、28.6°、57.3°、85.9°、90°` 的连续扫描中，旧配置
+的物理前臂方向误差最高约 `90°`；修正后最高约 `2.81°`。C++ 回归测试使用
+五个独立姿态重新求解，最坏误差为 `2.68°`。
+
+重新生成配置后应当与仓库文件完全一致：
+
+```bash
+./build/generate_g1_to_bumi3_config \
+  --source-xml assets/unitree_g1/g1_mocap_29dof.xml \
+  --target-xml assets/bumi3/mjcf/bumi3.xml \
+  --reference config/ik_configs/smplx_to_bumi3.json \
+  --output /tmp/g1_to_bumi3.json
+
+diff -u config/ik_configs/g1_to_bumi3.json /tmp/g1_to_bumi3.json
+./build/g1_to_bumi3_config_test
+```
+
+### “同样姿态”的边界
+
+在两边都有对应自由度时，GMR 会匹配腿、肩和修正后的物理前臂方向。但两个模型
+不是同构机器人：G1 有 waist roll/pitch 和双腕 3 DoF，BUMI3 没有这些关节。
+因此不能数学上逐关节完全相同；BUMI3 只能在自身 21 DoF 和限位内得到最接近的
+身体姿态。站立时应优先使用独立 neutral/实机验证 idle，而不是要求 BUMI3 用
+浮动根去补偿 G1 的 waist pitch。
+
 配置保留现有 GMR 所需的 `human_scale_table` 和两轮 `ik_match_table`，并增加：
 
 ```json
@@ -57,7 +122,10 @@ scale/offset/rotation offset：
 ```
 
 贴地使用 BUMI3 `l_ankle_roll_link`、`r_ankle_roll_link` 下真实接触 geom 的
-最低点计算 root Z 修正，不使用固定机器人高度。
+最低点计算 root Z 修正，不使用固定机器人高度。实时 G1→BUMI3 server 另外提供
+`--viewer-ground-penetration`（默认 `0.005 m`），只对 MuJoCo viewer 的 qpos
+副本做 root-Z 视觉下沉。IK 结果及发布给 GMT 的根位姿仍是严格几何接触；该参数
+也不能替代足底平整/接触约束。设为 `0` 可关闭视觉下沉。
 
 ## 离线测试
 
@@ -161,6 +229,7 @@ cd /home/weili/GMR-CPP_e1jump_lowdpi
   --hz 50 \
   --ttl-ms 200 \
   --stale-ms 250 \
+  --viewer-ground-penetration 0.005 \
   --vis
 ```
 
@@ -198,9 +267,13 @@ cd /home/weili/GMR-CPP_e1jump_lowdpi
 - `--no-output-redis`：只运行 IK/viewer，不发送 GMT。
 - `--vis`：BUMI3 MuJoCo viewer。
 - `--vis-targets`：额外显示 G1 FK body targets。
+- `--viewer-ground-penetration`：贴地后将 viewer qpos 副本额外下移的米数，
+  默认 `0.005`，允许 `[0, 0.03]`；不改变 GMT 输出，不能修复脚掌倾斜。
+- `--ground-penetration`：以上参数的兼容别名。
 
 需要人工设置的只有运行环境参数：Redis 地址/key、OMG 实际 FPS、stale/TTL、
-OMG planner ONNX 路径和提示词/音乐路径。`height_offset` 当前保持模型生成值 `0.0`；
+OMG planner ONNX 路径和提示词/音乐路径。配置中的 `height_offset` 保持模型生成值
+`0.0`，实时视觉下沉由独立运行参数控制；
 scale、position offset 和 rotation offset 不需要在线标定或动态搜索。
 
 ## 实物 BUMI3
