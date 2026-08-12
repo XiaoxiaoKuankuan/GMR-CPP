@@ -6,7 +6,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 EXECUTABLE="$ROOT/build/smplx_bumi3_server"
 XML="${BUMI3_XML:-$ROOT/assets/bumi3/mjcf/bumi3.xml}"
-IK_CONFIG="${BUMI3_IK_CONFIG:-$ROOT/config/ik_configs/smplx_to_bumi3.json}"
+IK_CONFIG="${BUMI3_IK_CONFIG:-$ROOT/config/ik_configs/smplx_to_bumi3_auto.json}"
 UDP_PORT="${BUMI3_UDP_PORT:-7006}"
 REDIS_KEY="${BUMI3_REDIS_KEY:-gmt_online_frame_bumi}"
 

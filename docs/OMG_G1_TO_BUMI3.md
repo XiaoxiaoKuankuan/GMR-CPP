@@ -10,16 +10,18 @@ G1RedisReceiver → G1MotionReader
         ↓
 G1MotionAdapter + G1 MuJoCo FK
         ↓ BodyMap：G1 body 世界 position/rotation
-现有 GMR IK + g1_to_bumi3.json
+现有 GMR IK + 可选 gait-aware 重定向 + g1_to_bumi3.json
         ↓
 BUMI3 qpos28
         ↓ Redis binary: gmt_online_frame_bumi
 GMT / Gazebo / 实物 BUMI3
 ```
 
-这是一条独立 source adapter 链路。没有修改 `GMR::runIKStep`、`solveIK`、
-DAQP、Jacobian、damping、关节限位，也没有修改原 SMPL-X → BUMI3 server、
-Reader 或配置。
+这是一条独立 source adapter 链路。新算法是显式 opt-in：只有运行
+`g1_bumi3_server` 时传入 `--foot-contact-constraints`，才启用 gait-aware
+重定向和轻量足底目标。不传该参数时，仍执行修改前的 full-pose IK、逐帧最低足点
+ground-align 和 sample-and-hold 发布路径。原 SMPL-X/GEM → BUMI3 server、Reader、
+配置、damping 和关节限位没有修改。
 
 ## 编译与配置生成
 
@@ -104,7 +106,17 @@ diff -u config/ik_configs/g1_to_bumi3.json /tmp/g1_to_bumi3.json
 不是同构机器人：G1 有 waist roll/pitch 和双腕 3 DoF，BUMI3 没有这些关节。
 因此不能数学上逐关节完全相同；BUMI3 只能在自身 21 DoF 和限位内得到最接近的
 身体姿态。站立时应优先使用独立 neutral/实机验证 idle，而不是要求 BUMI3 用
-浮动根去补偿 G1 的 waist pitch。
+浮动根去补偿 G1 的 waist pitch。gait-aware 模式因此把目标拆开处理：
+
+- BUMI3 的实体 waist 关节只接收世界 yaw；G1 torso roll 丢弃；
+- G1 torso pitch 作为单独的“前向躯干倾角”目标施加到浮动躯干，足部和腿部位置
+  任务会让髋、膝、踝配合实现前屈，而不是要求不存在的 waist pitch 关节运动；
+- BUMI3 `base_link` 只跟踪 G1 根的世界 XY 和 yaw；
+- 另用 roll-upright 目标抑制 BUMI3 浮动根左右倾斜，但不锁住前后 pitch；
+- 根 Z 不跟踪 G1 的绝对高度，由当前主支撑脚和 BUMI3 自身腿部 FK 决定。
+
+这样既避免了 G1 torso roll 被错误变成 BUMI 浮动根左右晃，也保留了弯腰、鞠躬
+等 torso pitch；根高度仍由支撑腿几何决定，不跟着源根高度逐帧颠动。
 
 配置保留现有 GMR 所需的 `human_scale_table` 和两轮 `ik_match_table`，并增加：
 
@@ -121,11 +133,83 @@ diff -u config/ik_configs/g1_to_bumi3.json /tmp/g1_to_bumi3.json
 }
 ```
 
-贴地使用 BUMI3 `l_ankle_roll_link`、`r_ankle_roll_link` 下真实接触 geom 的
-最低点计算 root Z 修正，不使用固定机器人高度。实时 G1→BUMI3 server 另外提供
+配置生成器还会从 G1 接触球和 BUMI3 足部 mesh 自动提取每只脚的足跟内外侧、
+脚尖内外侧四个局部接触点，不使用踝关节原点或手工猜测的固定机器人高度。
+
+启用 gait-aware 模式时，第一帧使用 BUMI3 `l_ankle_roll_link`、
+`r_ankle_roll_link` 下真实接触 geom 完成 root Z 初始化。此后检测并保持一个
+`primary support`：可靠单支撑优先；双支撑时保持上一主支撑脚，避免左右脚之间
+逐帧跳变；只有支撑状态实际切换时才换脚。IK 得到关节姿态后，用主支撑脚的
+BUMI3 FK 计算根 Z，使该脚足底落地。摆动脚不会参与根 Z 的目标计算，只有在它已
+穿地时才做单向安全抬升。因此不再每帧按“左右脚全局最低点”重算根高度，也不再
+把 root XY 投影回足底锚点。支撑脚防滑仍是带死区的低权重软目标。实时 server
+另外提供
 `--viewer-ground-penetration`（默认 `0.005 m`），只对 MuJoCo viewer 的 qpos
 副本做 root-Z 视觉下沉。IK 结果及发布给 GMT 的根位姿仍是严格几何接触；该参数
-也不能替代足底平整/接触约束。设为 `0` 可关闭视觉下沉。
+与足底约束互不混用。设为 `0` 可关闭视觉下沉。
+
+## Gait-aware 重定向与轻量足底目标
+
+每个新 G1 qpos 帧经 FK 后，按左右脚四个真实足底点的高度、中心垂直速度、
+中心水平速度和连续帧滞回判断 `stance/swing`。低空但快速横移的脚会被视为摆动脚，
+避免转身和舞蹈时把两只脚都误锁。默认不允许飞行；两脚都未检测到可靠接触时，
+较低一脚进入 `forced` grounding，但它只接受较弱的平足/贴地任务，不锁世界 XY。
+
+支撑脚落地时在当前 BUMI3 世界位置捕获 XY 锚点。默认采用动作保真优先的
+`soft-contact` 配置：
+
+- 动态双支撑只选水平速度较低的一只主支撑脚；两脚都近似静止才双锚定；
+- 足底 XY 使用带 `8 mm` 死区的软锚点，不默认使用硬防滑速度带；
+- 足底法向和中心高度使用较低权重，只压制明显 roll/pitch，不锁 yaw；
+- 新支撑脚使用 8 帧渐入，摆动脚立即释放；
+- DAQP 默认只保留所有真实足部 mesh 点的硬防穿透下界。
+
+离线任务若确实要求近似钉死足底，可在 JSON 中设
+`hard_support_constraints=true` 恢复硬防滑/高度上界；该模式不建议用于当前实时
+舞蹈和走路。接触模式下 DAQP 失败时保持当前配置，不会绕过硬防穿透。
+
+除几何 IK 外，仅对受限的 hinge/slide 关节增加轻量时序连续项，free root 不参加：
+
+```text
+||q - q_ik||^2
++ 0.05 * ||q - q_prev||^2
++ 0.20 * ||q - (q_prev + dt_ratio * (q_prev - q_prevprev))||^2
+```
+
+第一项权重仍占绝对主导，所以这不是低通滤波，也不会继续增强足底锁定；速度项只
+抑制单帧突变，加速度项轻量偏好延续上一帧速度。`dt_ratio` 使用输入时间戳，适配
+30 Hz OMG 输入与 50 Hz GMT 发布。
+
+当前 60 帧 OMG 走路样本的 A/B 结果：
+
+| 指标 | 旧 GMR | 当前 gait-aware |
+|---|---:|---:|
+| root Z 范围 | 44.61 mm | 43.97 mm |
+| root roll 范围 | 4.40° | 2.11° |
+| root pitch 范围 | 2.34° | 2.54° |
+| root Z 加速度 P95 | 4.06 m/s² | 2.75 m/s² |
+| 关节步长 P95 | 0.0301 rad | 0.0305 rad |
+| 平均关节加速度 | 2.52 rad/s² | 2.46 rad/s² |
+
+当前模式不追求毫米级钉死足底，保留贴地、防穿透和有限防滑，同时优先保持源动作。
+走路样本可靠支撑脚允许约 `15 mm` 软锚点偏移；这是为避免脚粘地和腰部代偿而
+保留的有意自由度。上述数字是该 60 帧样本的离线运动学指标，不代表动力学稳定性。
+
+接触模式将单关节速度、浮动根线速度和角速度分别限制为配置中的 `8 rad/s`、
+`3 m/s`、`6 rad/s`，只拦截明显异常的单次 IK 步长。这些限制
+同样只在足底约束模式生效。
+
+这里约束的是发送给 GMT 的运动学参考轨迹，不是动力学平衡控制器：它不计算
+接触力、摩擦锥、质心/ZMP 或电机力矩。实机上的抗滑、抗倾倒和关节安全仍必须由
+GMT/WBC、状态估计与保护逻辑负责。默认 `allow_flight=false` 会在两脚都离地时保留
+较低一脚作为低权重、不锁 XY 的 grounding 参考，适合当前“不要漂浮”的舞蹈目标，但仍会
+压制真实跳跃的腾空段；需要保留跳跃时可在配置中改为 `true`。新支撑脚进入后的
+前 8 帧是低权重渐入，不会突然把脚和腰拉向接触锚点。
+
+实时 server 在新约束模式下默认对 viewer 和 GMT qpos 做一个 source-frame 的因果
+插值：root xyz 和关节线性插值，root quaternion 使用最短路径 slerp。它消除
+30/50 Hz 之间重复上一姿态造成的 sample-and-hold 卡顿，代价是约一个输入帧延迟。
+`--no-reference-interpolation` 可关闭；旧兼容模式默认不启用。
 
 ## 离线测试
 
@@ -138,6 +222,8 @@ cd /home/weili/GMR-CPP_e1jump_lowdpi
   --input /path/to/walk.npy \
   --config config/ik_configs/g1_to_bumi3.json \
   --fps 30 \
+  --foot-contact-constraints \
+  --foot-contact-weight-scale 0.25 \
   --output /tmp/bumi3_walk.npy
 ```
 
@@ -229,6 +315,9 @@ cd /home/weili/GMR-CPP_e1jump_lowdpi
   --hz 50 \
   --ttl-ms 200 \
   --stale-ms 250 \
+  --foot-contact-constraints \
+  --foot-contact-weight-scale 0.25 \
+  --reference-interpolation \
   --viewer-ground-penetration 0.005 \
   --vis
 ```
@@ -268,13 +357,68 @@ cd /home/weili/GMR-CPP_e1jump_lowdpi
 - `--vis`：BUMI3 MuJoCo viewer。
 - `--vis-targets`：额外显示 G1 FK body targets。
 - `--viewer-ground-penetration`：贴地后将 viewer qpos 副本额外下移的米数，
-  默认 `0.005`，允许 `[0, 0.03]`；不改变 GMT 输出，不能修复脚掌倾斜。
+  默认 `0.005`，允许 `[0, 0.03]`；不改变 GMT 输出。
 - `--ground-penetration`：以上参数的兼容别名。
+- `--foot-contact-constraints`：显式启用 gait-aware 模式，包括 root XY/yaw 与 Z
+  分离、waist 实体关节仅 yaw、torso pitch 经浮动躯干和髋腿实现、root roll
+  upright、主支撑脚 FK 根 Z、轻量关节时序连续项，以及配置中的软防滑/平足/贴地
+  和硬防穿透。默认不启用，以保持旧命令完全兼容。
+- `--no-foot-contact-constraints`：关闭新约束，恢复此前的每帧最低几何点
+  ground-align 和 full-pose IK；不传任何一个开关也走这条旧路径。
+- `--foot-contact-weight-scale`：运行时缩放软防滑、平足和贴地权重，实时默认 `0.5`；
+  若仍有腰部代偿可使用 `0.25`，设为 `0` 时只保留硬防穿地和最终 root-Z 贴地。
+- `--reference-interpolation`：在相邻 GMR qpos 间插值后显示并发布给 GMT；
+  gait-aware 模式默认启用，增加约一个 source frame 延迟。
+- `--no-reference-interpolation`：关闭插值，恢复逐输入帧 sample-and-hold。
 
 需要人工设置的只有运行环境参数：Redis 地址/key、OMG 实际 FPS、stale/TTL、
 OMG planner ONNX 路径和提示词/音乐路径。配置中的 `height_offset` 保持模型生成值
 `0.0`，实时视觉下沉由独立运行参数控制；
 scale、position offset 和 rotation offset 不需要在线标定或动态搜索。
+
+### 完整 A/B 命令
+
+原始兼容模式（就是修改前的功能，不启用任何新算法）：
+
+```bash
+./run_g1_bumi3.sh \
+  --redis-host 127.0.0.1 \
+  --redis-port 6379 \
+  --redis-db 0 \
+  --input-redis-key omg_online_frame_g1 \
+  --output-redis-key gmt_online_frame_bumi \
+  --poll-hz 60 \
+  --hz 50 \
+  --ttl-ms 200 \
+  --stale-ms 250 \
+  --viewer-width 1280 \
+  --viewer-height 720 \
+  --vis \
+  --vis-targets
+```
+
+推荐 gait-aware 模式：
+
+```bash
+./run_g1_bumi3.sh \
+  --redis-host 127.0.0.1 \
+  --redis-port 6379 \
+  --redis-db 0 \
+  --input-redis-key omg_online_frame_g1 \
+  --output-redis-key gmt_online_frame_bumi \
+  --poll-hz 60 \
+  --hz 50 \
+  --ttl-ms 200 \
+  --stale-ms 250 \
+  --foot-contact-constraints \
+  --foot-contact-weight-scale 0.25 \
+  --reference-interpolation \
+  --viewer-ground-penetration 0.005 \
+  --viewer-width 1280 \
+  --viewer-height 720 \
+  --vis \
+  --vis-targets
+```
 
 ## 实物 BUMI3
 

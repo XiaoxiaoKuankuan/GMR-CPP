@@ -421,6 +421,25 @@ if(BUILD_TESTING)
         -O2 -Wall -Wextra -Wno-unused-parameter)
     add_test(NAME g1_motion_source_test COMMAND g1_motion_source_test)
 
+    add_executable(foot_contact_detector_test
+        tests/foot_contact_detector_test.cpp)
+    target_include_directories(foot_contact_detector_test PRIVATE
+        ${GMR_ROOT} ${GMR_ROOT}/include ${MUJOCO_INCLUDE_DIR})
+    target_link_libraries(foot_contact_detector_test PRIVATE
+        mujoco::mujoco Eigen3::Eigen)
+    target_compile_options(foot_contact_detector_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME foot_contact_detector_test COMMAND foot_contact_detector_test)
+
+    add_executable(qpos_interpolator_test
+        tests/qpos_interpolator_test.cpp)
+    target_include_directories(qpos_interpolator_test PRIVATE
+        ${GMR_ROOT} ${GMR_ROOT}/include)
+    target_link_libraries(qpos_interpolator_test PRIVATE Eigen3::Eigen)
+    target_compile_options(qpos_interpolator_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME qpos_interpolator_test COMMAND qpos_interpolator_test)
+
     add_executable(g1_to_bumi3_config_test
         tests/g1_to_bumi3_config_test.cpp)
     target_include_directories(g1_to_bumi3_config_test PRIVATE
@@ -433,4 +452,18 @@ if(BUILD_TESTING)
     target_compile_options(g1_to_bumi3_config_test PRIVATE
         -O2 -Wall -Wextra -Wno-unused-parameter)
     add_test(NAME g1_to_bumi3_config_test COMMAND g1_to_bumi3_config_test)
+
+    add_executable(g1_bumi3_foot_constraint_test
+        tests/g1_bumi3_foot_constraint_test.cpp)
+    target_include_directories(g1_bumi3_foot_constraint_test PRIVATE
+        ${GMR_ROOT} ${GMR_ROOT}/include ${GMR_ROOT}/readers ${MUJOCO_INCLUDE_DIR})
+    target_link_libraries(g1_bumi3_foot_constraint_test PRIVATE
+        g1_motion_source mujoco::mujoco Eigen3::Eigen
+        nlohmann_json::nlohmann_json pthread ${DAQP_LIB})
+    target_compile_definitions(g1_bumi3_foot_constraint_test PRIVATE
+        G1_BUMI3_REPO_ROOT="${GMR_ROOT}")
+    target_compile_options(g1_bumi3_foot_constraint_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME g1_bumi3_foot_constraint_test
+        COMMAND g1_bumi3_foot_constraint_test)
 endif()

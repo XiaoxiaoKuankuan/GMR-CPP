@@ -81,6 +81,49 @@ int main() {
             throw std::runtime_error("root policy mismatch");
         if (config.at("body_mapping").size() != 12)
             throw std::runtime_error("body mapping must contain 12 pairs");
+        const auto foot_contact = gmr::footConstraintConfigFromJson(config);
+        if (!foot_contact.enabled ||
+            foot_contact.left.body_name != "l_ankle_roll_link" ||
+            foot_contact.right.body_name != "r_ankle_roll_link" ||
+            foot_contact.settings.forced_support_weight_scale <= 0.0 ||
+            foot_contact.settings.transition_frames != 8 ||
+            foot_contact.settings.hard_support_constraints ||
+            foot_contact.settings.anchor_deadzone <= 0.0)
+            throw std::runtime_error("target foot-contact metadata mismatch");
+        const auto detector = gmr::footDetectorConfigFromJson(
+            config.at("foot_contact"));
+        if (detector.max_enter_horizontal_speed >=
+                detector.max_exit_horizontal_speed ||
+            detector.exit_frames != 1)
+            throw std::runtime_error("foot-contact release policy mismatch");
+        const auto& motion = config.at("motion_preserving");
+        if (!motion.at("enabled").get<bool>() ||
+            motion.at("root_body") != "base_link" ||
+            motion.at("waist_body") != "waist_yaw_link" ||
+            motion.at("root_z_policy") != "primary_support_fk" ||
+            motion.at("root_position_axes") !=
+                nlohmann::json::array({1.0, 1.0, 0.0}) ||
+            motion.at("root_rotation_axes") !=
+                nlohmann::json::array({0.0, 0.0, 1.0}) ||
+            motion.at("root_roll_upright_weight").get<double>() <= 0.0 ||
+            motion.at("torso_pitch_weight_scale").get<double>() <= 0.0 ||
+            motion.at("waist_rotation_axes") !=
+                nlohmann::json::array({0.0, 0.0, 1.0}) ||
+            motion.at("joint_velocity_weight").get<double>() <= 0.0 ||
+            motion.at("joint_acceleration_weight").get<double>() <= 0.0)
+            throw std::runtime_error(
+                "motion-preserving axis/temporal policy mismatch");
+        const auto source_left_sole = gmr::footSoleDefinitionFromJson(
+            config.at("foot_contact").at("source").at("left"),
+            "foot_contact.source.left");
+        const auto source_right_sole = gmr::footSoleDefinitionFromJson(
+            config.at("foot_contact").at("source").at("right"),
+            "foot_contact.source.right");
+        if (source_left_sole.body_name != "left_ankle_roll_link" ||
+            source_right_sole.body_name != "right_ankle_roll_link" ||
+            (source_left_sole.points_local[2] -
+             source_left_sole.points_local[0]).x() < 0.12)
+            throw std::runtime_error("source foot-contact metadata mismatch");
         const auto& semantic = config.at("semantic_joint_mapping");
         for (const char* side : {"left_elbow_joint", "right_elbow_joint"}) {
             const auto& entry = semantic.at(side);
@@ -124,6 +167,10 @@ int main() {
         gmr::G1MotionAdapter adapter(source_xml);
         const gmr::BodyMap bodies = adapter.to_body_map(frame);
         gmr_mink::GMR solver(target_xml, config_path, 1.0, 1.0, false);
+        if (!solver.motionPreservingConfigured() ||
+            solver.motionPreservingEnabled())
+            throw std::runtime_error(
+                "motion-preserving profile must be configured but opt-in");
         Eigen::VectorXd qpos;
         for (int iteration = 0; iteration < 100; ++iteration)
             qpos = solver.retarget(bodies, false);

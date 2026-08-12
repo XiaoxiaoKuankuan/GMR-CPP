@@ -1,4 +1,5 @@
 #include "gmr/geometry_ground.hpp"
+#include "gmr/foot_contact_json.hpp"
 
 #include <Eigen/Geometry>
 #include <mujoco/mujoco.h>
@@ -142,6 +143,18 @@ int main(int argc, char** argv) {
         if (!(source_leg_height > 0.0) || !(target_leg_height > 0.0))
             throw std::runtime_error("model-derived standing height is not positive");
         const double root_scale = target_leg_height / source_leg_height;
+        const gmr::FootSoleDefinition source_left_sole =
+            gmr::deriveFootSoleDefinition(
+                source_model.get(), source_data.get(), "left_ankle_roll_link");
+        const gmr::FootSoleDefinition source_right_sole =
+            gmr::deriveFootSoleDefinition(
+                source_model.get(), source_data.get(), "right_ankle_roll_link");
+        const gmr::FootSoleDefinition target_left_sole =
+            gmr::deriveFootSoleDefinition(
+                target_model.get(), target_data.get(), "l_ankle_roll_link");
+        const gmr::FootSoleDefinition target_right_sole =
+            gmr::deriveFootSoleDefinition(
+                target_model.get(), target_data.get(), "r_ankle_roll_link");
 
         std::map<std::string, double> scales;
         std::map<std::string, Eigen::Vector3d> position_offsets;
@@ -205,6 +218,70 @@ int main(int argc, char** argv) {
             {"source_standing_sole_z", source_ground},
             {"target_standing_sole_z", target_ground},
         };
+        output["foot_contact"] = {
+            {"enabled", true},
+            {"ground_z", 0.0},
+            {"allow_flight", false},
+            {"source", {
+                {"left", gmr::footSoleDefinitionToJson(source_left_sole)},
+                {"right", gmr::footSoleDefinitionToJson(source_right_sole)},
+            }},
+            {"target", {
+                {"left", gmr::footSoleDefinitionToJson(target_left_sole)},
+                {"right", gmr::footSoleDefinitionToJson(target_right_sole)},
+            }},
+            {"detection", {
+                {"enter_height_m", 0.025},
+                {"exit_height_m", 0.045},
+                {"max_enter_vertical_speed_mps", 0.18},
+                {"max_exit_upward_speed_mps", 0.30},
+                {"max_enter_horizontal_speed_mps", 0.035},
+                {"max_exit_horizontal_speed_mps", 0.075},
+                {"double_support_max_horizontal_speed_mps", 0.025},
+                {"enter_frames", 2},
+                {"exit_frames", 1},
+                {"minimum_stance_frames", 2},
+            }},
+            {"constraints", {
+                {"xy_weight", 35.0},
+                {"tilt_weight", 60.0},
+                {"height_weight", 80.0},
+                {"xy_kp", 5.0},
+                {"tilt_kp", 8.0},
+                {"height_kp", 10.0},
+                {"max_anchor_correction_speed_mps", 0.20},
+                {"anchor_deadzone_m", 0.008},
+                {"max_slip_speed_mps", 0.05},
+                {"support_height_m", 0.001},
+                {"support_height_upper_m", 0.003},
+                {"penetration_tolerance_m", 0.0},
+                {"max_joint_velocity_rps", 8.0},
+                {"max_root_linear_velocity_mps", 3.0},
+                {"max_root_angular_velocity_rps", 6.0},
+                {"forced_support_weight_scale", 0.08},
+                {"transition_frames", 8},
+                {"hard_support_constraints", false},
+            }},
+        };
+        output["motion_preserving"] = {
+            {"enabled", true},
+            {"root_body", "base_link"},
+            {"waist_body", "waist_yaw_link"},
+            // BUMI3 has no waist roll/pitch joints.  Match only horizontal
+            // root translation and heading, otherwise the full torso
+            // orientation task pushes G1 waist roll/pitch into BUMI3's pelvis.
+            {"root_position_axes", {1.0, 1.0, 0.0}},
+            {"root_rotation_axes", {0.0, 0.0, 1.0}},
+            {"root_roll_upright_weight", 20.0},
+            {"torso_pitch_weight_scale", 1.0},
+            {"waist_rotation_axes", {0.0, 0.0, 1.0}},
+            {"root_z_policy", "primary_support_fk"},
+            // These are dimensionless configuration-space terms applied once
+            // per input reference, after geometric IK.  They are deliberately
+            // light so swing clearance and timing remain source-driven.
+            {"joint_velocity_weight", 0.05},
+            {"joint_acceleration_weight", 0.20},
+        };
         output["body_mapping"] = nlohmann::json::object();
         for (const Mapping& mapping : kMappings)
             output["body_mapping"][mapping.source] = mapping.target;
@@ -260,6 +337,7 @@ int main(int argc, char** argv) {
         std::cout << "[generate] source sole=" << source_ground
                   << " target sole=" << target_ground
                   << " root_scale=" << root_scale << "\n"
+                  << "[generate] contact sole points source/target=4/4 per foot\n"
                   << "[generate] wrote " << output_path
                   << " mappings=" << kMappings.size() << "\n";
         return 0;

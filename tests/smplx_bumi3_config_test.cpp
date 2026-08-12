@@ -436,10 +436,14 @@ int main() {
         const std::string root = BUMI3_REPO_ROOT;
         const std::string xml_path = root + "/assets/bumi3/mjcf/bumi3.xml";
         const std::string config_path =
+            root + "/config/ik_configs/smplx_to_bumi3_auto.json";
+        const std::string legacy_config_path =
             root + "/config/ik_configs/smplx_to_bumi3.json";
         const std::string jump_config_path =
             root + "/config/ik_configs/smplx_to_bumi3_jump.json";
         const nlohmann::json config = nlohmann::json::parse(readFile(config_path));
+        const nlohmann::json legacy_config =
+            nlohmann::json::parse(readFile(legacy_config_path));
         const nlohmann::json jump_config =
             nlohmann::json::parse(readFile(jump_config_path));
 
@@ -454,8 +458,10 @@ int main() {
             throw std::runtime_error("MuJoCo qpos allocation failed");
 
         validateConfigAndModel(root, xml_path, config_path, config, model.get());
+        validateConfigAndModel(
+            root, xml_path, legacy_config_path, legacy_config, model.get());
         validateBumi3RedisPreset(root, model.get());
-        validateJumpPreservation(config, jump_config);
+        validateJumpPreservation(legacy_config, jump_config);
         validateJumpTranslation(xml_path, jump_config_path);
         for (const auto& [name, frame] : fixedPoses())
             reportFixedPose(name, frame, xml_path, config_path);

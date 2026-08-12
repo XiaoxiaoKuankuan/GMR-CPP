@@ -18,12 +18,31 @@ for path in "$EXECUTABLE" "$SOURCE_XML" "$TARGET_XML" "$IK_CONFIG"; do
     fi
 done
 
+# This repository contains historical build artifacts.  Their timestamps can
+# be newer than freshly checked-out source files, causing an incremental make
+# to keep an incompatible binary.  Fail early with an actionable message when
+# the dedicated OMG flags are requested but the executable predates them.
+if printf '%s\n' "$@" | grep -qx -- '--foot-contact-constraints'; then
+    if ! "$EXECUTABLE" --help 2>&1 |
+            grep -q -- '--foot-contact-weight-scale'; then
+        echo "[ERROR] build/g1_bumi3_server is stale and lacks current soft-contact support." >&2
+        echo "Rebuild it with:" >&2
+        echo "  cmake --build build --target g1_bumi3_server -- -B -j\$(nproc)" >&2
+        exit 1
+    fi
+fi
+
 export LD_LIBRARY_PATH="$ROOT/third_party/mujoco/lib:${LD_LIBRARY_PATH:-}"
 echo "[run_g1_bumi3] OMG G1 Redis key=$INPUT_KEY"
 echo "[run_g1_bumi3] source=$SOURCE_XML"
 echo "[run_g1_bumi3] target=$TARGET_XML"
 echo "[run_g1_bumi3] IK=$IK_CONFIG"
 echo "[run_g1_bumi3] BUMI3 GMT Redis key=$OUTPUT_KEY (21-joint verified reorder)"
+if printf '%s\n' "$@" | grep -qx -- '--foot-contact-constraints'; then
+    echo "[run_g1_bumi3] retarget mode=gait-aware (explicit opt-in)"
+else
+    echo "[run_g1_bumi3] retarget mode=legacy (no gait-aware/contact flag)"
+fi
 
 exec "$EXECUTABLE" \
     --source-xml "$SOURCE_XML" \

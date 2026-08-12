@@ -13,6 +13,147 @@
     "right_shoulder_yaw_link": "r_arm_yaw_link",
     "torso_link": "waist_yaw_link"
   },
+  "foot_contact": {
+    "allow_flight": false,
+    "constraints": {
+      "anchor_deadzone_m": 0.008,
+      "forced_support_weight_scale": 0.08,
+      "hard_support_constraints": false,
+      "height_kp": 10.0,
+      "height_weight": 80.0,
+      "max_anchor_correction_speed_mps": 0.2,
+      "max_joint_velocity_rps": 8.0,
+      "max_root_angular_velocity_rps": 6.0,
+      "max_root_linear_velocity_mps": 3.0,
+      "max_slip_speed_mps": 0.05,
+      "penetration_tolerance_m": 0.0,
+      "support_height_m": 0.001,
+      "support_height_upper_m": 0.003,
+      "tilt_kp": 8.0,
+      "tilt_weight": 60.0,
+      "transition_frames": 8,
+      "xy_kp": 5.0,
+      "xy_weight": 35.0
+    },
+    "detection": {
+      "double_support_max_horizontal_speed_mps": 0.025,
+      "enter_frames": 2,
+      "enter_height_m": 0.025,
+      "exit_frames": 1,
+      "exit_height_m": 0.045,
+      "max_enter_horizontal_speed_mps": 0.035,
+      "max_enter_vertical_speed_mps": 0.18,
+      "max_exit_horizontal_speed_mps": 0.075,
+      "max_exit_upward_speed_mps": 0.3,
+      "minimum_stance_frames": 2
+    },
+    "enabled": true,
+    "ground_z": 0.0,
+    "source": {
+      "left": {
+        "body": "left_ankle_roll_link",
+        "sole_points": [
+          [
+            -0.05,
+            -0.02500000000000001,
+            -0.034999999999999996
+          ],
+          [
+            -0.05,
+            0.02500000000000001,
+            -0.034999999999999996
+          ],
+          [
+            0.12,
+            -0.03,
+            -0.034999999999999996
+          ],
+          [
+            0.12,
+            0.029999999999999985,
+            -0.034999999999999996
+          ]
+        ]
+      },
+      "right": {
+        "body": "right_ankle_roll_link",
+        "sole_points": [
+          [
+            -0.05,
+            -0.02500000000000001,
+            -0.034999999999999996
+          ],
+          [
+            -0.05,
+            0.02500000000000001,
+            -0.034999999999999996
+          ],
+          [
+            0.12,
+            -0.029999999999999985,
+            -0.034999999999999996
+          ],
+          [
+            0.12,
+            0.03,
+            -0.034999999999999996
+          ]
+        ]
+      }
+    },
+    "target": {
+      "left": {
+        "body": "l_ankle_roll_link",
+        "sole_points": [
+          [
+            -0.04506335516557606,
+            -0.03033414255908326,
+            -0.04955529427890765
+          ],
+          [
+            -0.04506335211963506,
+            0.03033413972919738,
+            -0.04955529269094541
+          ],
+          [
+            0.08946581782398655,
+            -0.03009436863978443,
+            -0.04918309126895418
+          ],
+          [
+            0.08946586406892015,
+            0.03009437937870932,
+            -0.04918309152736468
+          ]
+        ]
+      },
+      "right": {
+        "body": "r_ankle_roll_link",
+        "sole_points": [
+          [
+            -0.04506335817237522,
+            -0.030334138773401048,
+            -0.04955529401212226
+          ],
+          [
+            -0.045063353884431265,
+            0.030334143116124465,
+            -0.049555294968934335
+          ],
+          [
+            0.08946586507716056,
+            -0.030094379690964235,
+            -0.049183093812512346
+          ],
+          [
+            0.08946582277323281,
+            0.030094367824987284,
+            -0.04918309445245704
+          ]
+        ]
+      }
+    }
+  },
   "generated_from": {
     "method": "rest-FK alignment, model-derived scale, and semantic forearm zero calibration",
     "source_model": "assets/unitree_g1/g1_mocap_29dof.xml",
@@ -422,6 +563,31 @@
         0.0,
         0.0
       ]
+    ]
+  },
+  "motion_preserving": {
+    "enabled": true,
+    "joint_acceleration_weight": 0.2,
+    "joint_velocity_weight": 0.05,
+    "root_body": "base_link",
+    "root_position_axes": [
+      1.0,
+      1.0,
+      0.0
+    ],
+    "root_roll_upright_weight": 20.0,
+    "root_rotation_axes": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "root_z_policy": "primary_support_fk",
+    "torso_pitch_weight_scale": 1.0,
+    "waist_body": "waist_yaw_link",
+    "waist_rotation_axes": [
+      0.0,
+      0.0,
+      1.0
     ]
   },
   "robot_root_name": "base_link",

@@ -115,6 +115,17 @@ fi
 cmake .. $CMAKE_ARGS
 make -j$(nproc)
 
+# Historical build artifacts are tracked in this repository.  On some
+# checkouts their mtimes are newer than the source, so GNU make can retain an
+# old g1_bumi3_server even after CMake configuration.  Detect that exact stale
+# binary and force only this target instead of requiring a destructive clean.
+if [ -f "$SCRIPT_DIR/build/g1_bumi3_server" ] &&
+   ! "$SCRIPT_DIR/build/g1_bumi3_server" --help 2>&1 |
+       grep -q -- '--foot-contact-weight-scale'; then
+    echo "  ⚠ stale g1_bumi3_server detected; forcing target rebuild"
+    make -B -j$(nproc) g1_bumi3_server
+fi
+
 echo ""
 echo "=============================================="
 echo "  ✓ Build completed! ($BUILD_TYPE)"

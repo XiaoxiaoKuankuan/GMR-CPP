@@ -30,7 +30,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--config", type=Path,
-        default=ROOT / "config/ik_configs/smplx_to_bumi3.json",
+        default=ROOT / "config/ik_configs/smplx_to_bumi3_auto.json",
     )
     args = parser.parse_args()
     xml_path = args.xml.expanduser().resolve(strict=True)

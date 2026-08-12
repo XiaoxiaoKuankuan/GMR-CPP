@@ -314,7 +314,7 @@ Config parseArgs(int argc, char** argv) {
     } else if (cfg.preset == "bumi3") {
         cfg.xml_file = (repo_root / "assets/bumi3/mjcf/bumi3.xml").string();
         cfg.ik_config =
-            (repo_root / "config/ik_configs/smplx_to_bumi3.json").string();
+            (repo_root / "config/ik_configs/smplx_to_bumi3_auto.json").string();
         cfg.viewer_follow_body = "base_link";
         cfg.ground_clearance = 0.02;
         cfg.redis_order_verified = true;

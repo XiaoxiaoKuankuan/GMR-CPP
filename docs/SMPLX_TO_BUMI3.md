@@ -6,23 +6,23 @@
 GENMO SMPL-X FK
   → SMP1 UDP（固定14个人体 target）
   → SmplxReader（不变）
-  → smplx_to_bumi3.json（固定参数）
+  → smplx_to_bumi3_auto.json（默认参数）
   → 原 GMR C++ IK（不变）
   → BUMI3 MuJoCo Viewer
   → Redis（默认关闭，顺序尚未完成下游验证）
 ```
 
-## 固定配置来源
+## 默认配置来源
 
-运行配置 `config/ik_configs/smplx_to_bumi3.json` 是当前普通模式的受保护基线。
-本次 ground/jump 任务开始时记录的 SHA-256 为：
+普通模式默认使用
+`config/ik_configs/smplx_to_bumi3_auto.json`。该文件复制自：
 
 ```text
-e2b313018bc133599e058673cfae363ef1f08e61fb375d544c4948145b4553e8
+/home/weili/下载/general_motion_retargeting/ik_configs/smplx_to_bumi3_auto.json
 ```
 
-该文件包含用户已经确认的膝盖/脚权重，本任务没有修改它。Jump 配置完整继承其
-scale、position offset、rotation quaternion 和 body mapping。
+`config/ik_configs/smplx_to_bumi3.json` 继续保留，供已有 Jump 配置和 G1 → BUMI3
+生成流程引用；`smplx_to_bumi3_jump.json` 未随普通模式默认配置切换而改变。
 程序不执行动态调参、在线标定、自动搜索或运行时参数修正。
 
 ## BUMI3 模型
@@ -49,7 +49,7 @@ nq=28  nv=27  nu=21  nbody=23  njnt=22
 
 /home/weili/GENMO/.venv/bin/python scripts/validate_smplx_to_bumi3.py \
   --xml assets/bumi3/mjcf/bumi3.xml \
-  --config config/ik_configs/smplx_to_bumi3.json
+  --config config/ik_configs/smplx_to_bumi3_auto.json
 ```
 
 ## 12 项 IK target mapping
@@ -98,7 +98,7 @@ BUMI3_REDIS_KEY
 
 ```text
 mode=grounded
-config=config/ik_configs/smplx_to_bumi3.json
+config=config/ik_configs/smplx_to_bumi3_auto.json
 port=7006
 offset_to_ground=on
 ground_clearance=0.02
