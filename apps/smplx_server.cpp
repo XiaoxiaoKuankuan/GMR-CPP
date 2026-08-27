@@ -13,6 +13,7 @@
 #include "gmr/motion_buffer.hpp"
 #include "gmr/mujoco_viewer.hpp"
 #include "gmr/redis_publisher.hpp"
+#include "gmr/realtime_motion_guard_json.hpp"
 #include "readers/smplx_reader.hpp"
 
 #include <nlohmann/json.hpp>
@@ -458,50 +459,6 @@ nlohmann::json readJson(const std::string& path) {
     return value;
 }
 
-gmr::RealtimeMotionGuardConfig realtimeGuardConfigFromJson(
-    const nlohmann::json& root) {
-    if (!root.contains("realtime_safety"))
-        throw std::runtime_error(
-            "IK config has no realtime_safety profile");
-    const auto& value = root.at("realtime_safety");
-    gmr::RealtimeMotionGuardConfig result;
-    result.nominal_timestep = value.value(
-        "nominal_timestep_s", result.nominal_timestep);
-    result.minimum_timestep = value.value(
-        "minimum_timestep_s", result.minimum_timestep);
-    result.maximum_timestep = value.value(
-        "maximum_timestep_s", result.maximum_timestep);
-    result.max_joint_velocity = value.value(
-        "max_joint_velocity_rps", result.max_joint_velocity);
-    result.max_joint_acceleration = value.value(
-        "max_joint_acceleration_rps2", result.max_joint_acceleration);
-    result.max_arm_velocity = value.value(
-        "max_arm_velocity_rps", result.max_arm_velocity);
-    result.max_arm_acceleration = value.value(
-        "max_arm_acceleration_rps2", result.max_arm_acceleration);
-    result.arm_jump_threshold = value.value(
-        "arm_jump_threshold_rad", result.arm_jump_threshold);
-    result.arm_jump_release_threshold = value.value(
-        "arm_jump_release_threshold_rad",
-        result.arm_jump_release_threshold);
-    result.arm_jump_candidate_tolerance = value.value(
-        "arm_jump_candidate_tolerance_rad",
-        result.arm_jump_candidate_tolerance);
-    result.arm_jump_confirmation_frames = value.value(
-        "arm_jump_confirmation_frames",
-        result.arm_jump_confirmation_frames);
-    result.left_arm_joints = value.at("left_arm_joints")
-        .get<std::vector<std::string>>();
-    result.right_arm_joints = value.at("right_arm_joints")
-        .get<std::vector<std::string>>();
-    if (value.contains("joint_velocity_limits_rps")) {
-        for (const auto& [name, limit] :
-             value.at("joint_velocity_limits_rps").items())
-            result.joint_velocity_limits[name] = limit.get<double>();
-    }
-    return result;
-}
-
 gmr::FootObservation relativeToSourceGround(
     gmr::FootObservation observation, double source_ground_z) {
     observation.center_world.z() -= source_ground_z;
@@ -768,7 +725,7 @@ int main(int argc, char** argv) {
             }
             if (realtime_safety_enabled)
                 gmr.enableRealtimeMotionGuard(
-                    realtimeGuardConfigFromJson(ik_profile));
+                    gmr::realtimeGuardConfigFromJson(ik_profile));
         }
 
         // Remove datagrams accumulated while re-warming; start from the newest stream.

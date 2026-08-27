@@ -130,6 +130,19 @@ def main() -> None:
         foot_contact["target"]["right"]["body"] == "r_ankle_roll_link",
         "BUMI3 target foot names are invalid",
     )
+    contact_limits = foot_contact["constraints"]
+    require(
+        float(contact_limits["mesh_floor_margin_m"]) == 0.0006 and
+        float(contact_limits["sole_corner_floor_margin_m"]) == 0.0027 and
+        float(contact_limits["max_joint_velocity_rps"]) == 6.0 and
+        float(contact_limits["max_joint_acceleration_rps2"]) == 80.0 and
+        float(contact_limits["max_output_root_horizontal_velocity_mps"]) == 0.75 and
+        float(contact_limits["max_root_vertical_velocity_mps"]) == 0.45 and
+        float(contact_limits["max_root_linear_acceleration_mps2"]) == 3.0 and
+        float(contact_limits["max_root_angular_velocity_rps"]) == 6.0 and
+        float(contact_limits["max_root_angular_acceleration_rps2"]) == 20.0,
+        "batch frame-shared temporal limits differ from the reviewed profile",
+    )
 
     base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "base_link")
     require(base_id >= 0, "base_link missing")

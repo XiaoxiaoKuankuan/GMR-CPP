@@ -10,6 +10,7 @@
 #include "gmr/foot_contact_json.hpp"
 #include "gmr/geometry_ground.hpp"
 #include "gmr/gmr_mink.hpp"
+#include "gmr/realtime_motion_guard_json.hpp"
 #include "readers/smplx_reader.hpp"
 
 #include <Eigen/Dense>
@@ -285,7 +286,11 @@ class BatchFootContactRuntime {
 public:
     BatchFootContactRuntime(const Config& cfg, const nlohmann::json& ik_profile)
         : cfg_(cfg), constraint_config_(
-              gmr::footConstraintConfigFromJson(ik_profile)) {
+              gmr::footConstraintConfigFromJson(ik_profile)),
+          realtime_config_(gmr::realtimeGuardConfigFromJson(ik_profile)),
+          realtime_safety_enabled_(
+              ik_profile.contains("realtime_safety") &&
+              ik_profile.at("realtime_safety").value("enabled", false)) {
         enabled_ = cfg.foot_contact_override >= 0
             ? cfg.foot_contact_override != 0
             : constraint_config_.enabled;
@@ -318,14 +323,20 @@ public:
 
     Eigen::VectorXd reset(gmr_mink::GMR& solver, const gmr::RawFrame& raw,
                           uint32_t iterations) {
+        // Reset/warm-up may intentionally repeat one pose hundreds of times.
+        // It is calibration rather than a real input timeline, so both causal
+        // guards stay off until the warm-up has produced the first feasible
+        // contact configuration.
+        solver.disableRealtimeMotionGuard();
+        solver.disableFrameTemporalLimits();
         configureSolver(solver);
         initialized_ = false;
         previous_timestamp_ = std::numeric_limits<double>::quiet_NaN();
         previous_frame_number_ = 0;
         have_previous_frame_number_ = false;
         current_frame_dt_ = 1.0 / 30.0;
-        have_output_qpos_ = false;
-        output_root_limit_count_ = 0;
+        temporal_overrun_count_ = 0;
+        contact_qp_failure_count_ = 0;
         latest_state_ = {};
         if (ground_tracker_) ground_tracker_->reset();
         ground_reacquiring_ = false;
@@ -333,6 +344,7 @@ public:
             Eigen::VectorXd qpos;
             for (uint32_t index = 0; index < iterations; ++index)
                 qpos = solver.retarget(raw.body_data, cfg_.offset_to_ground);
+            enableTemporalProtection(solver);
             return qpos;
         }
 
@@ -361,18 +373,25 @@ public:
             10, constraint_config_.settings.transition_frames);
         for (int index = 0; index < contact_warmup; ++index)
             qpos = solver.retarget(body_data, false);
+        enableTemporalProtection(solver);
         initialized_ = true;
         reportDiagnostics(solver, "reset");
         return finalizeOutput(solver, std::move(qpos));
     }
 
     Eigen::VectorXd frame(gmr_mink::GMR& solver, const gmr::RawFrame& raw) {
-        if (!enabled_)
-            return solver.retarget(raw.body_data, cfg_.offset_to_ground);
+        if (!enabled_) {
+            advanceTimeline(raw, false);
+            prepareTemporalFrame(solver);
+            return finalizeOutput(
+                solver,
+                solver.retarget(raw.body_data, cfg_.offset_to_ground));
+        }
         if (!initialized_)
             return reset(solver, raw, 1000);
         const gmr::FootContactState previous_state = latest_state_;
         latest_state_ = detect(raw, false);
+        prepareTemporalFrame(solver);
         const gmr::BodyMap body_data = correctedBodyData(raw.body_data);
         const bool contact_entered =
             (latest_state_.left_stance && !previous_state.left_stance) ||
@@ -420,11 +439,7 @@ public:
     }
 
 private:
-    gmr::FootContactState detect(const gmr::RawFrame& raw, bool seed) {
-        auto left = gmr::observeFoot(
-            raw.body_data, gmr::FootSide::Left, source_left_);
-        auto right = gmr::observeFoot(
-            raw.body_data, gmr::FootSide::Right, source_right_);
+    double advanceTimeline(const gmr::RawFrame& raw, bool seed) {
         double timestamp = raw.stamp_ns > 0
             ? static_cast<double>(raw.stamp_ns) * 1e-9 : 0.0;
         if (!seed && std::isfinite(previous_timestamp_) &&
@@ -432,12 +447,25 @@ private:
             const bool duplicate_packet = have_previous_frame_number_ &&
                 raw.frame_number == previous_frame_number_;
             if (!duplicate_packet)
-                timestamp = previous_timestamp_ + 0.02;
+                timestamp = previous_timestamp_ + current_frame_dt_;
         }
         if (!seed && std::isfinite(previous_timestamp_) &&
             timestamp > previous_timestamp_ &&
             timestamp - previous_timestamp_ <= 0.2)
             current_frame_dt_ = timestamp - previous_timestamp_;
+        previous_timestamp_ = timestamp;
+        previous_frame_number_ = raw.frame_number;
+        current_frame_number_ = raw.frame_number;
+        have_previous_frame_number_ = true;
+        return timestamp;
+    }
+
+    gmr::FootContactState detect(const gmr::RawFrame& raw, bool seed) {
+        auto left = gmr::observeFoot(
+            raw.body_data, gmr::FootSide::Left, source_left_);
+        auto right = gmr::observeFoot(
+            raw.body_data, gmr::FootSide::Right, source_right_);
+        const double timestamp = advanceTimeline(raw, seed);
 
         const bool had_ground = ground_tracker_->initialized();
         ground_tracker_->update(left, right, latest_state_, timestamp);
@@ -463,9 +491,6 @@ private:
             ? std::max(1, detector_->config().enter_frames) : 1;
         for (int index = 0; index < updates; ++index)
             state = detector_->update(left, right, timestamp);
-        previous_timestamp_ = timestamp;
-        previous_frame_number_ = raw.frame_number;
-        have_previous_frame_number_ = true;
         return state;
     }
 
@@ -481,31 +506,55 @@ private:
 
     Eigen::VectorXd finalizeOutput(gmr_mink::GMR& solver,
                                    Eigen::VectorXd qpos) {
-        if (!have_output_qpos_) {
-            previous_output_qpos_ = qpos;
-            have_output_qpos_ = true;
-            return qpos;
+        if (solver.frameTemporalLimitsEnabled()) {
+            const auto& status = solver.frameTemporalLimitDiagnostics();
+            if (status.maximum_bound_overrun > 1e-5) {
+                ++temporal_overrun_count_;
+                if (temporal_overrun_count_ == 1)
+                    std::cerr
+                        << "[WARN][GMR batch] frame temporal bound overrun="
+                        << status.maximum_bound_overrun
+                        << "; result was not post-interpolated\n";
+            }
         }
-        const double dt = std::clamp(
-            current_frame_dt_, 1.0 / 240.0, 0.1);
-        const double maximum =
-            constraint_config_.settings.max_output_root_horizontal_velocity * dt;
-        Eigen::Vector2d delta = qpos.head<2>() -
-                                previous_output_qpos_.head<2>();
-        if (delta.norm() > maximum) {
-            delta *= maximum / delta.norm();
-            qpos.head<2>() = previous_output_qpos_.head<2>() + delta;
-            solver.setConfiguration(qpos);
-            ++output_root_limit_count_;
-            if (output_root_limit_count_ == 1)
+        const auto& contact = solver.footContactDiagnostics();
+        if (contact.enabled && contact.daqp_exitflag <= 0) {
+            ++contact_qp_failure_count_;
+            if (contact_qp_failure_count_ <= 20)
                 std::cerr
-                    << "[GMR batch contact] causal output root limit active: "
-                    << constraint_config_.settings
-                           .max_output_root_horizontal_velocity
-                    << "m/s horizontal\n";
+                    << "[WARN][GMR batch] contact QP held frame="
+                    << current_frame_number_ << " stance=("
+                    << contact.left_stance << ',' << contact.right_stance
+                    << ") forced=(" << contact.left_forced << ','
+                    << contact.right_forced << ") blend=("
+                    << contact.left_blend << ',' << contact.right_blend
+                    << ") min_m=(" << contact.left_min_height << ','
+                    << contact.right_min_height << ") heel_toe_m=("
+                    << contact.left_heel_toe_height_difference << ','
+                    << contact.right_heel_toe_height_difference << ")\n";
         }
-        previous_output_qpos_ = qpos;
         return qpos;
+    }
+
+    void enableTemporalProtection(gmr_mink::GMR& solver) const {
+        if (!realtime_safety_enabled_) return;
+        solver.setReferenceTimestep(current_frame_dt_);
+        solver.enableFrameTemporalLimits(realtime_config_);
+        auto arm_guard_config = realtime_config_;
+        arm_guard_config.protect_non_arm_joints = false;
+        solver.enableRealtimeMotionGuard(arm_guard_config);
+        if (std::isfinite(previous_timestamp_))
+            solver.setRealtimeInputTimestamp(previous_timestamp_);
+        std::cerr
+            << "[GMR batch] causal temporal protection=on frame_shared_qp=on"
+            << " arm_confirmation="
+            << realtime_config_.arm_jump_confirmation_frames << " frames\n";
+    }
+
+    void prepareTemporalFrame(gmr_mink::GMR& solver) const {
+        if (!realtime_safety_enabled_) return;
+        solver.setReferenceTimestep(current_frame_dt_);
+        solver.setRealtimeInputTimestamp(previous_timestamp_);
     }
 
     static void reportDiagnostics(const gmr_mink::GMR& solver,
@@ -522,10 +571,13 @@ private:
 
     Config cfg_;
     gmr::FootConstraintConfig constraint_config_;
+    gmr::RealtimeMotionGuardConfig realtime_config_;
+    bool realtime_safety_enabled_ = false;
     bool enabled_ = false;
     bool initialized_ = false;
     double previous_timestamp_ = std::numeric_limits<double>::quiet_NaN();
     uint32_t previous_frame_number_ = 0;
+    uint32_t current_frame_number_ = 0;
     bool have_previous_frame_number_ = false;
     double current_frame_dt_ = 1.0 / 30.0;
     gmr::FootSoleDefinition source_left_;
@@ -535,9 +587,8 @@ private:
     std::unique_ptr<gmr::SourceGroundTracker> ground_tracker_;
     std::unique_ptr<gmr::TargetGroundAligner> target_ground_;
     bool ground_reacquiring_ = false;
-    bool have_output_qpos_ = false;
-    Eigen::VectorXd previous_output_qpos_;
-    uint64_t output_root_limit_count_ = 0;
+    uint64_t temporal_overrun_count_ = 0;
+    uint64_t contact_qp_failure_count_ = 0;
 };
 
 gmr::RawFrame decodeSmp1(const std::vector<uint8_t>& payload) {

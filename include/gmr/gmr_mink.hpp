@@ -81,6 +81,14 @@ struct MotionPreservingConfig {
     double joint_acceleration_weight = 0.20;
 };
 
+struct FrameTemporalLimitDiagnostics {
+    double timestep = 0.0;
+    int bounded_dofs = 0;
+    int active_bound_dofs = 0;
+    double maximum_bound_overrun = 0.0;
+    uint64_t total_active_bound_dofs = 0;
+};
+
 class GMR {
 public:
     GMR(const std::string& xml_path,
@@ -238,6 +246,8 @@ public:
 
     Eigen::VectorXd retarget(const BodyMap& human_data, bool offset_to_ground = false)
     {
+        if (frame_temporal_limits_enabled_) beginFrameTemporalLimits();
+        try {
         BodyMap scaled = scaleHumanData(human_data);
         BodyMap offset = offsetHumanData(scaled, pos_offsets1_, rot_offsets1_);
         offset = applyGroundOffset(offset);
@@ -261,7 +271,12 @@ public:
             }
         }
         frame_count_++;
-        if (use_table1_) solveIK(offset, entries1_, !use_table2_);
+        // With a shared per-frame budget, table 1 must already see contact.
+        // Otherwise it can spend the whole root/leg allowance on an infeasible
+        // pose and leave table 2 no legal motion with which to recover the sole.
+        if (use_table1_)
+            solveIK(offset, entries1_,
+                    !use_table2_ || frame_temporal_limits_active_);
         if (use_table2_) solveIK(offset, entries2_, true);
         if (motion_preserving_enabled_) applyJointTemporalRegularization();
         if (realtime_motion_guard_) {
@@ -271,13 +286,23 @@ public:
             clampJoints();
             mj_forward(model_, data_);
         }
-        if (contactConstraintsActive()) projectContactConfiguration(true);
+        // The batch temporal path keeps root/leg/contact limits in the same QP.
+        // A direct root-Z projection here would bypass that shared frame budget
+        // and recreate the one-frame vertical jump the QP is meant to prevent.
+        if (contactConstraintsActive() && !frame_temporal_limits_active_)
+            projectContactConfiguration(true);
 
         updateFootDiagnostics();
+
+        if (frame_temporal_limits_active_) finishFrameTemporalLimits();
 
         Eigen::VectorXd out(nq_);
         for (int i = 0; i < nq_; ++i) out[i] = data_->qpos[i];
         return out;
+        } catch (...) {
+            frame_temporal_limits_active_ = false;
+            throw;
+        }
     }
 
     const BodyMap& getScaledHumanData() const { return scaled_human_data_; }
@@ -340,6 +365,8 @@ public:
         clampJoints();
         mj_forward(model_, data_);
         resetTemporalStateFromCurrent();
+        if (frame_temporal_limits_enabled_)
+            resetFrameTemporalLimitsFromCurrent();
     }
     void initializeFootContacts(const gmr::FootContactState& state) {
         if (!foot_contact_enabled_) return;
@@ -452,6 +479,29 @@ public:
             throw std::runtime_error("realtime motion guard is not enabled");
         return realtime_motion_guard_->diagnostics();
     }
+    void enableFrameTemporalLimits(
+        const gmr::RealtimeMotionGuardConfig& config) {
+        frame_temporal_guard_config_ = config;
+        buildFrameTemporalDofLimits();
+        frame_temporal_limits_enabled_ = true;
+        resetFrameTemporalLimitsFromCurrent();
+    }
+    void disableFrameTemporalLimits() {
+        frame_temporal_limits_enabled_ = false;
+        frame_temporal_limits_active_ = false;
+        frame_temporal_initialized_ = false;
+        frame_temporal_start_qpos_.resize(0);
+        previous_frame_velocity_.resize(0);
+        frame_displacement_lower_.resize(0);
+        frame_displacement_upper_.resize(0);
+        frame_temporal_diagnostics_ = {};
+    }
+    bool frameTemporalLimitsEnabled() const {
+        return frame_temporal_limits_enabled_;
+    }
+    const FrameTemporalLimitDiagnostics& frameTemporalLimitDiagnostics() const {
+        return frame_temporal_diagnostics_;
+    }
 
 private:
     mjModel* model_ = nullptr;
@@ -478,6 +528,7 @@ private:
         bool requested = false;
         bool forced = false;
         bool anchor_valid = false;
+        bool transition_pending_solve = false;
         double blend = 0.0;
         Eigen::Vector2d anchor_xy = Eigen::Vector2d::Zero();
         double entry_center_height = 0.0;
@@ -519,6 +570,22 @@ private:
     double realtime_input_timestamp_ =
         std::numeric_limits<double>::quiet_NaN();
 
+    struct FrameTemporalDofLimit {
+        double velocity = std::numeric_limits<double>::infinity();
+        double acceleration = std::numeric_limits<double>::infinity();
+    };
+    bool frame_temporal_limits_enabled_ = false;
+    bool frame_temporal_limits_active_ = false;
+    bool frame_temporal_initialized_ = false;
+    double frame_temporal_timestep_ = 0.02;
+    gmr::RealtimeMotionGuardConfig frame_temporal_guard_config_;
+    std::vector<FrameTemporalDofLimit> frame_temporal_dof_limits_;
+    Eigen::VectorXd frame_temporal_start_qpos_;
+    Eigen::VectorXd previous_frame_velocity_;
+    Eigen::VectorXd frame_displacement_lower_;
+    Eigen::VectorXd frame_displacement_upper_;
+    FrameTemporalLimitDiagnostics frame_temporal_diagnostics_;
+
     struct VelBound { int vadr; int qadr; double lo; double hi; };
     std::vector<VelBound> vel_bounds_;
 
@@ -535,6 +602,205 @@ private:
             b.hi   = model_->jnt_range[i*2+1];
             vel_bounds_.push_back(b);
         }
+    }
+
+    void buildFrameTemporalDofLimits() {
+        const auto finite_positive = [](double value) {
+            return std::isfinite(value) && value > 0.0;
+        };
+        const auto& guard = frame_temporal_guard_config_;
+        const auto& contact = foot_config_.settings;
+        if (!finite_positive(guard.max_joint_velocity) ||
+            !finite_positive(guard.max_joint_acceleration) ||
+            !finite_positive(guard.max_arm_velocity) ||
+            !finite_positive(guard.max_arm_acceleration) ||
+            !finite_positive(guard.minimum_timestep) ||
+            !finite_positive(guard.maximum_timestep) ||
+            guard.minimum_timestep > guard.maximum_timestep ||
+            !finite_positive(contact.max_output_root_horizontal_velocity) ||
+            !finite_positive(contact.max_root_vertical_velocity) ||
+            !finite_positive(contact.max_root_linear_acceleration) ||
+            !finite_positive(contact.max_root_angular_velocity) ||
+            !finite_positive(contact.max_root_angular_acceleration))
+            throw std::runtime_error(
+                "invalid frame temporal-limit configuration");
+
+        frame_temporal_dof_limits_.assign(nv_, {});
+        const auto contains = [](const std::vector<std::string>& names,
+                                 const std::string& name) {
+            return std::find(names.begin(), names.end(), name) != names.end();
+        };
+        for (int joint = 0; joint < model_->njnt; ++joint) {
+            const int type = model_->jnt_type[joint];
+            const int dof = model_->jnt_dofadr[joint];
+            if (type == mjJNT_HINGE || type == mjJNT_SLIDE) {
+                const char* raw_name =
+                    mj_id2name(model_, mjOBJ_JOINT, joint);
+                const std::string name = raw_name ? raw_name : "";
+                const bool arm = contains(guard.left_arm_joints, name) ||
+                                 contains(guard.right_arm_joints, name);
+                double velocity = arm ? guard.max_arm_velocity :
+                                        guard.max_joint_velocity;
+                const auto configured = guard.joint_velocity_limits.find(name);
+                if (configured != guard.joint_velocity_limits.end())
+                    velocity = configured->second;
+                // Realtime safety records the actuator ceiling, while the
+                // contact profile may choose a deliberately slower batch
+                // tracking limit.  The shared QP always takes the safer one.
+                velocity = std::min(
+                    velocity, contact.max_joint_velocity);
+                if (!finite_positive(velocity))
+                    throw std::runtime_error(
+                        "invalid frame velocity limit for joint " + name);
+                frame_temporal_dof_limits_[dof] = {
+                    velocity,
+                    arm ? guard.max_arm_acceleration :
+                          guard.max_joint_acceleration};
+            } else if (type == mjJNT_FREE) {
+                const double horizontal_component =
+                    contact.max_output_root_horizontal_velocity /
+                    std::sqrt(2.0);
+                const double linear_acceleration_component =
+                    contact.max_root_linear_acceleration /
+                    std::sqrt(3.0);
+                const double angular_velocity_component =
+                    contact.max_root_angular_velocity /
+                    std::sqrt(3.0);
+                const double angular_acceleration_component =
+                    contact.max_root_angular_acceleration /
+                    std::sqrt(3.0);
+                frame_temporal_dof_limits_[dof + 0] = {
+                    horizontal_component,
+                    linear_acceleration_component};
+                frame_temporal_dof_limits_[dof + 1] = {
+                    horizontal_component,
+                    linear_acceleration_component};
+                frame_temporal_dof_limits_[dof + 2] = {
+                    contact.max_root_vertical_velocity,
+                    linear_acceleration_component};
+                for (int axis = 3; axis < 6; ++axis)
+                    frame_temporal_dof_limits_[dof + axis] = {
+                        angular_velocity_component,
+                        angular_acceleration_component};
+            }
+        }
+    }
+
+    void resetFrameTemporalLimitsFromCurrent() {
+        frame_temporal_limits_active_ = false;
+        frame_temporal_initialized_ = true;
+        frame_temporal_start_qpos_.resize(nq_);
+        for (int index = 0; index < nq_; ++index)
+            frame_temporal_start_qpos_[index] = data_->qpos[index];
+        previous_frame_velocity_ = Eigen::VectorXd::Zero(nv_);
+        frame_displacement_lower_ = Eigen::VectorXd::Constant(
+            nv_, -std::numeric_limits<double>::infinity());
+        frame_displacement_upper_ = Eigen::VectorXd::Constant(
+            nv_, std::numeric_limits<double>::infinity());
+        frame_temporal_diagnostics_ = {};
+    }
+
+    void beginFrameTemporalLimits() {
+        if (frame_temporal_limits_active_)
+            throw std::runtime_error(
+                "frame temporal limits cannot begin twice");
+        if (!frame_temporal_initialized_)
+            resetFrameTemporalLimitsFromCurrent();
+        frame_temporal_timestep_ = std::clamp(
+            reference_timestep_,
+            frame_temporal_guard_config_.minimum_timestep,
+            frame_temporal_guard_config_.maximum_timestep);
+        for (int index = 0; index < nq_; ++index)
+            frame_temporal_start_qpos_[index] = data_->qpos[index];
+
+        frame_temporal_diagnostics_.timestep = frame_temporal_timestep_;
+        frame_temporal_diagnostics_.bounded_dofs = 0;
+        frame_temporal_diagnostics_.active_bound_dofs = 0;
+        frame_temporal_diagnostics_.maximum_bound_overrun = 0.0;
+        for (int dof = 0; dof < nv_; ++dof) {
+            const auto& limit = frame_temporal_dof_limits_[dof];
+            if (!std::isfinite(limit.velocity) ||
+                !std::isfinite(limit.acceleration)) {
+                frame_displacement_lower_[dof] =
+                    -std::numeric_limits<double>::infinity();
+                frame_displacement_upper_[dof] =
+                    std::numeric_limits<double>::infinity();
+                continue;
+            }
+            ++frame_temporal_diagnostics_.bounded_dofs;
+            const double acceleration_step =
+                limit.acceleration * frame_temporal_timestep_;
+            double lower_velocity = std::max(
+                -limit.velocity,
+                previous_frame_velocity_[dof] - acceleration_step);
+            double upper_velocity = std::min(
+                limit.velocity,
+                previous_frame_velocity_[dof] + acceleration_step);
+            // A contact emergency may require an immediate stop even when the
+            // nominal acceleration corridor says the joint should keep moving.
+            // Always admitting zero makes "track less / brake now" feasible;
+            // it never permits a position jump or an instant reversal.
+            lower_velocity = std::min(lower_velocity, 0.0);
+            upper_velocity = std::max(upper_velocity, 0.0);
+            frame_displacement_lower_[dof] =
+                lower_velocity * frame_temporal_timestep_;
+            frame_displacement_upper_[dof] =
+                upper_velocity * frame_temporal_timestep_;
+        }
+        frame_temporal_limits_active_ = true;
+    }
+
+    void appendFrameTemporalVelocityBounds(
+        double integration_timestep,
+        std::vector<double>& lower,
+        std::vector<double>& upper) const {
+        if (!frame_temporal_limits_active_) return;
+        Eigen::VectorXd displacement(nv_);
+        mj_differentiatePos(
+            model_, displacement.data(), 1.0,
+            frame_temporal_start_qpos_.data(), data_->qpos);
+        for (int dof = 0; dof < nv_; ++dof) {
+            if (!std::isfinite(frame_displacement_lower_[dof]) ||
+                !std::isfinite(frame_displacement_upper_[dof]))
+                continue;
+            lower[dof] = std::max(
+                lower[dof],
+                (frame_displacement_lower_[dof] - displacement[dof]) /
+                    integration_timestep);
+            upper[dof] = std::min(
+                upper[dof],
+                (frame_displacement_upper_[dof] - displacement[dof]) /
+                    integration_timestep);
+        }
+    }
+
+    void finishFrameTemporalLimits() {
+        Eigen::VectorXd displacement(nv_);
+        mj_differentiatePos(
+            model_, displacement.data(), 1.0,
+            frame_temporal_start_qpos_.data(), data_->qpos);
+        for (int dof = 0; dof < nv_; ++dof) {
+            if (!std::isfinite(frame_displacement_lower_[dof]) ||
+                !std::isfinite(frame_displacement_upper_[dof]))
+                continue;
+            const double lower_overrun =
+                frame_displacement_lower_[dof] - displacement[dof];
+            const double upper_overrun =
+                displacement[dof] - frame_displacement_upper_[dof];
+            const double overrun = std::max({0.0, lower_overrun, upper_overrun});
+            frame_temporal_diagnostics_.maximum_bound_overrun = std::max(
+                frame_temporal_diagnostics_.maximum_bound_overrun, overrun);
+            const double margin = std::min(
+                displacement[dof] - frame_displacement_lower_[dof],
+                frame_displacement_upper_[dof] - displacement[dof]);
+            if (margin <= 1e-7) {
+                ++frame_temporal_diagnostics_.active_bound_dofs;
+                ++frame_temporal_diagnostics_.total_active_bound_dofs;
+            }
+        }
+        previous_frame_velocity_ =
+            displacement / frame_temporal_timestep_;
+        frame_temporal_limits_active_ = false;
     }
 
     BodyMap scaleHumanData(const BodyMap& src) const {
@@ -810,10 +1076,18 @@ private:
         runtime.requested = requested;
         runtime.forced = forced;
         if (requested) {
-            if (entering)
+            if (entering) {
                 runtime.blend = step;
-            else if (advance_transition)
+                runtime.transition_pending_solve = true;
+            } else if (advance_transition &&
+                       runtime.transition_pending_solve) {
+                // Contact entry is captured after following the current human
+                // frame.  The next input must solve the first transition band
+                // once before the band is tightened further.
+                runtime.transition_pending_solve = false;
+            } else if (advance_transition && last_contact_daqp_exitflag_ > 0) {
                 runtime.blend = std::min(1.0, runtime.blend + step);
+            }
             if (foot_contacts_initialized_ && !runtime.anchor_valid)
                 captureFootAnchor(runtime, definition, side);
         } else {
@@ -822,6 +1096,7 @@ private:
             // the floor and distorts turns.
             runtime.blend = 0.0;
             runtime.anchor_valid = false;
+            runtime.transition_pending_solve = false;
         }
     }
 
@@ -946,12 +1221,34 @@ private:
             const auto jacobian = pointJacobian(point, body, false);
             GeneralConstraint floor;
             floor.row = jacobian.row(2);
-            floor.lower = (foot_config_.ground_z -
+            floor.lower = (foot_config_.ground_z +
+                           foot_config_.settings.mesh_floor_margin -
                            foot_config_.settings.penetration_tolerance -
                            point.z()) / dt;
             floor.upper = 1e30;
             floor.relaxable = false;
             constraints.push_back(std::move(floor));
+        }
+
+        // The eight mesh vertices that are lowest before an IK step are not
+        // necessarily the lowest vertices after a bounded but still sizable
+        // ankle rotation.  Protect all four configured sole corners as a
+        // swept-foot lookahead envelope.  A small positive margin covers the
+        // linearized-Jacobian error and the 1--2 mm difference between the
+        // configured corner patch and the absolute mesh minimum.
+        for (const auto& point : observation.points_world) {
+            const auto jacobian = pointJacobian(point, body, false);
+            GeneralConstraint corner_floor;
+            corner_floor.row = jacobian.row(2);
+            corner_floor.lower =
+                (foot_config_.ground_z +
+                     foot_config_.settings.sole_corner_floor_margin -
+                     foot_config_.settings.penetration_tolerance -
+                     point.z()) /
+                dt;
+            corner_floor.upper = 1e30;
+            corner_floor.relaxable = false;
+            constraints.push_back(std::move(corner_floor));
         }
 
         // Physical non-penetration is always hard.  The remaining stance-only
@@ -1024,9 +1321,26 @@ private:
             GeneralConstraint flatness;
             flatness.row = positive_jacobian.row(2) -
                            negative_jacobian.row(2);
-            flatness.lower = (-tolerance - difference) / dt;
-            flatness.upper = (tolerance - difference) / dt;
-            flatness.relaxable = false;
+            // A newly landed dance foot can still be tilted by 5--10 cm from
+            // heel to toe.  Forcing one sixth of that error away in a single
+            // 30 Hz frame can conflict with the shared leg/root acceleration
+            // budget.  The old infeasible fallback then held the entire robot
+            // until contact was released.  Make the hard band monotonic: while
+            // the sole is outside the target tolerance it may improve or stop,
+            // but may never tilt farther.  The existing soft normal objective
+            // spends the available temporal budget on flattening; once inside
+            // 2--3 mm, this row becomes the requested strict plane bound.
+            constexpr double kLinearizationEpsilon = 1e-6;
+            const double feasible_tolerance = std::max(
+                tolerance, std::abs(difference) + kLinearizationEpsilon);
+            flatness.lower = (-feasible_tolerance - difference) / dt;
+            flatness.upper = (feasible_tolerance - difference) / dt;
+            // If a nonlinear Jacobian or simultaneous double support still
+            // makes the plane row infeasible, retry with penetration as the
+            // only hard physical constraint.  This preserves smooth bounded
+            // motion instead of freezing every DoF; the plane remains a soft
+            // objective and is re-enforced on the following IK step.
+            flatness.relaxable = true;
             constraints.push_back(std::move(flatness));
         };
         const auto transition_tolerance = [blend = runtime.blend](
@@ -1344,6 +1658,12 @@ private:
                 }
             }
         }
+        // Intersect the ordinary joint/range bounds with the displacement
+        // still available in this input frame.  Because the bound is measured
+        // from the frame-start configuration, all inner IK iterations and both
+        // matching tables spend one shared budget instead of receiving a fresh
+        // velocity allowance on every substep.
+        appendFrameTemporalVelocityBounds(dt, vlo, vhi);
 
         std::vector<double> H_flat(nv_*nv_), f_flat(nv_);
         for (int c=0;c<nv_;c++)
@@ -1428,7 +1748,7 @@ private:
                                 ? "; holding configuration because contact constraints are active"
                                 : "; falling back to LDLT");
             }
-            if (contact_active) {
+            if (contact_active || frame_temporal_limits_active_) {
                 v.setZero();
             } else {
                 v = H.ldlt().solve(-f);
@@ -1440,7 +1760,8 @@ private:
         mj_integratePos(model_, data_->qpos, v.data(), dt);
         clampJoints();
         mj_forward(model_, data_);
-        if (contact_active) projectContactConfiguration();
+        if (contact_active && !frame_temporal_limits_active_)
+            projectContactConfiguration();
     }
 
     void solveIK(const BodyMap& targets, const std::vector<IKEntry>& entries,

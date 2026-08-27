@@ -506,10 +506,16 @@ struct FootConstraintSettings {
     double max_heel_toe_height_difference = 0.003;
     double max_lateral_height_difference = 0.003;
     double penetration_tolerance = 0.0;
+    double mesh_floor_margin = 0.0;
+    double sole_corner_floor_margin = 0.0;
     double max_joint_velocity = 8.0;
+    double max_joint_acceleration = 80.0;
     double max_root_linear_velocity = 3.0;
     double max_output_root_horizontal_velocity = 0.75;
+    double max_root_vertical_velocity = 0.45;
+    double max_root_linear_acceleration = 3.0;
     double max_root_angular_velocity = 6.0;
+    double max_root_angular_acceleration = 20.0;
     double forced_support_weight_scale = 0.08;
     int transition_frames = 8;
     bool hard_support_constraints = false;

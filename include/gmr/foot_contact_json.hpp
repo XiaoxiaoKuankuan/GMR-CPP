@@ -146,15 +146,32 @@ inline FootConstraintConfig footConstraintConfigFromJson(
             target.max_lateral_height_difference);
         target.penetration_tolerance = settings.value(
             "penetration_tolerance_m", target.penetration_tolerance);
+        target.mesh_floor_margin = settings.value(
+            "mesh_floor_margin_m", target.mesh_floor_margin);
+        target.sole_corner_floor_margin = settings.value(
+            "sole_corner_floor_margin_m",
+            target.sole_corner_floor_margin);
         target.max_joint_velocity = settings.value(
             "max_joint_velocity_rps", target.max_joint_velocity);
+        target.max_joint_acceleration = settings.value(
+            "max_joint_acceleration_rps2",
+            target.max_joint_acceleration);
         target.max_root_linear_velocity = settings.value(
             "max_root_linear_velocity_mps", target.max_root_linear_velocity);
         target.max_output_root_horizontal_velocity = settings.value(
             "max_output_root_horizontal_velocity_mps",
             target.max_output_root_horizontal_velocity);
+        target.max_root_vertical_velocity = settings.value(
+            "max_root_vertical_velocity_mps",
+            target.max_root_vertical_velocity);
+        target.max_root_linear_acceleration = settings.value(
+            "max_root_linear_acceleration_mps2",
+            target.max_root_linear_acceleration);
         target.max_root_angular_velocity = settings.value(
             "max_root_angular_velocity_rps", target.max_root_angular_velocity);
+        target.max_root_angular_acceleration = settings.value(
+            "max_root_angular_acceleration_rps2",
+            target.max_root_angular_acceleration);
         target.forced_support_weight_scale = settings.value(
             "forced_support_weight_scale",
             target.forced_support_weight_scale);
@@ -185,14 +202,28 @@ inline FootConstraintConfig footConstraintConfigFromJson(
         settings.max_lateral_height_difference > 0.0 &&
         std::isfinite(settings.penetration_tolerance) &&
         settings.penetration_tolerance >= 0.0 &&
+        std::isfinite(settings.mesh_floor_margin) &&
+        settings.mesh_floor_margin >= 0.0 &&
+        settings.mesh_floor_margin <= 0.005 &&
+        std::isfinite(settings.sole_corner_floor_margin) &&
+        settings.sole_corner_floor_margin >= 0.0 &&
+        settings.sole_corner_floor_margin <= 0.02 &&
         std::isfinite(settings.max_joint_velocity) &&
         settings.max_joint_velocity > 0.0 &&
+        std::isfinite(settings.max_joint_acceleration) &&
+        settings.max_joint_acceleration > 0.0 &&
         std::isfinite(settings.max_root_linear_velocity) &&
         settings.max_root_linear_velocity > 0.0 &&
         std::isfinite(settings.max_output_root_horizontal_velocity) &&
         settings.max_output_root_horizontal_velocity > 0.0 &&
+        std::isfinite(settings.max_root_vertical_velocity) &&
+        settings.max_root_vertical_velocity > 0.0 &&
+        std::isfinite(settings.max_root_linear_acceleration) &&
+        settings.max_root_linear_acceleration > 0.0 &&
         std::isfinite(settings.max_root_angular_velocity) &&
         settings.max_root_angular_velocity > 0.0 &&
+        std::isfinite(settings.max_root_angular_acceleration) &&
+        settings.max_root_angular_acceleration > 0.0 &&
         std::isfinite(settings.forced_support_weight_scale) &&
         settings.forced_support_weight_scale >= 0.0 &&
         settings.forced_support_weight_scale <= 1.0 &&

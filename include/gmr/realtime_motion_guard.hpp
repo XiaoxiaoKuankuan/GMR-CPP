@@ -43,6 +43,7 @@ struct RealtimeMotionGuardConfig {
     double arm_jump_release_threshold = 0.25;
     double arm_jump_candidate_tolerance = 0.20;
     int arm_jump_confirmation_frames = 2;
+    bool protect_non_arm_joints = true;
     std::vector<std::string> left_arm_joints;
     std::vector<std::string> right_arm_joints;
     std::unordered_map<std::string, double> joint_velocity_limits;
@@ -150,6 +151,14 @@ public:
             const double desired_velocity =
                 (qpos[joint.qpos_address] - previous) / dt;
             const bool arm = joint.arm_side >= 0;
+            // Batch already constrains legs and waist together with root/contact
+            // inside the shared QP.  In that mode this post-QP guard is kept only
+            // for arm branch confirmation; touching a leg here would invalidate
+            // the sole-plane feasibility that the QP just established.
+            if (!config_.protect_non_arm_joints && !arm) {
+                previous_velocity_[index] = desired_velocity;
+                continue;
+            }
             const double velocity_limit = joint.velocity_limit;
             const double acceleration_limit = arm ? config_.max_arm_acceleration :
                                                     config_.max_joint_acceleration;

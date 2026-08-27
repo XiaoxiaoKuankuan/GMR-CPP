@@ -1,6 +1,7 @@
 #include "gmr/body_map.hpp"
 #include "gmr/geometry_ground.hpp"
 #include "gmr/gmr_mink.hpp"
+#include "gmr/realtime_motion_guard_json.hpp"
 #include "gmr/redis_publisher.hpp"
 
 #include <mujoco/mujoco.h>
@@ -304,7 +305,15 @@ void validateRealtimeProfiles(const nlohmann::json& config,
         foot.settings.support_height_upper != 0.003 ||
         foot.settings.max_heel_toe_height_difference != 0.003 ||
         foot.settings.max_lateral_height_difference != 0.003 ||
-        foot.settings.max_output_root_horizontal_velocity != 0.75)
+        foot.settings.mesh_floor_margin != 0.0006 ||
+        foot.settings.sole_corner_floor_margin != 0.0027 ||
+        foot.settings.max_joint_velocity != 6.0 ||
+        foot.settings.max_joint_acceleration != 80.0 ||
+        foot.settings.max_output_root_horizontal_velocity != 0.75 ||
+        foot.settings.max_root_vertical_velocity != 0.45 ||
+        foot.settings.max_root_linear_acceleration != 3.0 ||
+        foot.settings.max_root_angular_velocity != 6.0 ||
+        foot.settings.max_root_angular_acceleration != 20.0)
         throw std::runtime_error(
             "SMPL-X stance sole plane must use the configured 1--3 mm band");
     const auto detector = gmr::footDetectorConfigFromJson(
@@ -440,6 +449,93 @@ void validateHardSolePlane(const std::string& xml_path,
         status.right_center_height > 0.0035)
         throw std::runtime_error(
             "hard stance sole-plane constraints did not converge");
+}
+
+void validateFrameSharedTemporalLimits(const std::string& xml_path,
+                                       const std::string& config_path,
+                                       const nlohmann::json& config) {
+    const auto contact = gmr::footConstraintConfigFromJson(config);
+    const auto safety = gmr::realtimeGuardConfigFromJson(config);
+    gmr_mink::GMR solver(xml_path, config_path, 1.8, 1.0, false);
+    solver.setFootContactEnabled(true);
+
+    const gmr::BodyMap neutral = armsDownPose();
+    solver.calibrateGroundOffset(neutral, 0.05);
+    Eigen::VectorXd qpos;
+    for (int iteration = 0; iteration < 200; ++iteration)
+        qpos = solver.retarget(neutral, false);
+    gmr::TargetGroundAligner ground(
+        xml_path, {contact.left.body_name, contact.right.body_name});
+    ground.align(qpos, contact.ground_z);
+    solver.setConfiguration(qpos);
+    gmr::FootContactState double_support;
+    double_support.left_stance = true;
+    double_support.right_stance = true;
+    solver.initializeFootContacts(double_support);
+    solver.settleFootContacts();
+    for (int frame = 0; frame < 20; ++frame) {
+        solver.setFootContactState(double_support);
+        qpos = solver.retarget(neutral, false);
+    }
+
+    constexpr double dt = 1.0 / 30.0;
+    const Eigen::VectorXd start = qpos;
+    solver.setReferenceTimestep(dt);
+    solver.enableFrameTemporalLimits(safety);
+    auto arm_guard = safety;
+    arm_guard.protect_non_arm_joints = false;
+    solver.enableRealtimeMotionGuard(arm_guard);
+    solver.setRealtimeInputTimestamp(dt);
+
+    gmr::BodyMap abrupt = fixedPoses().at(1).second;
+    abrupt.at("pelvis").position += Eigen::Vector3d(0.25, -0.15, 0.20);
+    abrupt.at("spine3").position += Eigen::Vector3d(0.25, -0.15, 0.20);
+    solver.setFootContactState(double_support);
+    const Eigen::VectorXd output = solver.retarget(abrupt, false);
+
+    char error[1024] = {};
+    std::unique_ptr<mjModel, decltype(&mj_deleteModel)> model(
+        mj_loadXML(xml_path.c_str(), nullptr, error, sizeof(error)),
+        mj_deleteModel);
+    if (!model) throw std::runtime_error(error);
+    Eigen::VectorXd velocity(model->nv);
+    mj_differentiatePos(
+        model.get(), velocity.data(), dt, start.data(), output.data());
+    const auto& diagnostics = solver.frameTemporalLimitDiagnostics();
+    const auto& feet = solver.footContactDiagnostics();
+
+    const double first_root_linear_limit =
+        contact.settings.max_root_linear_acceleration * dt;
+    const double first_root_angular_limit =
+        contact.settings.max_root_angular_acceleration * dt;
+    const double first_joint_limit = safety.max_joint_acceleration * dt;
+    if (velocity.head<3>().norm() > first_root_linear_limit + 1e-6)
+        throw std::runtime_error(
+            "frame-shared QP exceeded the first-frame root linear budget");
+    if (velocity.segment<3>(3).norm() > first_root_angular_limit + 1e-6)
+        throw std::runtime_error(
+            "frame-shared QP exceeded the first-frame root angular budget");
+    for (int dof = 6; dof < model->nv; ++dof)
+        if (std::abs(velocity[dof]) > first_joint_limit + 1e-6)
+            throw std::runtime_error(
+                "frame-shared QP exceeded the first-frame joint budget");
+    std::cout << "[BUMI3 frame-shared QP] dt=" << diagnostics.timestep
+              << " active_bounds=" << diagnostics.active_bound_dofs
+              << " bounded_dofs=" << diagnostics.bounded_dofs
+              << " max_overrun=" << diagnostics.maximum_bound_overrun
+              << " max_root_linear_velocity="
+              << velocity.head<3>().cwiseAbs().maxCoeff()
+              << " max_joint_velocity="
+              << velocity.tail(model->nv - 6).cwiseAbs().maxCoeff()
+              << " foot_min=(" << feet.left_min_height << ','
+              << feet.right_min_height << ")m\n";
+    if (!output.allFinite() || diagnostics.bounded_dofs != model->nv ||
+        diagnostics.maximum_bound_overrun > 1e-5 ||
+        diagnostics.active_bound_dofs <= 0 ||
+        feet.daqp_exitflag <= 0 ||
+        feet.left_min_height < -1e-5 || feet.right_min_height < -1e-5)
+        throw std::runtime_error(
+            "frame-shared temporal/contact QP validation failed");
 }
 
 double lowestFootTarget(const gmr::BodyMap& targets) {
@@ -610,6 +706,7 @@ int main() {
         validateConfigAndModel(root, xml_path, config_path, config, model.get());
         validateRealtimeProfiles(config, model.get());
         validateHardSolePlane(xml_path, config_path, config);
+        validateFrameSharedTemporalLimits(xml_path, config_path, config);
         validateConfigAndModel(
             root, xml_path, legacy_config_path, legacy_config, model.get());
         validateBumi3RedisPreset(root, model.get());
