@@ -1,5 +1,7 @@
 #pragma once
 
+#include "gmr/body_map.hpp"
+
 #include <Eigen/Dense>
 #include <mujoco/mujoco.h>
 
@@ -87,6 +89,42 @@ inline FootObservation observeFoot(const mjModel* model, const mjData* data,
     }
     observation.center_world /= static_cast<double>(definition.points_local.size());
     observation.normal_world = (rotation * definition.normalLocal()).normalized();
+    return observation;
+}
+
+// SMPL-X 的 SMP1 输入已经给出脚目标的位置和四元数，不需要再加载一份人体
+// MuJoCo 模型。这里把配置中的四个局部参考点变换到世界坐标，生成与机器人 FK
+// observeFoot() 相同的数据结构，从而复用同一个高度/速度/滞回接触检测器。
+inline FootObservation observeFoot(const BodyMap& bodies, FootSide side,
+                                   const FootSoleDefinition& definition) {
+    const auto found = bodies.find(definition.body_name);
+    if (found == bodies.end())
+        throw std::runtime_error(
+            "observeFoot: missing SMPL-X target " + definition.body_name);
+    const BodyData& body = found->second;
+    if (!body.position.allFinite() || !body.rot_wxyz.allFinite())
+        throw std::runtime_error(
+            "observeFoot: non-finite SMPL-X target " + definition.body_name);
+    const double norm = body.rot_wxyz.norm();
+    if (norm < 1e-9)
+        throw std::runtime_error(
+            "observeFoot: zero SMPL-X quaternion " + definition.body_name);
+    const Eigen::Vector4d normalized = body.rot_wxyz / norm;
+    const Eigen::Quaterniond quaternion(
+        normalized[0], normalized[1], normalized[2], normalized[3]);
+    const Eigen::Matrix3d rotation = quaternion.toRotationMatrix();
+
+    FootObservation observation;
+    observation.side = side;
+    for (size_t index = 0; index < definition.points_local.size(); ++index) {
+        observation.points_world[index] =
+            body.position + rotation * definition.points_local[index];
+        observation.center_world += observation.points_world[index];
+    }
+    observation.center_world /=
+        static_cast<double>(definition.points_local.size());
+    observation.normal_world =
+        (rotation * definition.normalLocal()).normalized();
     return observation;
 }
 

@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/g1_bumi3_foot_constraint_test.dir/tests/g1_bumi3_foot_constraint_test.cpp.o -o g1_bumi3_foot_constraint_test  -Wl,-rpath,/home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/lib libg1_motion_source.a ../third_party/mujoco/lib/libmujoco.so -lpthread ../third_party/daqp/build/libdaqpstat.a /usr/lib/x86_64-linux-gnu/libhiredis.so 

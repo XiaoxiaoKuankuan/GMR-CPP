@@ -441,7 +441,8 @@ CMakeFiles/g1_bumi3_server.dir/apps/g1_bumi3_server.cpp.o: \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/geometry_ground.hpp \
- /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/gmr_mink.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact_json.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact.hpp \
  /usr/include/nlohmann/json.hpp /usr/include/c++/11/iterator \
  /usr/include/c++/11/bits/stream_iterator.h /usr/include/c++/11/numeric \
  /usr/include/c++/11/bits/stl_numeric.h \
@@ -509,6 +510,7 @@ CMakeFiles/g1_bumi3_server.dir/apps/g1_bumi3_server.cpp.o: \
  /usr/include/nlohmann/ordered_map.hpp \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
  /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/gmr_mink.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/api.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/daqp.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/factorization.h \
@@ -519,7 +521,9 @@ CMakeFiles/g1_bumi3_server.dir/apps/g1_bumi3_server.cpp.o: \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/bnb.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/hierarchical.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/types.h \
- /usr/include/c++/11/fstream \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/realtime_motion_guard.hpp \
+ /usr/include/c++/11/unordered_set \
+ /usr/include/c++/11/bits/unordered_set.h /usr/include/c++/11/fstream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/iostream \
@@ -528,6 +532,7 @@ CMakeFiles/g1_bumi3_server.dir/apps/g1_bumi3_server.cpp.o: \
  /usr/include/KHR/khrplatform.h /usr/include/c++/11/set \
  /usr/include/c++/11/bits/stl_set.h \
  /usr/include/c++/11/bits/stl_multiset.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/qpos_interpolator.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/redis_publisher.hpp \
  /usr/include/hiredis/hiredis.h /usr/include/hiredis/read.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/hiredis/sds.h \

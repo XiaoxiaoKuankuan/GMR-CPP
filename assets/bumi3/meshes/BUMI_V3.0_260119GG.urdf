@@ -48,7 +48,7 @@
         <origin rpy="0 0 0" xyz="0 0 0.129049999999987"/>
         <parent link="base_link"/>
         <child link="waist_yaw_link"/>
-        <axis xyz="0 0 -1"/>
+        <axis xyz="0 0 1"/>
         <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/>
     </joint>
     <link name="l_arm_pitch_link">
@@ -107,7 +107,7 @@
         <parent link="l_arm_pitch_link"/>
         <child link="l_arm_roll_link"/>
         <axis xyz="1 0 0"/>
-        <limit effort="0" lower="-1.04" upper="1.4" velocity="0"/>
+        <limit effort="0" lower="-0.14" upper="1.94" velocity="0"/>
     </joint>
     <link name="l_arm_yaw_link">
         <visual>
@@ -223,7 +223,7 @@
         <parent link="r_arm_pitch_link"/>
         <child link="r_arm_roll_link"/>
         <axis xyz="1 0 0"/>
-        <limit effort="0" lower="-1.4" upper="1.04" velocity="0"/>
+        <limit effort="0" lower="-1.94" upper="0.14" velocity="0"/>
     </joint>
     <link name="r_arm_yaw_link">
         <visual>

@@ -581,6 +581,8 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
   ../third_party/daqp/include/bnb.h \
   ../third_party/daqp/include/hierarchical.h \
   ../third_party/daqp/include/types.h \
+  ../include/gmr/foot_contact_json.hpp \
+  ../include/gmr/foot_contact.hpp \
   /usr/include/c++/11/fstream \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
@@ -614,6 +616,10 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
 
 /usr/include/c++/11/fstream:
+
+../include/gmr/foot_contact.hpp:
+
+../include/gmr/foot_contact_json.hpp:
 
 ../third_party/daqp/include/bnb.h:
 

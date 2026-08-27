@@ -520,7 +520,11 @@ CMakeFiles/optitrack_mocap_server.dir/apps/mocap_server.cpp.o: \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/bnb.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/hierarchical.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/types.h \
- /usr/include/c++/11/fstream \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact_json.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/realtime_motion_guard.hpp \
+ /usr/include/c++/11/unordered_set \
+ /usr/include/c++/11/bits/unordered_set.h /usr/include/c++/11/fstream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/iostream \

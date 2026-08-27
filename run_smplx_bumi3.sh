@@ -22,7 +22,7 @@ export LD_LIBRARY_PATH="$ROOT/third_party/mujoco/lib:${LD_LIBRARY_PATH:-}"
 echo "[run_smplx_bumi3] SMP1 0.0.0.0:$UDP_PORT -> BUMI3"
 echo "[run_smplx_bumi3] XML=$XML"
 echo "[run_smplx_bumi3] IK=$IK_CONFIG"
-echo "[run_smplx_bumi3] mode=grounded ground_clearance=0.05m offset_to_ground=on"
+echo "[run_smplx_bumi3] mode=contact-aware ground_clearance=0.04m offset_to_ground=off"
 echo "[run_smplx_bumi3] Redis disabled by default; GMT 21-joint reorder is configured"
 
 exec "$EXECUTABLE" \
@@ -30,7 +30,9 @@ exec "$EXECUTABLE" \
     --ik-config "$IK_CONFIG" \
     --port "$UDP_PORT" \
     --redis-key "$REDIS_KEY" \
-    --offset-to-ground \
-    --ground-clearance 0.05 \
+    --no-offset-to-ground \
+    --ground-clearance 0.04 \
+    --foot-contact-constraints \
+    --realtime-safety \
     --no-redis \
     "$@"

@@ -46,7 +46,7 @@
       <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="base_link"/>
       <body name="waist_yaw_link" pos="0 0 0.129049999999987">
         <inertial pos="-4.378868e-03 -6.672295e-03 1.240299e-01" mass="5.271670e+00" fullinertia="5.482801e-02 4.887115e-02 1.609058e-02 6.175213e-05 -1.957883e-03 1.033938e-03"/>
-        <joint name="waist_yaw_joint" type="hinge" axis="0 0 -1" limited="true" range="-1.57 1.57"/>
+        <joint name="waist_yaw_joint" type="hinge" axis="0 0 1" limited="true" range="-1.57 1.57"/>
         <geom type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="waist_yaw_link"/>
         <body name="l_arm_pitch_link" pos="0.0010007 0.083723 0.17204" quat="0.9914448214 0.1305264957 0 0">
           <inertial pos="1.956958e-03 4.005473e-02 1.480389e-05" mass="3.228282e-01" fullinertia="1.602346e-04 1.550148e-04 1.688444e-04 -2.179800e-06 -4.922125e-07 1.210814e-06"/>
@@ -54,7 +54,7 @@
           <geom type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="l_arm_pitch_link"/>
           <body name="l_arm_roll_link" pos="-0.0010007 0.044 0" quat="0.9914448214 -0.1305264957 0 0">
             <inertial pos="3.495797e-04 1.900254e-02 -5.207819e-02" mass="3.834243e-01" fullinertia="4.321869e-04 4.873103e-04 2.473135e-04 -1.276022e-06 5.376326e-06 3.726497e-05"/>
-            <joint name="l_arm_roll_joint" type="hinge" axis="1 0 0" limited="true" range="-1.04 1.4"/>
+            <joint name="l_arm_roll_joint" type="hinge" axis="1 0 0" limited="true" range="-0.14 1.94"/>
             <geom type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="l_arm_roll_link"/>
             <body name="l_arm_yaw_link" pos="0.0010007 0.023135 -0.092344" quat="0.9990482317 0.04361915629 0 0">
               <inertial pos="7.083462e-03 -9.665339e-04 -5.421378e-02" mass="3.366217e-01" fullinertia="2.023561e-04 1.986222e-04 1.466206e-04 1.216495e-06 2.517202e-05 -2.404022e-06"/>
@@ -74,7 +74,7 @@
           <geom type="mesh" rgba="1 1 1 1" mesh="r_arm_pitch_link"/>
           <body name="r_arm_roll_link" pos="-0.0010007 -0.044 0" quat="0.9914448214 0.1305264957 0 0">
             <inertial pos="3.495797e-04 -1.900254e-02 -5.207819e-02" mass="3.834243e-01" fullinertia="4.321869e-04 4.873103e-04 2.473135e-04 1.276022e-06 5.376326e-06 -3.726497e-05"/>
-            <joint name="r_arm_roll_joint" type="hinge" axis="1 0 0" limited="true" range="-1.4 1.04"/>
+            <joint name="r_arm_roll_joint" type="hinge" axis="1 0 0" limited="true" range="-1.94 0.14"/>
             <geom type="mesh" rgba="1 1 1 1" mesh="r_arm_roll_link"/>
             <body name="r_arm_yaw_link" pos="0.0010007 -0.023135 -0.092344" quat="0.9990482317 -0.04361915629 0 0">
               <inertial pos="7.083462e-03 9.665339e-04 -5.421378e-02" mass="3.366217e-01" fullinertia="2.023561e-04 1.986222e-04 1.466206e-04 -1.216495e-06 2.517202e-05 2.404022e-06"/>

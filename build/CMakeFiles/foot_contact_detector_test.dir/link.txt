@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/foot_contact_detector_test.dir/tests/foot_contact_detector_test.cpp.o -o foot_contact_detector_test  -Wl,-rpath,/home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/lib ../third_party/mujoco/lib/libmujoco.so 

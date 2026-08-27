@@ -433,16 +433,19 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
  /usr/include/c++/11/bits/shared_ptr_atomic.h \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
- /usr/include/eigen3/Eigen/Geometry /usr/include/nlohmann/json.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact_json.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/body_map.hpp \
+ /usr/include/c++/11/map /usr/include/c++/11/bits/stl_tree.h \
+ /usr/include/c++/11/bits/stl_map.h \
+ /usr/include/c++/11/bits/stl_multimap.h /usr/include/nlohmann/json.hpp \
  /usr/include/c++/11/iterator /usr/include/c++/11/bits/stream_iterator.h \
  /usr/include/c++/11/numeric /usr/include/c++/11/bits/stl_numeric.h \
  /usr/include/c++/11/pstl/glue_numeric_defs.h \
  /usr/include/nlohmann/adl_serializer.hpp \
  /usr/include/nlohmann/detail/conversions/from_json.hpp \
  /usr/include/c++/11/forward_list /usr/include/c++/11/bits/forward_list.h \
- /usr/include/c++/11/bits/forward_list.tcc /usr/include/c++/11/map \
- /usr/include/c++/11/bits/stl_tree.h /usr/include/c++/11/bits/stl_map.h \
- /usr/include/c++/11/bits/stl_multimap.h /usr/include/c++/11/valarray \
+ /usr/include/c++/11/bits/forward_list.tcc /usr/include/c++/11/valarray \
  /usr/include/c++/11/bits/valarray_array.h \
  /usr/include/c++/11/bits/valarray_array.tcc \
  /usr/include/c++/11/bits/valarray_before.h \
@@ -502,7 +505,7 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
  /usr/include/nlohmann/ordered_map.hpp \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
  /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
- /usr/include/c++/11/fstream \
+ /usr/include/eigen3/Eigen/Geometry /usr/include/c++/11/fstream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/iostream

@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/ground_clearance_test.dir/tests/ground_clearance_test.cpp.o -o ground_clearance_test  -Wl,-rpath,/home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/lib ../third_party/mujoco/lib/libmujoco.so ../third_party/daqp/build/libdaqpstat.a 

@@ -22,6 +22,8 @@ struct ProcessedFrame {
 class MotionBuffer {
 public:
     using PreprocessFn = std::function<void(BodyMap&)>;
+    using BeforeRetargetFn =
+        std::function<void(const RawFrame&, gmr_mink::GMR&)>;
 
     explicit MotionBuffer(size_t max_frames,
                           double frame_timeout_sec = 0.02)
@@ -32,6 +34,9 @@ public:
     ~MotionBuffer() { stopAsync(); }
 
     void setPreprocessFn(PreprocessFn fn) { preprocess_fn_ = std::move(fn); }
+    void setBeforeRetargetFn(BeforeRetargetFn fn) {
+        before_retarget_fn_ = std::move(fn);
+    }
     void setOffsetToGround(bool v) { offset_to_ground_ = v; }
     void setCaptureTargetData(bool v) { capture_target_data_ = v; }
 
@@ -108,6 +113,7 @@ private:
         if (preprocess_fn_) preprocess_fn_(raw.body_data);
 
         try {
+            if (before_retarget_fn_) before_retarget_fn_(raw, *gmr);
             ProcessedFrame pf;
             if (raw.stamp_ns > 0) {
                 pf.frame_time = raw.stamp_ns * 1e-9;
@@ -199,6 +205,7 @@ private:
     size_t              max_frames_;
     double              frame_timeout_;
     PreprocessFn        preprocess_fn_;
+    BeforeRetargetFn    before_retarget_fn_;
     bool                offset_to_ground_ = false;  // default false，不影响mocap_server
     bool                capture_target_data_ = false;
     std::atomic<bool>   running_{false};

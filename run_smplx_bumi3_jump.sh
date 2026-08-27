@@ -23,7 +23,7 @@ export LD_LIBRARY_PATH="$ROOT/third_party/mujoco/lib:${LD_LIBRARY_PATH:-}"
 echo "[run_smplx_bumi3_jump] mode=jump SMP1=0.0.0.0:$UDP_PORT -> BUMI3"
 echo "[run_smplx_bumi3_jump] XML=$XML"
 echo "[run_smplx_bumi3_jump] IK=$IK_CONFIG"
-echo "[run_smplx_bumi3_jump] offset_to_ground=off fixed_ground_offset=${GROUND_OFFSET}m ground_clearance=0.02m"
+echo "[run_smplx_bumi3_jump] offset_to_ground=off fixed_ground_offset=${GROUND_OFFSET}m ground_clearance=0.04m"
 echo "[run_smplx_bumi3_jump] Redis disabled by default: publish order is unverified"
 
 exec "$EXECUTABLE" \
@@ -35,4 +35,4 @@ exec "$EXECUTABLE" \
     "$@" \
     --no-offset-to-ground \
     --fixed-ground-offset "$GROUND_OFFSET" \
-    --ground-clearance 0.02
+    --ground-clearance 0.04

@@ -5,6 +5,133 @@
   "human_height_assumption": 1.8,
   "use_ik_match_table1": true,
   "use_ik_match_table2": true,
+  "realtime_safety": {
+    "enabled": true,
+    "nominal_timestep_s": 0.02,
+    "minimum_timestep_s": 0.005,
+    "maximum_timestep_s": 0.05,
+    "max_joint_velocity_rps": 12.0,
+    "max_joint_acceleration_rps2": 80.0,
+    "max_arm_velocity_rps": 12.0,
+    "max_arm_acceleration_rps2": 60.0,
+    "velocity_limit_reference": "/home/weili/legged_lab/source/NoetixRobot/NoetixRobot/assets/robots/bumi3/bumi.py:Bumi_CFG.actuators.velocity_limit_sim",
+    "joint_velocity_limits_rps": {
+      "waist_yaw_joint": 9.0,
+      "l_arm_pitch_joint": 12.0,
+      "l_arm_roll_joint": 12.0,
+      "l_arm_yaw_joint": 12.0,
+      "l_elbow_pitch_joint": 12.0,
+      "r_arm_pitch_joint": 12.0,
+      "r_arm_roll_joint": 12.0,
+      "r_arm_yaw_joint": 12.0,
+      "r_elbow_pitch_joint": 12.0,
+      "l_leg_pitch_joint": 12.0,
+      "l_leg_roll_joint": 12.0,
+      "l_leg_yaw_joint": 12.0,
+      "l_knee_pitch_joint": 12.0,
+      "l_ankle_pitch_joint": 12.0,
+      "l_ankle_roll_joint": 12.0,
+      "r_leg_pitch_joint": 12.0,
+      "r_leg_roll_joint": 12.0,
+      "r_leg_yaw_joint": 12.0,
+      "r_knee_pitch_joint": 12.0,
+      "r_ankle_pitch_joint": 12.0,
+      "r_ankle_roll_joint": 12.0
+    },
+    "arm_jump_threshold_rad": 0.6,
+    "arm_jump_release_threshold_rad": 0.25,
+    "arm_jump_candidate_tolerance_rad": 0.2,
+    "arm_jump_confirmation_frames": 2,
+    "left_arm_joints": [
+      "l_arm_pitch_joint",
+      "l_arm_roll_joint",
+      "l_arm_yaw_joint",
+      "l_elbow_pitch_joint"
+    ],
+    "right_arm_joints": [
+      "r_arm_pitch_joint",
+      "r_arm_roll_joint",
+      "r_arm_yaw_joint",
+      "r_elbow_pitch_joint"
+    ]
+  },
+  "foot_contact": {
+    "enabled": true,
+    "allow_flight": true,
+    "ground_z": 0.0,
+    "detection": {
+      "enter_height_m": 0.03,
+      "exit_height_m": 0.06,
+      "max_enter_vertical_speed_mps": 0.25,
+      "max_exit_upward_speed_mps": 0.4,
+      "max_enter_horizontal_speed_mps": 0.12,
+      "max_exit_horizontal_speed_mps": 0.3,
+      "double_support_max_horizontal_speed_mps": 0.1,
+      "enter_frames": 2,
+      "exit_frames": 1,
+      "minimum_stance_frames": 2
+    },
+    "constraints": {
+      "xy_weight": 35.0,
+      "tilt_weight": 60.0,
+      "height_weight": 80.0,
+      "xy_kp": 5.0,
+      "tilt_kp": 8.0,
+      "height_kp": 10.0,
+      "max_anchor_correction_speed_mps": 0.2,
+      "anchor_deadzone_m": 0.008,
+      "max_slip_speed_mps": 0.05,
+      "support_height_m": 0.001,
+      "support_height_upper_m": 0.003,
+      "penetration_tolerance_m": 0.0,
+      "max_joint_velocity_rps": 12.0,
+      "max_root_linear_velocity_mps": 3.0,
+      "max_root_angular_velocity_rps": 6.0,
+      "forced_support_weight_scale": 0.08,
+      "transition_frames": 6,
+      "hard_support_constraints": false
+    },
+    "source": {
+      "left": {
+        "body": "left_foot",
+        "sole_points": [
+          [-0.02, -0.01, 0.0],
+          [-0.02, 0.01, 0.0],
+          [0.02, -0.01, 0.0],
+          [0.02, 0.01, 0.0]
+        ]
+      },
+      "right": {
+        "body": "right_foot",
+        "sole_points": [
+          [-0.02, -0.01, 0.0],
+          [-0.02, 0.01, 0.0],
+          [0.02, -0.01, 0.0],
+          [0.02, 0.01, 0.0]
+        ]
+      }
+    },
+    "target": {
+      "left": {
+        "body": "l_ankle_roll_link",
+        "sole_points": [
+          [-0.04506335516557606, -0.03033414255908326, -0.04955529427890765],
+          [-0.04506335211963506, 0.03033413972919738, -0.04955529269094541],
+          [0.08946581782398655, -0.03009436863978443, -0.04918309126895418],
+          [0.08946586406892015, 0.03009437937870932, -0.04918309152736468]
+        ]
+      },
+      "right": {
+        "body": "r_ankle_roll_link",
+        "sole_points": [
+          [-0.04506335817237522, -0.030334138773401048, -0.04955529401212226],
+          [-0.045063353884431265, 0.030334143116124465, -0.049555294968934335],
+          [0.08946586507716056, -0.030094379690964235, -0.049183093812512346],
+          [0.08946582277323281, 0.030094367824987284, -0.04918309445245704]
+        ]
+      }
+    }
+  },
   "human_scale_table": {
     "pelvis": 0.55,
     "spine3": 1.156137228012085,

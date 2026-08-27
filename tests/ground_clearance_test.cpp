@@ -79,9 +79,9 @@ int main() {
         // BUMI3 grounded preset value.
         gmr_mink::GMR bumi3_solver(
             xml_path, config_path.string(), 1.8, 1.0, false);
-        bumi3_solver.setGroundClearance(0.02);
+        bumi3_solver.setGroundClearance(0.04);
         bumi3_solver.retarget(input, true);
-        checkTargets(bumi3_solver.getScaledHumanData(), 0.02);
+        checkTargets(bumi3_solver.getScaledHumanData(), 0.04);
 
         // Jump mode uses one manually selected constant instead of per-frame
         // lowest-foot grounding. The same translation is applied to every target.
@@ -112,7 +112,7 @@ int main() {
 
         fs::remove(config_path);
         std::cout << "ground_clearance_test: PASS "
-                     "default=0.06 bumi3=0.02 fixed_offset=0.41\n";
+                     "default=0.06 bumi3=0.04 fixed_offset=0.41\n";
         return 0;
     } catch (const std::exception& error) {
         std::error_code ignored;

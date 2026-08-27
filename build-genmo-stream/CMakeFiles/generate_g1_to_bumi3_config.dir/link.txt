@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp.o -o generate_g1_to_bumi3_config  -Wl,-rpath,/home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/lib ../third_party/mujoco/lib/libmujoco.so 

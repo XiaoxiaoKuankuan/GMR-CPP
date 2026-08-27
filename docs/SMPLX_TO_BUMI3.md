@@ -7,9 +7,10 @@ GENMO SMPL-X FK
   → SMP1 UDP（固定14个人体 target）
   → SmplxReader（不变）
   → smplx_to_bumi3_auto.json（默认参数）
-  → 原 GMR C++ IK（不变）
+  → GMR C++ IK
+  → 支撑脚/腾空约束 + 实时速度/加速度/手臂跳变保护
   → BUMI3 MuJoCo Viewer
-  → Redis（默认关闭，顺序尚未完成下游验证）
+  → Redis（默认关闭，显式启用时按已验证 GMT 顺序发布）
 ```
 
 ## 默认配置来源
@@ -23,7 +24,8 @@ GENMO SMPL-X FK
 
 `config/ik_configs/smplx_to_bumi3.json` 继续保留，供已有 Jump 配置和 G1 → BUMI3
 生成流程引用；`smplx_to_bumi3_jump.json` 未随普通模式默认配置切换而改变。
-程序不执行动态调参、在线标定、自动搜索或运行时参数修正。
+普通模式不做耗时的在线搜索或未来帧优化；它只在启动首帧标定一次固定地面，运行时
+使用当前帧和历史帧执行常数规模的接触判断与关节保护。
 
 ## BUMI3 模型
 
@@ -94,14 +96,16 @@ BUMI3_UDP_PORT
 BUMI3_REDIS_KEY
 ```
 
-普通 grounded 模式固定启用逐帧最低脚对地，并使用 `0.02 m` clearance：
+普通模式默认启用接触感知地面处理，并统一使用 `0.04 m` 初始 target clearance：
 
 ```text
-mode=grounded
+mode=contact-aware
 config=config/ik_configs/smplx_to_bumi3_auto.json
 port=7006
-offset_to_ground=on
-ground_clearance=0.02
+offset_to_ground=off
+ground_clearance=0.04
+foot_contact=on（允许腾空）
+realtime_safety=on
 ```
 
 GENMO 发送端不增加新坐标转换，继续使用 SMP1：
@@ -148,7 +152,7 @@ Redis 帧中的 `joint_pos`，不会改变 MuJoCo qpos、Viewer 或 IK 配置。
 
 当前默认 key 为 `gmt_online_frame_bumi`。
 
-## Grounded 与 Jump 模式
+## 接触感知与 Jump 模式
 
 普通模式：
 
@@ -160,11 +164,33 @@ Redis 帧中的 `joint_pos`，不会改变 MuJoCo qpos、Viewer 或 IK 配置。
   --vis-smplx-frames
 ```
 
-它使用 `--offset-to-ground --ground-clearance 0.02`。所有经过 scale/offset 的人体
-target 统一平移，使最低的 `left_foot/right_foot` target 位于 `z=0.02 m`。这里的
-`0.02 m` 是当前 BUMI3 的固定经验 clearance，不是摄像头动态地面识别，也不代表
-机器人 mesh 脚底与物理地面的精确距离。用户仍可显式传入
-`--no-offset-to-ground` 覆盖普通脚本默认值。
+它使用 `--no-offset-to-ground --ground-clearance 0.04`。服务在启动后的第一帧把
+最低 SMPL-X 脚 target 标定到 `z=0.04 m`，此后锁定同一个平移量，不再逐帧重新
+移动整个人。因此后续双脚同时升高仍然会被识别为腾空，不会被最低脚对地逻辑消除。
+
+接触检测同时观察左右脚相对首帧地面的高度、竖直速度、水平速度，并带进入/退出
+滞回。稳定低脚成为支撑脚；两脚都离地时允许 `flight`；从一只支撑脚换到另一只时，
+机器人脚底约束渐进切换。脚约束使用 BUMI3 XML 中真实脚底几何，`0.04 m` 只表示
+人体 target 的初始离地参考，不表示机器人 mesh 悬空 4 cm。
+
+如果显式关闭 `--no-foot-contact-constraints`，可以回到旧的无接触约束路径；旧的
+`--offset-to-ground` 仅用于兼容。接触约束打开时程序会忽略逐帧最低脚对地，以免
+破坏腾空判断。
+
+## 实时关节保护
+
+`realtime_safety` 配置默认打开，保护发生在每次 IK 结束后、脚底最终对地修正前：
+
+- 速度上限按 Noetix `bumi.py` 的 `Bumi_CFG` 执行器配置逐关节设置：腰 yaw
+  为 `9 rad/s`，其余双腿、膝、脚踝和双臂 20 个关节均为 `12 rad/s`；
+- `bumi.py` 没有给出加速度上限，因此仍使用全身 `80 rad/s²`、手臂
+  `60 rad/s²` 的实时保护值；
+- 左右手臂任一关节单帧候选变化超过 `0.60 rad` 时，整条手臂先保持一帧；
+- 下一帧仍然是相近的大跳目标才确认，并在速度/加速度限制下逐渐追赶；
+- 只有一帧的 IK 换解或识别毛刺不会发送到 Redis。
+
+保护器只扫描固定的 21 个关节，不重复求解 IK、不等待计时器，也不使用未来帧。
+普通动作没有额外帧延迟；只有疑似手臂换解时增加一帧确认。
 
 Jump 模式：
 
@@ -182,7 +208,7 @@ config=config/ik_configs/smplx_to_bumi3_jump.json
 port=7007
 offset_to_ground=off（脚本强制）
 fixed_ground_offset=0.65（每帧减去同一个固定值）
-ground_clearance=0.02（仅保留统一 preset 信息，不参与逐帧修正）
+ground_clearance=0.04（统一 preset 信息，不参与逐帧修正）
 ```
 
 `0.65 m` 是根据当前实际摄像头画面人工调整后的固定值，相比上一版 `0.55 m`
@@ -213,8 +239,8 @@ CUDA_VISIBLE_DEVICES=0 python scripts/demo/demo_webcam.py \
   --gmr_protocol smplx1
 ```
 
-普通模式会消除最低脚的真实腾空高度，适用于站立、行走和下蹲；Jump 模式保留
-pelvis/双脚整体竖直平移，但也会重新暴露 GENMO 单目竖直估计或积分漂移。
+普通模式现在也保留双脚真实腾空高度，同时用接触状态约束站立、行走和下蹲时的
+支撑脚。Jump 脚本仍保留独立配置和人工固定 offset，便于兼容原有相机标定流程。
 
 ## Xsens Jump 规律与 BUMI3 权重来源
 
@@ -238,5 +264,6 @@ G1/E1 都修改了部分 Xsens scale，但本任务明确要求保留当前 SMPL
 两套 Xsens 的 position/rotation offset 都没有变化；Jump 配置继续使用 BUMI3 自身
 的 SMPL-X offset/quaternion，未复制任何 Xsens quaternion。
 
-目前已完成 XML、配置、协议、固定姿态 IK 和 viewer-only 软件验证；尚未完成真实摄像头
-动作质量确认、BUMI3 下游关节发布顺序确认和实机安全验证。
+目前已完成 XML、配置、协议、固定姿态 IK、接触检测和实时关节保护的软件测试；仍需
+用真实摄像头动作检查阈值，并在上实机前确认仿真配置中的 `9/12 rad/s` 是否也是
+实物控制器允许的命令速度；`80/60 rad/s²` 仍需硬件侧单独确认。

@@ -582,6 +582,8 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/bnb.h
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/hierarchical.h
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/types.h
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact_json.hpp
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact.hpp
  /usr/include/c++/11/fstream
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h

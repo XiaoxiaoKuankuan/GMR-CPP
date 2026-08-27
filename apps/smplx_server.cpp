@@ -7,11 +7,15 @@
  */
 
 #include "gmr/frame_queue.hpp"
+#include "gmr/foot_contact_json.hpp"
+#include "gmr/geometry_ground.hpp"
 #include "gmr/gmr_mink.hpp"
 #include "gmr/motion_buffer.hpp"
 #include "gmr/mujoco_viewer.hpp"
 #include "gmr/redis_publisher.hpp"
 #include "readers/smplx_reader.hpp"
+
+#include <nlohmann/json.hpp>
 
 #include <algorithm>
 #include <atomic>
@@ -24,11 +28,13 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <utility>
 #include <vector>
 
 #ifndef SMPLX_DEFAULT_PRESET
@@ -103,7 +109,11 @@ struct Config {
     std::string viewer_follow_body = "pelvis";
     bool        offset_to_ground = false;
     double      fixed_ground_offset = 0.0;
+    bool        fixed_ground_offset_explicit = false;
     double      ground_clearance = 0.06;
+    int         foot_contact_override = -1;
+    double      foot_contact_weight_scale = 0.5;
+    int         realtime_safety_override = -1;
     bool        require_buttons = true;
     bool        redis_enabled = true;
     bool        redis_order_verified = true;
@@ -280,10 +290,15 @@ void usage(const char* program) {
         "  --pelvis-z-offset <m>     output-only pelvis z offset\n"
         "  --no-redis                disable Redis connection/publisher\n"
         "  --redis                   explicitly enable Redis publisher\n"
-        "  --offset-to-ground        per-frame lowest-foot grounding\n"
+        "  --offset-to-ground        legacy per-frame lowest-foot grounding\n"
         "  --no-offset-to-ground     preserve sender ground (default)\n"
         "  --fixed-ground-offset <m> fixed Z amount subtracted from every target\n"
-        "  --ground-clearance <m>    fixed lowest-foot clearance (G1/E1 0.06, BUMI3 0.02)\n"
+        "  --ground-clearance <m>    initial lowest-foot clearance (G1/E1 0.06, BUMI3 0.04)\n"
+        "  --foot-contact-constraints     enable configured support/flight handling\n"
+        "  --no-foot-contact-constraints  disable support/flight handling\n"
+        "  --foot-contact-weight-scale <s> contact objective scale [0,5]\n"
+        "  --realtime-safety         enable configured velocity/acceleration guard\n"
+        "  --no-realtime-safety      disable velocity/acceleration guard\n"
         "  --always                  bypass A+R1 joystick publish gate\n"
         "  --vis                     open MuJoCo viewer\n"
         "  --vis-smplx-targets       show raw/scaled/robot target overlay\n"
@@ -316,7 +331,7 @@ Config parseArgs(int argc, char** argv) {
         cfg.ik_config =
             (repo_root / "config/ik_configs/smplx_to_bumi3_auto.json").string();
         cfg.viewer_follow_body = "base_link";
-        cfg.ground_clearance = 0.02;
+        cfg.ground_clearance = 0.04;
         cfg.redis_order_verified = true;
     } else {
         throw std::runtime_error("SMPL-X server preset must be g1, e1 or bumi3");
@@ -361,8 +376,21 @@ Config parseArgs(int argc, char** argv) {
         else if (arg == "--redis")             cfg.redis_enabled = true;
         else if (arg == "--offset-to-ground")  cfg.offset_to_ground = true;
         else if (arg == "--no-offset-to-ground") cfg.offset_to_ground = false;
-        else if (arg == "--fixed-ground-offset") cfg.fixed_ground_offset = std::stod(next());
+        else if (arg == "--fixed-ground-offset") {
+            cfg.fixed_ground_offset = std::stod(next());
+            cfg.fixed_ground_offset_explicit = true;
+        }
         else if (arg == "--ground-clearance")  cfg.ground_clearance = std::stod(next());
+        else if (arg == "--foot-contact-constraints")
+            cfg.foot_contact_override = 1;
+        else if (arg == "--no-foot-contact-constraints")
+            cfg.foot_contact_override = 0;
+        else if (arg == "--foot-contact-weight-scale")
+            cfg.foot_contact_weight_scale = std::stod(next());
+        else if (arg == "--realtime-safety")
+            cfg.realtime_safety_override = 1;
+        else if (arg == "--no-realtime-safety")
+            cfg.realtime_safety_override = 0;
         else if (arg == "--always")            cfg.require_buttons = false;
         else if (arg == "--vis")               cfg.vis = true;
         else if (arg == "--vis-smplx-targets")  {
@@ -407,6 +435,11 @@ Config parseArgs(int argc, char** argv) {
         throw std::runtime_error("--fixed-ground-offset must be finite");
     if (!std::isfinite(cfg.ground_clearance) || cfg.ground_clearance < 0.0)
         throw std::runtime_error("--ground-clearance must be finite and >= 0");
+    if (!std::isfinite(cfg.foot_contact_weight_scale) ||
+        cfg.foot_contact_weight_scale < 0.0 ||
+        cfg.foot_contact_weight_scale > 5.0)
+        throw std::runtime_error(
+            "--foot-contact-weight-scale must be finite and in [0,5]");
     if (!fs::is_regular_file(cfg.xml_file))
         throw std::runtime_error("robot XML not found: " + cfg.xml_file);
     if (!fs::is_regular_file(cfg.ik_config))
@@ -415,6 +448,66 @@ Config parseArgs(int argc, char** argv) {
         std::cerr << "[warn] --ttl-ms <= 0: stale input will stop updates, "
                      "but the last Redis SET value will not expire\n";
     return cfg;
+}
+
+nlohmann::json readJson(const std::string& path) {
+    std::ifstream input(path);
+    if (!input) throw std::runtime_error("cannot open JSON: " + path);
+    nlohmann::json value;
+    input >> value;
+    return value;
+}
+
+gmr::RealtimeMotionGuardConfig realtimeGuardConfigFromJson(
+    const nlohmann::json& root) {
+    if (!root.contains("realtime_safety"))
+        throw std::runtime_error(
+            "IK config has no realtime_safety profile");
+    const auto& value = root.at("realtime_safety");
+    gmr::RealtimeMotionGuardConfig result;
+    result.nominal_timestep = value.value(
+        "nominal_timestep_s", result.nominal_timestep);
+    result.minimum_timestep = value.value(
+        "minimum_timestep_s", result.minimum_timestep);
+    result.maximum_timestep = value.value(
+        "maximum_timestep_s", result.maximum_timestep);
+    result.max_joint_velocity = value.value(
+        "max_joint_velocity_rps", result.max_joint_velocity);
+    result.max_joint_acceleration = value.value(
+        "max_joint_acceleration_rps2", result.max_joint_acceleration);
+    result.max_arm_velocity = value.value(
+        "max_arm_velocity_rps", result.max_arm_velocity);
+    result.max_arm_acceleration = value.value(
+        "max_arm_acceleration_rps2", result.max_arm_acceleration);
+    result.arm_jump_threshold = value.value(
+        "arm_jump_threshold_rad", result.arm_jump_threshold);
+    result.arm_jump_release_threshold = value.value(
+        "arm_jump_release_threshold_rad",
+        result.arm_jump_release_threshold);
+    result.arm_jump_candidate_tolerance = value.value(
+        "arm_jump_candidate_tolerance_rad",
+        result.arm_jump_candidate_tolerance);
+    result.arm_jump_confirmation_frames = value.value(
+        "arm_jump_confirmation_frames",
+        result.arm_jump_confirmation_frames);
+    result.left_arm_joints = value.at("left_arm_joints")
+        .get<std::vector<std::string>>();
+    result.right_arm_joints = value.at("right_arm_joints")
+        .get<std::vector<std::string>>();
+    if (value.contains("joint_velocity_limits_rps")) {
+        for (const auto& [name, limit] :
+             value.at("joint_velocity_limits_rps").items())
+            result.joint_velocity_limits[name] = limit.get<double>();
+    }
+    return result;
+}
+
+gmr::FootObservation relativeToSourceGround(
+    gmr::FootObservation observation, double source_ground_z) {
+    observation.center_world.z() -= source_ground_z;
+    for (auto& point : observation.points_world)
+        point.z() -= source_ground_z;
+    return observation;
 }
 
 double steadyNowSec() {
@@ -475,10 +568,61 @@ int main(int argc, char** argv) {
         gmr::SmplxReader reader(queue, reader_cfg);
         reader.connect();
 
+        const nlohmann::json ik_profile = readJson(cfg.ik_config);
         gmr_mink::GMR gmr(
             cfg.xml_file, cfg.ik_config, cfg.human_height, cfg.damping, false);
         gmr.setGroundOffset(cfg.fixed_ground_offset);
         gmr.setGroundClearance(cfg.ground_clearance);
+        const bool default_foot_contact =
+            cfg.preset == "bumi3" && gmr.footContactConfigured();
+        const bool foot_contact_enabled = cfg.foot_contact_override >= 0
+            ? cfg.foot_contact_override != 0 : default_foot_contact;
+        if (foot_contact_enabled && !gmr.footContactConfigured())
+            throw std::runtime_error(
+                "foot contact was requested but the IK config has no enabled profile");
+        gmr.setFootContactEnabled(foot_contact_enabled);
+        gmr.setFootContactWeightScale(cfg.foot_contact_weight_scale);
+
+        const bool configured_realtime_safety =
+            ik_profile.contains("realtime_safety") &&
+            ik_profile.at("realtime_safety").value("enabled", false);
+        const bool realtime_safety_enabled = cfg.realtime_safety_override >= 0
+            ? cfg.realtime_safety_override != 0
+            : cfg.preset == "bumi3" && configured_realtime_safety;
+        if (realtime_safety_enabled && !configured_realtime_safety)
+            throw std::runtime_error(
+                "realtime safety was requested but the IK config has no enabled profile");
+
+        std::unique_ptr<gmr::FootContactDetector> contact_detector;
+        std::unique_ptr<gmr::TargetGroundAligner> target_ground;
+        gmr::FootSoleDefinition source_left_sole;
+        gmr::FootSoleDefinition source_right_sole;
+        if (foot_contact_enabled) {
+            const auto& foot = ik_profile.at("foot_contact");
+            source_left_sole = gmr::footSoleDefinitionFromJson(
+                foot.at("source").at("left"), "foot_contact.source.left");
+            source_right_sole = gmr::footSoleDefinitionFromJson(
+                foot.at("source").at("right"), "foot_contact.source.right");
+            contact_detector = std::make_unique<gmr::FootContactDetector>(
+                gmr::footDetectorConfigFromJson(foot));
+            const auto target_left = gmr::footSoleDefinitionFromJson(
+                foot.at("target").at("left"), "foot_contact.target.left");
+            const auto target_right = gmr::footSoleDefinitionFromJson(
+                foot.at("target").at("right"), "foot_contact.target.right");
+            target_ground = std::make_unique<gmr::TargetGroundAligner>(
+                cfg.xml_file,
+                std::vector<std::string>{
+                    target_left.body_name, target_right.body_name});
+        }
+        std::cout
+            << "[Config] foot_contact="
+            << (foot_contact_enabled
+                    ? "on (support foot + flight enabled)" : "off")
+            << " weight_scale=" << cfg.foot_contact_weight_scale << "\n"
+            << "[Config] realtime_safety="
+            << (realtime_safety_enabled
+                    ? "on (causal velocity/acceleration + arm jump guard)" : "off")
+            << "\n";
         std::cout << "[GMR] ready; waiting for SMP1 frames...\n";
 
         constexpr int    kSeedFrames = 10;
@@ -489,8 +633,121 @@ int main(int argc, char** argv) {
                 kMaxBufferSec / kFrameTimeoutSec), 32);
 
         gmr::MotionBuffer buffer(max_frames, kFrameTimeoutSec);
-        buffer.setOffsetToGround(cfg.offset_to_ground);
+        const bool effective_offset_to_ground =
+            cfg.offset_to_ground && !foot_contact_enabled;
+        if (foot_contact_enabled && cfg.offset_to_ground)
+            std::cout
+                << "[Ground] per-frame lowest-foot grounding disabled because "
+                   "contact-aware fixed calibration preserves flight\n";
+        buffer.setOffsetToGround(effective_offset_to_ground);
         buffer.setCaptureTargetData(cfg.vis_smplx_targets);
+
+        bool fixed_ground_calibrated =
+            !foot_contact_enabled || cfg.fixed_ground_offset_explicit;
+        double source_ground_z = std::numeric_limits<double>::quiet_NaN();
+        double previous_frame_timestamp =
+            std::numeric_limits<double>::quiet_NaN();
+        gmr::FootContactState latest_contact_state;
+        gmr::FootContactState previous_contact_state;
+        bool have_contact_state = false;
+        auto last_contact_diagnostics = std::chrono::steady_clock::now() -
+                                        std::chrono::seconds(2);
+        auto last_guard_diagnostics = std::chrono::steady_clock::now() -
+                                      std::chrono::seconds(5);
+        buffer.setBeforeRetargetFn(
+            [&](const gmr::RawFrame& raw, gmr_mink::GMR& solver) {
+                const double timestamp = raw.stamp_ns > 0
+                    ? raw.stamp_ns * 1e-9 : steadyNowSec();
+                if (!fixed_ground_calibrated) {
+                    const double offset = solver.calibrateGroundOffset(
+                        raw.body_data, cfg.ground_clearance);
+                    fixed_ground_calibrated = true;
+                    std::cout
+                        << "[Ground] fixed source calibration offset=" << offset
+                        << "m initial_target_clearance="
+                        << cfg.ground_clearance << "m\n";
+                }
+                if (realtime_safety_enabled)
+                    solver.setRealtimeInputTimestamp(timestamp);
+                if (!foot_contact_enabled) return;
+
+                if (std::isfinite(previous_frame_timestamp) &&
+                    timestamp - previous_frame_timestamp > 0.2) {
+                    contact_detector->reset();
+                    have_contact_state = false;
+                    std::cout
+                        << "[foot-contact] detector reset after input gap\n";
+                }
+                previous_frame_timestamp = timestamp;
+                auto left = gmr::observeFoot(
+                    raw.body_data, gmr::FootSide::Left, source_left_sole);
+                auto right = gmr::observeFoot(
+                    raw.body_data, gmr::FootSide::Right, source_right_sole);
+                if (!std::isfinite(source_ground_z)) {
+                    source_ground_z = std::min(
+                        left.minimumHeight(), right.minimumHeight());
+                    std::cout
+                        << "[foot-contact] locked SMP1 source ground z="
+                        << source_ground_z << "m\n";
+                }
+                left = relativeToSourceGround(std::move(left), source_ground_z);
+                right = relativeToSourceGround(std::move(right), source_ground_z);
+                latest_contact_state = contact_detector->update(
+                    left, right, timestamp);
+                if (solver.footContactsInitialized())
+                    solver.setFootContactState(latest_contact_state);
+
+                const bool changed = !have_contact_state ||
+                    latest_contact_state.left_stance !=
+                        previous_contact_state.left_stance ||
+                    latest_contact_state.right_stance !=
+                        previous_contact_state.right_stance ||
+                    latest_contact_state.left_forced !=
+                        previous_contact_state.left_forced ||
+                    latest_contact_state.right_forced !=
+                        previous_contact_state.right_forced;
+                if (changed) {
+                    std::cout
+                        << "[foot-contact] left="
+                        << (latest_contact_state.left_stance ? "stance" : "swing")
+                        << " right="
+                        << (latest_contact_state.right_stance ? "stance" : "swing")
+                        << " source_height=("
+                        << latest_contact_state.left_height << ','
+                        << latest_contact_state.right_height << ")m\n";
+                }
+                previous_contact_state = latest_contact_state;
+                have_contact_state = true;
+
+                const auto now = std::chrono::steady_clock::now();
+                if (solver.footContactsInitialized() &&
+                    now - last_contact_diagnostics >= std::chrono::seconds(1)) {
+                    const auto& status = solver.footContactDiagnostics();
+                    std::cout
+                        << "[foot-contact] target primary="
+                        << (status.primary_support_side == 0 ? "left" :
+                            status.primary_support_side == 1 ? "right" : "flight")
+                        << " slip=(" << status.left_slip << ','
+                        << status.right_slip << ")m daqp="
+                        << status.daqp_exitflag << "\n";
+                    last_contact_diagnostics = now;
+                }
+                if (solver.realtimeMotionGuardEnabled() &&
+                    now - last_guard_diagnostics >= std::chrono::seconds(5)) {
+                    const auto& status =
+                        solver.realtimeMotionGuardDiagnostics();
+                    std::cout
+                        << "[realtime-safety] velocity_limited_total="
+                        << status.total_velocity_limited
+                        << " acceleration_limited_total="
+                        << status.total_acceleration_limited
+                        << " arm_jump_hold_total="
+                        << status.total_arm_jump_holds
+                        << " arm_jump_confirm_total="
+                        << status.total_arm_jump_confirmations << "\n";
+                    last_guard_diagnostics = now;
+                }
+            });
 
         std::cout << "[Init] collecting " << kSeedFrames << " seed frames...\n";
         buffer.seedSync(kSeedFrames, queue, &gmr);
@@ -498,8 +755,20 @@ int main(int argc, char** argv) {
         // Re-warm with a real SMPL-X pose while preserving the solver's warm state.
         const gmr::BodyMap warm_body = buffer.latestBodyData();
         if (!warm_body.empty()) {
+            Eigen::VectorXd warm_qpos;
             for (int i = 0; i < 1000; ++i)
-                gmr.retarget(warm_body, cfg.offset_to_ground);
+                warm_qpos = gmr.retarget(
+                    warm_body, effective_offset_to_ground);
+            if (foot_contact_enabled) {
+                target_ground->align(warm_qpos, 0.0);
+                gmr.setConfiguration(warm_qpos);
+                gmr.initializeFootContacts(latest_contact_state);
+                for (int i = 0; i < 10; ++i)
+                    warm_qpos = gmr.retarget(warm_body, false);
+            }
+            if (realtime_safety_enabled)
+                gmr.enableRealtimeMotionGuard(
+                    realtimeGuardConfigFromJson(ik_profile));
         }
 
         // Remove datagrams accumulated while re-warming; start from the newest stream.
@@ -628,7 +897,7 @@ int main(int argc, char** argv) {
             cfg.redis_enabled ? "on" : "off",
             cfg.redis.key.c_str(), cfg.publish_hz, cfg.stale_ms,
             cfg.redis.ttl_ms,
-            cfg.offset_to_ground ? "on" : "off",
+            effective_offset_to_ground ? "on" : "off",
             cfg.fixed_ground_offset,
             cfg.ground_clearance,
             cfg.require_buttons ? "A+R1" : "off",

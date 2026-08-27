@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/g1_bumi3_server.dir/apps/g1_bumi3_server.cpp.o -o g1_bumi3_server  -Wl,-rpath,/home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/lib libg1_motion_source.a ../third_party/mujoco/lib/libmujoco.so /usr/lib/x86_64-linux-gnu/libglfw.so /usr/lib/x86_64-linux-gnu/libhiredis.so -lpthread -lGL ../third_party/daqp/build/libdaqpstat.a 

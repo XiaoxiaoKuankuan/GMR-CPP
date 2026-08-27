@@ -13,6 +13,7 @@ extern "C" {
 
 #include "gmr/body_map.hpp"
 #include "gmr/foot_contact_json.hpp"
+#include "gmr/realtime_motion_guard.hpp"
 #include <string>
 #include <map>
 #include <vector>
@@ -23,6 +24,7 @@ extern "C" {
 #include <algorithm>
 #include <limits>
 #include <chrono>
+#include <memory>
 
 namespace gmr_mink {
 
@@ -262,6 +264,13 @@ public:
         if (use_table1_) solveIK(offset, entries1_, !use_table2_);
         if (use_table2_) solveIK(offset, entries2_, true);
         if (motion_preserving_enabled_) applyJointTemporalRegularization();
+        if (realtime_motion_guard_) {
+            Eigen::Map<Eigen::VectorXd> configuration(data_->qpos, nq_);
+            realtime_motion_guard_->apply(
+                configuration, realtime_input_timestamp_);
+            clampJoints();
+            mj_forward(model_, data_);
+        }
         if (contactConstraintsActive()) projectContactConfiguration(true);
 
         updateFootDiagnostics();
@@ -363,6 +372,48 @@ public:
                 "ground clearance must be finite and >= 0");
         ground_clearance_ = clearance;
     }
+    double calibrateGroundOffset(const BodyMap& human_data, double clearance) {
+        if (!std::isfinite(clearance) || clearance < 0.0)
+            throw std::runtime_error(
+                "ground calibration clearance must be finite and >= 0");
+        const BodyMap scaled = scaleHumanData(human_data);
+        const BodyMap offset = offsetHumanData(
+            scaled, pos_offsets1_, rot_offsets1_);
+        double lowest = std::numeric_limits<double>::infinity();
+        for (const auto& [name, body] : offset) {
+            std::string lower = name;
+            std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+            if (lower.find("foot") != std::string::npos)
+                lowest = std::min(lowest, body.position.z());
+        }
+        if (!std::isfinite(lowest))
+            throw std::runtime_error(
+                "ground calibration requires at least one human foot target");
+        ground_offset_ = lowest - clearance;
+        return ground_offset_;
+    }
+    void enableRealtimeMotionGuard(
+        const gmr::RealtimeMotionGuardConfig& config) {
+        realtime_motion_guard_ =
+            std::make_unique<gmr::RealtimeMotionGuard>(model_, config);
+        Eigen::Map<const Eigen::VectorXd> configuration(data_->qpos, nq_);
+        realtime_motion_guard_->reset(configuration);
+    }
+    void disableRealtimeMotionGuard() { realtime_motion_guard_.reset(); }
+    bool realtimeMotionGuardEnabled() const {
+        return static_cast<bool>(realtime_motion_guard_);
+    }
+    void setRealtimeInputTimestamp(double timestamp) {
+        if (!std::isfinite(timestamp))
+            throw std::runtime_error("realtime input timestamp must be finite");
+        realtime_input_timestamp_ = timestamp;
+    }
+    const gmr::RealtimeMotionGuardDiagnostics& realtimeMotionGuardDiagnostics()
+        const {
+        if (!realtime_motion_guard_)
+            throw std::runtime_error("realtime motion guard is not enabled");
+        return realtime_motion_guard_->diagnostics();
+    }
 
 private:
     mjModel* model_ = nullptr;
@@ -423,6 +474,9 @@ private:
     bool temporal_state_initialized_ = false;
     Eigen::VectorXd previous_temporal_qpos_;
     Eigen::VectorXd previous_previous_temporal_qpos_;
+    std::unique_ptr<gmr::RealtimeMotionGuard> realtime_motion_guard_;
+    double realtime_input_timestamp_ =
+        std::numeric_limits<double>::quiet_NaN();
 
     struct VelBound { int vadr; int qadr; double lo; double hi; };
     std::vector<VelBound> vel_bounds_;
@@ -631,7 +685,7 @@ private:
         double selected_height = std::min(left_lowest, right_lowest);
         bool exact_seating = seat_support_foot;
         last_root_z_safety_override_ = false;
-        if (motion_preserving_enabled_ && seat_support_foot) {
+        if (seat_support_foot && foot_contacts_initialized_) {
             const int side = selectPrimarySupportSide();
             if (side >= 0)
                 selected_height = side == 0 ? left_lowest : right_lowest;
@@ -639,7 +693,7 @@ private:
                 exact_seating = false;
         }
         double correction = foot_config_.ground_z - selected_height;
-        if (motion_preserving_enabled_ && exact_seating) {
+        if (exact_seating) {
             // Seat the selected support FK, but never lower the body far enough
             // to drive the swing sole through the floor.  The global minimum is
             // a one-sided penetration guard here, not the root-height target.

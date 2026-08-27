@@ -54,6 +54,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/smplx_g1_server.dir/DependInfo.cmake"
   "CMakeFiles/smplx_e1_server.dir/DependInfo.cmake"
   "CMakeFiles/smplx_bumi3_server.dir/DependInfo.cmake"
+  "CMakeFiles/smplx_bumi3_batch_server.dir/DependInfo.cmake"
+  "CMakeFiles/bumi3_qpos_viewer.dir/DependInfo.cmake"
   "CMakeFiles/g1_motion_source.dir/DependInfo.cmake"
   "CMakeFiles/g1_bumi3_server.dir/DependInfo.cmake"
   "CMakeFiles/generate_g1_to_bumi3_config.dir/DependInfo.cmake"
@@ -62,5 +64,9 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/smplx_bumi3_config_test.dir/DependInfo.cmake"
   "CMakeFiles/ground_clearance_test.dir/DependInfo.cmake"
   "CMakeFiles/g1_motion_source_test.dir/DependInfo.cmake"
+  "CMakeFiles/foot_contact_detector_test.dir/DependInfo.cmake"
+  "CMakeFiles/qpos_interpolator_test.dir/DependInfo.cmake"
+  "CMakeFiles/realtime_motion_guard_test.dir/DependInfo.cmake"
   "CMakeFiles/g1_to_bumi3_config_test.dir/DependInfo.cmake"
+  "CMakeFiles/g1_bumi3_foot_constraint_test.dir/DependInfo.cmake"
   )

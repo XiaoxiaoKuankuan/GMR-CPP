@@ -589,6 +589,8 @@ CMakeFiles/smplx_bumi3_server.dir/apps/smplx_server.cpp.o: ../apps/smplx_server.
   ../third_party/daqp/include/bnb.h \
   ../third_party/daqp/include/hierarchical.h \
   ../third_party/daqp/include/types.h \
+  ../include/gmr/foot_contact_json.hpp \
+  ../include/gmr/foot_contact.hpp \
   /usr/include/c++/11/fstream \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
@@ -1319,6 +1321,10 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
 
 /usr/include/c++/11/fstream:
+
+../include/gmr/foot_contact.hpp:
+
+../include/gmr/foot_contact_json.hpp:
 
 ../third_party/daqp/include/bnb.h:
 

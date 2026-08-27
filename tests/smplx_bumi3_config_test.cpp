@@ -292,6 +292,58 @@ void validateJumpPreservation(const nlohmann::json& base,
                  "preserved\n";
 }
 
+void validateRealtimeProfiles(const nlohmann::json& config,
+                              const mjModel* model) {
+    const auto foot = gmr::footConstraintConfigFromJson(config);
+    if (!foot.enabled || foot.left.body_name != "l_ankle_roll_link" ||
+        foot.right.body_name != "r_ankle_roll_link")
+        throw std::runtime_error("SMPL-X foot-contact target profile is invalid");
+    const auto detector = gmr::footDetectorConfigFromJson(
+        config.at("foot_contact"));
+    if (!detector.allow_flight || detector.enter_frames < 2)
+        throw std::runtime_error(
+            "SMPL-X foot detector must preserve flight with contact hysteresis");
+    const auto source_left = gmr::footSoleDefinitionFromJson(
+        config.at("foot_contact").at("source").at("left"),
+        "foot_contact.source.left");
+    const auto source_right = gmr::footSoleDefinitionFromJson(
+        config.at("foot_contact").at("source").at("right"),
+        "foot_contact.source.right");
+    if (source_left.body_name != "left_foot" ||
+        source_right.body_name != "right_foot")
+        throw std::runtime_error("SMPL-X source foot names are invalid");
+
+    const auto& safety = config.at("realtime_safety");
+    if (!safety.at("enabled").get<bool>() ||
+        safety.at("max_joint_velocity_rps").get<double>() != 12.0 ||
+        safety.at("max_arm_velocity_rps").get<double>() != 12.0 ||
+        safety.at("max_joint_acceleration_rps2").get<double>() <= 0.0 ||
+        safety.at("arm_jump_confirmation_frames").get<int>() < 2)
+        throw std::runtime_error("SMPL-X realtime-safety profile is invalid");
+    const auto& velocity_limits = safety.at("joint_velocity_limits_rps");
+    if (velocity_limits.size() != 21 ||
+        velocity_limits.at("waist_yaw_joint").get<double>() != 9.0)
+        throw std::runtime_error(
+            "BUMI3 velocity table must contain 21 joints with waist at 9 rad/s");
+    for (const auto& [name, limit] : velocity_limits.items()) {
+        if (mj_name2id(model, mjOBJ_JOINT, name.c_str()) < 0 ||
+            (name != "waist_yaw_joint" && limit.get<double>() != 12.0))
+            throw std::runtime_error(
+                "BUMI3 velocity table differs from bumi.py at " + name);
+    }
+    for (const char* side : {"left_arm_joints", "right_arm_joints"}) {
+        const auto names = safety.at(side).get<std::vector<std::string>>();
+        if (names.size() != 4)
+            throw std::runtime_error(std::string(side) + " must contain four joints");
+        for (const auto& name : names)
+            if (mj_name2id(model, mjOBJ_JOINT, name.c_str()) < 0)
+                throw std::runtime_error("realtime-safety joint missing: " + name);
+    }
+    std::cout
+        << "[BUMI3 realtime] velocity/acceleration, arm jump, support/flight "
+           "profiles validated\n";
+}
+
 double lowestFootTarget(const gmr::BodyMap& targets) {
     return std::min(targets.at("left_foot").position.z(),
                     targets.at("right_foot").position.z());
@@ -458,6 +510,7 @@ int main() {
             throw std::runtime_error("MuJoCo qpos allocation failed");
 
         validateConfigAndModel(root, xml_path, config_path, config, model.get());
+        validateRealtimeProfiles(config, model.get());
         validateConfigAndModel(
             root, xml_path, legacy_config_path, legacy_config, model.get());
         validateBumi3RedisPreset(root, model.get());

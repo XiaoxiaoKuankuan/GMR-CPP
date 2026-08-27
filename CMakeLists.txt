@@ -292,6 +292,51 @@ target_compile_definitions(smplx_bumi3_server PRIVATE
 
 message(STATUS "=== smplx_g1_server / smplx_e1_server / smplx_bumi3_server ENABLED ===")
 
+# Persistent one-input/one-output SMP1 service used by GENMO sliding-window
+# deployment.  It intentionally has no Redis publisher or viewer: stdout is a
+# checksummed binary response channel and all diagnostics go to stderr.
+add_executable(smplx_bumi3_batch_server
+    apps/smplx_bumi3_batch_server.cpp
+    readers/smplx_reader.cpp
+)
+target_include_directories(smplx_bumi3_batch_server PRIVATE
+    ${GMR_ROOT}
+    ${GMR_ROOT}/include
+    ${GMR_ROOT}/readers
+    ${MUJOCO_INCLUDE_DIR}
+)
+target_link_libraries(smplx_bumi3_batch_server PRIVATE
+    mujoco::mujoco
+    Eigen3::Eigen
+    nlohmann_json::nlohmann_json
+    pthread
+    ${DAQP_LIB}
+)
+target_compile_options(smplx_bumi3_batch_server PRIVATE
+    -O2 -Wall -Wextra -Wno-unused-parameter)
+
+message(STATUS "=== smplx_bumi3_batch_server ENABLED ===")
+
+# Real-time visualization sidecar for the GENMO safety bridge.  It consumes
+# native BUMI3 qpos[28] records at the bridge playback clock; it is deliberately
+# separate from the ahead-of-time batch IK process.
+add_executable(bumi3_qpos_viewer apps/bumi3_qpos_viewer.cpp)
+target_include_directories(bumi3_qpos_viewer PRIVATE
+    ${GMR_ROOT}
+    ${GMR_ROOT}/include
+    ${MUJOCO_INCLUDE_DIR}
+)
+target_link_libraries(bumi3_qpos_viewer PRIVATE
+    mujoco::mujoco
+    glfw
+    Eigen3::Eigen
+    GL
+)
+target_compile_options(bumi3_qpos_viewer PRIVATE
+    -O2 -Wall -Wextra -Wno-unused-parameter)
+
+message(STATUS "=== bumi3_qpos_viewer ENABLED ===")
+
 # ==============================================================================
 #  OMG Unitree G1 qpos -> source FK BodyMap -> BUMI3
 # ==============================================================================
@@ -439,6 +484,18 @@ if(BUILD_TESTING)
     target_compile_options(qpos_interpolator_test PRIVATE
         -O2 -Wall -Wextra -Wno-unused-parameter)
     add_test(NAME qpos_interpolator_test COMMAND qpos_interpolator_test)
+
+    add_executable(realtime_motion_guard_test
+        tests/realtime_motion_guard_test.cpp)
+    target_include_directories(realtime_motion_guard_test PRIVATE
+        ${GMR_ROOT} ${GMR_ROOT}/include ${MUJOCO_INCLUDE_DIR})
+    target_link_libraries(realtime_motion_guard_test PRIVATE
+        mujoco::mujoco Eigen3::Eigen)
+    target_compile_definitions(realtime_motion_guard_test PRIVATE
+        BUMI3_REPO_ROOT="${GMR_ROOT}")
+    target_compile_options(realtime_motion_guard_test PRIVATE
+        -O2 -Wall -Wextra -Wno-unused-parameter)
+    add_test(NAME realtime_motion_guard_test COMMAND realtime_motion_guard_test)
 
     add_executable(g1_to_bumi3_config_test
         tests/g1_to_bumi3_config_test.cpp)

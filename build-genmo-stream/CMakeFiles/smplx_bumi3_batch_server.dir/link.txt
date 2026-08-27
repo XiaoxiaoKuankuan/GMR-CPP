@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG CMakeFiles/smplx_bumi3_batch_server.dir/apps/smplx_bumi3_batch_server.cpp.o CMakeFiles/smplx_bumi3_batch_server.dir/readers/smplx_reader.cpp.o -o smplx_bumi3_batch_server  -Wl,-rpath,/home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/lib ../third_party/mujoco/lib/libmujoco.so -lpthread ../third_party/daqp/build/libdaqpstat.a 

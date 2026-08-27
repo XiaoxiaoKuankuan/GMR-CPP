@@ -117,6 +117,19 @@ def main() -> None:
             for value in config["human_scale_table"].values()),
         "human scales must be finite and positive",
     )
+    foot_contact = config["foot_contact"]
+    require(foot_contact["enabled"], "foot-contact profile must be enabled")
+    require(foot_contact["allow_flight"], "foot-contact detector must allow flight")
+    require(
+        foot_contact["source"]["left"]["body"] == "left_foot" and
+        foot_contact["source"]["right"]["body"] == "right_foot",
+        "SMPL-X source foot names are invalid",
+    )
+    require(
+        foot_contact["target"]["left"]["body"] == "l_ankle_roll_link" and
+        foot_contact["target"]["right"]["body"] == "r_ankle_roll_link",
+        "BUMI3 target foot names are invalid",
+    )
 
     base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "base_link")
     require(base_id >= 0, "base_link missing")
@@ -142,6 +155,31 @@ def main() -> None:
         mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_JOINT, joint) or ""
         for joint in range(model.njnt)
     ]
+    realtime_safety = config["realtime_safety"]
+    require(realtime_safety["enabled"], "realtime safety must be enabled")
+    require(
+        float(realtime_safety["max_joint_velocity_rps"]) == 12.0 and
+        float(realtime_safety["max_arm_velocity_rps"]) == 12.0 and
+        float(realtime_safety["max_joint_acceleration_rps2"]) > 0.0,
+        "realtime default velocity must match bumi.py and acceleration must be positive",
+    )
+    joint_velocity_limits = realtime_safety["joint_velocity_limits_rps"]
+    require(len(joint_velocity_limits) == 21, "velocity table must contain 21 joints")
+    require(
+        float(joint_velocity_limits["waist_yaw_joint"]) == 9.0,
+        "waist velocity must match bumi.py: 9 rad/s",
+    )
+    require(
+        all(float(limit) == (9.0 if name == "waist_yaw_joint" else 12.0)
+            for name, limit in joint_velocity_limits.items()),
+        "joint velocity table differs from bumi.py",
+    )
+    for side in ("left_arm_joints", "right_arm_joints"):
+        require(len(realtime_safety[side]) == 4, f"{side} must contain four joints")
+        require(
+            all(name in joint_names for name in realtime_safety[side]),
+            f"{side} contains a joint missing from XML",
+        )
     qpos_joint_order = [
         joint_names[joint]
         for joint in sorted(
@@ -192,6 +230,9 @@ def main() -> None:
     print("PASS configured robot bodies: 12/12 present")
     print("PASS SMP1 input unchanged: 14 supported, 12 consumed, wrists unused")
     print("PASS offsets finite, quaternion norms valid, scales positive")
+    print("PASS bumi.py velocity table: waist=9 rad/s, other 20 joints=12 rad/s")
+    print("PASS realtime acceleration and arm jump profile")
+    print("PASS support-foot detector keeps true flight frames")
     print("PASS robot preset matches XML qpos/actuator order (21 joints)")
     print(f"PASS Redis publish order: MuJoCo qpos -> GMT {expected_joint_ids_map}")
 
