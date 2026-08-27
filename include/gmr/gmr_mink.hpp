@@ -352,14 +352,52 @@ public:
                               gmr::FootSide::Right);
         updateFootDiagnostics();
     }
-    void setFootContactState(const gmr::FootContactState& state) {
+    void settleFootContacts(int soft_iterations = 30,
+                            int hard_iterations = 5) {
+        if (!contactConstraintsActive()) return;
+        if (soft_iterations < 0 || hard_iterations < 0)
+            throw std::runtime_error(
+                "foot-contact settle iterations must be non-negative");
+        const bool hard_constraints =
+            foot_config_.settings.hard_support_constraints;
+        const BodyMap no_targets;
+        const std::vector<IKEntry> no_entries;
+        try {
+            // Remove the competing human pose tasks while a newly initialized
+            // stance sole is brought onto the plane.  Once it is flat, the
+            // normal IK can preserve that feasible state with hard bands.
+            foot_config_.settings.hard_support_constraints = false;
+            for (int iteration = 0; iteration < soft_iterations; ++iteration)
+                runIKStep(no_targets, no_entries, true);
+            // The contact-only projection may move a newly touching sole by a
+            // few millimetres.  Re-capture its feasible anchor and plane error
+            // before hard constraints are restored, otherwise the transition
+            // corridor would still be based on the pre-projection tilted foot.
+            if (left_contact_.requested)
+                captureFootAnchor(
+                    left_contact_, foot_config_.left, gmr::FootSide::Left);
+            if (right_contact_.requested)
+                captureFootAnchor(
+                    right_contact_, foot_config_.right, gmr::FootSide::Right);
+            foot_config_.settings.hard_support_constraints = hard_constraints;
+            for (int iteration = 0; iteration < hard_iterations; ++iteration)
+                runIKStep(no_targets, no_entries, true);
+        } catch (...) {
+            foot_config_.settings.hard_support_constraints = hard_constraints;
+            throw;
+        }
+        projectContactConfiguration(true);
+        updateFootDiagnostics();
+    }
+    void setFootContactState(const gmr::FootContactState& state,
+                             bool advance_transition = true) {
         if (!foot_contact_enabled_) return;
         updateFootRuntime(left_contact_, state.left_stance,
                           state.left_forced, foot_config_.left,
-                          gmr::FootSide::Left);
+                          gmr::FootSide::Left, advance_transition);
         updateFootRuntime(right_contact_, state.right_stance,
                           state.right_forced, foot_config_.right,
-                          gmr::FootSide::Right);
+                          gmr::FootSide::Right, advance_transition);
     }
     void setGroundOffset(double offset) {
         if (!std::isfinite(offset))
@@ -442,7 +480,10 @@ private:
         bool anchor_valid = false;
         double blend = 0.0;
         Eigen::Vector2d anchor_xy = Eigen::Vector2d::Zero();
+        double entry_center_height = 0.0;
         double entry_max_height = 0.0;
+        double entry_heel_toe_height_difference = 0.0;
+        double entry_lateral_height_difference = 0.0;
     };
 
     struct GeneralConstraint {
@@ -720,11 +761,29 @@ private:
                            gmr::FootSide side) {
         const auto observation = gmr::observeFoot(model_, data_, side, definition);
         runtime.anchor_xy = observation.center_world.head<2>();
+        runtime.entry_center_height =
+            observation.center_world.z() - foot_config_.ground_z;
         runtime.entry_max_height = -std::numeric_limits<double>::infinity();
         for (const auto& point : observation.points_world)
             runtime.entry_max_height = std::max(
                 runtime.entry_max_height,
                 point.z() - foot_config_.ground_z);
+        const double heel_height = 0.5 *
+            (observation.points_world[0].z() +
+             observation.points_world[1].z());
+        const double toe_height = 0.5 *
+            (observation.points_world[2].z() +
+             observation.points_world[3].z());
+        const double negative_y_height = 0.5 *
+            (observation.points_world[0].z() +
+             observation.points_world[2].z());
+        const double positive_y_height = 0.5 *
+            (observation.points_world[1].z() +
+             observation.points_world[3].z());
+        runtime.entry_heel_toe_height_difference =
+            toe_height - heel_height;
+        runtime.entry_lateral_height_difference =
+            positive_y_height - negative_y_height;
         runtime.anchor_valid = true;
     }
 
@@ -740,7 +799,7 @@ private:
 
     void updateFootRuntime(FootRuntime& runtime, bool requested, bool forced,
                            const gmr::FootSoleDefinition& definition,
-                           gmr::FootSide side) {
+                           gmr::FootSide side, bool advance_transition) {
         const double step = 1.0 / static_cast<double>(
             std::max(1, foot_config_.settings.transition_frames));
         const bool entering = requested && !runtime.requested;
@@ -751,7 +810,10 @@ private:
         runtime.requested = requested;
         runtime.forced = forced;
         if (requested) {
-            runtime.blend = entering ? step : std::min(1.0, runtime.blend + step);
+            if (entering)
+                runtime.blend = step;
+            else if (advance_transition)
+                runtime.blend = std::min(1.0, runtime.blend + step);
             if (foot_contacts_initialized_ && !runtime.anchor_valid)
                 captureFootAnchor(runtime, definition, side);
         } else {
@@ -892,9 +954,9 @@ private:
             constraints.push_back(std::move(floor));
         }
 
-        // The motion-preserving default uses soft support objectives; only
-        // physical non-penetration remains hard.  Strict slip/height bands can
-        // still be enabled from JSON for offline experiments.
+        // Physical non-penetration is always hard.  The remaining stance-only
+        // constraints are opt-in because they trade some source-pose fidelity
+        // for a physically usable support sole.
         if (!foot_config_.settings.hard_support_constraints) return;
 
         for (const auto& point : observation.points_world) {
@@ -915,11 +977,80 @@ private:
             }
         }
 
-        if (!runtime.requested || runtime.forced ||
-            !runtime.anchor_valid || runtime.blend <= 0.0)
+        if (!runtime.requested || !runtime.anchor_valid || runtime.blend <= 0.0)
             return;
         const auto center_jacobian = pointJacobian(
             observation.center_world, body, false);
+
+        // Keep the configured sole centre inside the 1--3 mm support band.
+        // This complements the mesh-wide non-penetration guard above: the
+        // latter prevents tunnelling, while this band prevents a stance foot
+        // from hovering or balancing on a strongly tilted edge.
+        GeneralConstraint center_height;
+        center_height.row = center_jacobian.row(2);
+        const double entry_weight = 1.0 - runtime.blend;
+        const double lower_height = foot_config_.settings.support_height +
+            entry_weight * (runtime.entry_center_height -
+                            foot_config_.settings.support_height);
+        const double upper_height = foot_config_.settings.support_height_upper +
+            entry_weight * (runtime.entry_center_height -
+                            foot_config_.settings.support_height_upper);
+        center_height.lower =
+            (foot_config_.ground_z + lower_height -
+             observation.center_world.z()) / dt;
+        center_height.upper =
+            (foot_config_.ground_z + upper_height -
+             observation.center_world.z()) / dt;
+        center_height.relaxable = true;
+        constraints.push_back(std::move(center_height));
+
+        // A horizontal ground plane only determines roll and pitch.  Constrain
+        // the heel/toe and lateral height differences, but intentionally add no
+        // yaw row so the source dance heading remains free.
+        const Eigen::Vector3d heel = 0.5 *
+            (observation.points_world[0] + observation.points_world[1]);
+        const Eigen::Vector3d toe = 0.5 *
+            (observation.points_world[2] + observation.points_world[3]);
+        const Eigen::Vector3d negative_y = 0.5 *
+            (observation.points_world[0] + observation.points_world[2]);
+        const Eigen::Vector3d positive_y = 0.5 *
+            (observation.points_world[1] + observation.points_world[3]);
+        auto append_height_difference = [&constraints, body, dt, this](
+                const Eigen::Vector3d& positive,
+                const Eigen::Vector3d& negative, double tolerance) {
+            const auto positive_jacobian = pointJacobian(positive, body, false);
+            const auto negative_jacobian = pointJacobian(negative, body, false);
+            const double difference = positive.z() - negative.z();
+            GeneralConstraint flatness;
+            flatness.row = positive_jacobian.row(2) -
+                           negative_jacobian.row(2);
+            flatness.lower = (-tolerance - difference) / dt;
+            flatness.upper = (tolerance - difference) / dt;
+            flatness.relaxable = false;
+            constraints.push_back(std::move(flatness));
+        };
+        const auto transition_tolerance = [blend = runtime.blend](
+                double target, double entry_difference) {
+            return target + (1.0 - blend) *
+                std::max(0.0, std::abs(entry_difference) - target);
+        };
+        append_height_difference(
+            toe, heel,
+            transition_tolerance(
+                foot_config_.settings.max_heel_toe_height_difference,
+                runtime.entry_heel_toe_height_difference));
+        append_height_difference(
+            positive_y, negative_y,
+            transition_tolerance(
+                foot_config_.settings.max_lateral_height_difference,
+                runtime.entry_lateral_height_difference));
+
+        // Detector-forced support is deliberately free in XY, but it is still
+        // the selected lower foot during an ambiguous moving double-support
+        // phase.  Keep its sole flat/on-ground, then skip only the world anchor
+        // and slip constraints so turning and intentional sliding remain free.
+        if (runtime.forced) return;
+
         const Eigen::Vector2d reference = footAnchorVelocity(runtime, observation);
         // The anchor is captured at the current target pose on contact entry,
         // so XY can be constrained immediately without introducing a position
@@ -965,7 +1096,8 @@ private:
         auto update = [&](const FootRuntime& runtime,
                           const gmr::FootSoleDefinition& definition,
                           gmr::FootSide side, double& slip, double& tilt,
-                          double& minimum, double& maximum) {
+                          double& minimum, double& maximum, double& center,
+                          double& heel_toe, double& lateral) {
             const auto observation = gmr::observeFoot(model_, data_, side, definition);
             slip = runtime.anchor_valid && !runtime.forced
                 ? (observation.center_world.head<2>() - runtime.anchor_xy).norm() : 0.0;
@@ -979,17 +1111,38 @@ private:
                 minimum = std::min(minimum, height);
                 maximum = std::max(maximum, height);
             }
+            center = observation.center_world.z() - foot_config_.ground_z;
+            const double heel_height = 0.5 *
+                (observation.points_world[0].z() +
+                 observation.points_world[1].z());
+            const double toe_height = 0.5 *
+                (observation.points_world[2].z() +
+                 observation.points_world[3].z());
+            const double negative_y_height = 0.5 *
+                (observation.points_world[0].z() +
+                 observation.points_world[2].z());
+            const double positive_y_height = 0.5 *
+                (observation.points_world[1].z() +
+                 observation.points_world[3].z());
+            heel_toe = toe_height - heel_height;
+            lateral = positive_y_height - negative_y_height;
         };
         update(left_contact_, foot_config_.left, gmr::FootSide::Left,
                foot_diagnostics_.left_slip,
                foot_diagnostics_.left_tilt_degrees,
                foot_diagnostics_.left_min_height,
-               foot_diagnostics_.left_max_height);
+               foot_diagnostics_.left_max_height,
+               foot_diagnostics_.left_center_height,
+               foot_diagnostics_.left_heel_toe_height_difference,
+               foot_diagnostics_.left_lateral_height_difference);
         update(right_contact_, foot_config_.right, gmr::FootSide::Right,
                foot_diagnostics_.right_slip,
                foot_diagnostics_.right_tilt_degrees,
                foot_diagnostics_.right_min_height,
-               foot_diagnostics_.right_max_height);
+               foot_diagnostics_.right_max_height,
+               foot_diagnostics_.right_center_height,
+               foot_diagnostics_.right_heel_toe_height_difference,
+               foot_diagnostics_.right_lateral_height_difference);
     }
 
     static double headingYaw(const Eigen::Vector4d& quaternion) {

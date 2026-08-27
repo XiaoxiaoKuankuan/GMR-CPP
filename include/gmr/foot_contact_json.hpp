@@ -77,6 +77,30 @@ inline FootContactDetectorConfig footDetectorConfigFromJson(
     return validated.config();
 }
 
+inline SourceGroundTrackerConfig sourceGroundTrackerConfigFromJson(
+    const nlohmann::json& foot_contact) {
+    SourceGroundTrackerConfig result;
+    if (!foot_contact.contains("source_ground_tracking")) return result;
+    const auto& value = foot_contact.at("source_ground_tracking");
+    result.enabled = value.value("enabled", result.enabled);
+    result.support_track_speed = value.value(
+        "support_track_speed_mps", result.support_track_speed);
+    result.reacquire_track_speed = value.value(
+        "reacquire_track_speed_mps", result.reacquire_track_speed);
+    result.max_reacquire_vertical_speed = value.value(
+        "max_reacquire_vertical_speed_mps",
+        result.max_reacquire_vertical_speed);
+    result.max_reacquire_horizontal_speed = value.value(
+        "max_reacquire_horizontal_speed_mps",
+        result.max_reacquire_horizontal_speed);
+    result.reacquire_after_frames = value.value(
+        "reacquire_after_frames", result.reacquire_after_frames);
+    result.stable_reacquire_frames = value.value(
+        "stable_reacquire_frames", result.stable_reacquire_frames);
+    SourceGroundTracker validated(result);
+    return validated.config();
+}
+
 inline FootConstraintConfig footConstraintConfigFromJson(
     const nlohmann::json& root) {
     FootConstraintConfig result;
@@ -114,12 +138,21 @@ inline FootConstraintConfig footConstraintConfigFromJson(
             "support_height_m", target.support_height);
         target.support_height_upper = settings.value(
             "support_height_upper_m", target.support_height_upper);
+        target.max_heel_toe_height_difference = settings.value(
+            "max_heel_toe_height_difference_m",
+            target.max_heel_toe_height_difference);
+        target.max_lateral_height_difference = settings.value(
+            "max_lateral_height_difference_m",
+            target.max_lateral_height_difference);
         target.penetration_tolerance = settings.value(
             "penetration_tolerance_m", target.penetration_tolerance);
         target.max_joint_velocity = settings.value(
             "max_joint_velocity_rps", target.max_joint_velocity);
         target.max_root_linear_velocity = settings.value(
             "max_root_linear_velocity_mps", target.max_root_linear_velocity);
+        target.max_output_root_horizontal_velocity = settings.value(
+            "max_output_root_horizontal_velocity_mps",
+            target.max_output_root_horizontal_velocity);
         target.max_root_angular_velocity = settings.value(
             "max_root_angular_velocity_rps", target.max_root_angular_velocity);
         target.forced_support_weight_scale = settings.value(
@@ -146,12 +179,18 @@ inline FootConstraintConfig footConstraintConfigFromJson(
         std::isfinite(settings.support_height) && settings.support_height >= 0.0 &&
         std::isfinite(settings.support_height_upper) &&
         settings.support_height_upper >= settings.support_height &&
+        std::isfinite(settings.max_heel_toe_height_difference) &&
+        settings.max_heel_toe_height_difference > 0.0 &&
+        std::isfinite(settings.max_lateral_height_difference) &&
+        settings.max_lateral_height_difference > 0.0 &&
         std::isfinite(settings.penetration_tolerance) &&
         settings.penetration_tolerance >= 0.0 &&
         std::isfinite(settings.max_joint_velocity) &&
         settings.max_joint_velocity > 0.0 &&
         std::isfinite(settings.max_root_linear_velocity) &&
         settings.max_root_linear_velocity > 0.0 &&
+        std::isfinite(settings.max_output_root_horizontal_velocity) &&
+        settings.max_output_root_horizontal_velocity > 0.0 &&
         std::isfinite(settings.max_root_angular_velocity) &&
         settings.max_root_angular_velocity > 0.0 &&
         std::isfinite(settings.forced_support_weight_scale) &&

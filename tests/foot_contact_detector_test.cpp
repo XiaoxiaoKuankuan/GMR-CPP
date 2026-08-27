@@ -104,6 +104,31 @@ int main() {
         require(!state.left_stance && state.right_stance,
                 "dynamic double support did not select a primary foot");
 
+        // Ambiguous moving double support must keep one primary side instead
+        // of alternating its forced support every frame.
+        gmr::FootContactDetectorConfig sticky_config;
+        sticky_config.allow_flight = true;
+        sticky_config.enter_frames = 1;
+        sticky_config.exit_frames = 1;
+        sticky_config.minimum_stance_frames = 0;
+        sticky_config.max_enter_horizontal_speed = 0.15;
+        sticky_config.max_exit_horizontal_speed = 0.20;
+        sticky_config.double_support_max_horizontal_speed = 0.025;
+        gmr::FootContactDetector sticky_detector(sticky_config);
+        sticky_detector.update(
+            observation(gmr::FootSide::Left, 0.01, 0.0),
+            observation(gmr::FootSide::Right, 0.01, 0.0), 4.0);
+        state = sticky_detector.update(
+            observation(gmr::FootSide::Left, 0.01, 0.001),
+            observation(gmr::FootSide::Right, 0.01, 0.002), 4.02);
+        require(state.left_stance && state.left_forced && !state.right_stance,
+                "ambiguous support did not initially select the slower left foot");
+        state = sticky_detector.update(
+            observation(gmr::FootSide::Left, 0.01, 0.003),
+            observation(gmr::FootSide::Right, 0.01, 0.003), 4.04);
+        require(state.left_stance && state.left_forced && !state.right_stance,
+                "ambiguous support side chattered when foot speeds crossed");
+
         gmr::FootContactDetectorConfig no_flight = config;
         no_flight.allow_flight = false;
         gmr::FootContactDetector grounded(no_flight);
@@ -123,6 +148,44 @@ int main() {
                 observation(gmr::FootSide::Right, 0.06), 1.04 + frame * 0.02);
         require(state.left_stance && !state.left_forced,
                 "detected contact must replace forced fallback");
+
+        gmr::SourceGroundTrackerConfig tracker_config;
+        tracker_config.enabled = true;
+        tracker_config.support_track_speed = 0.10;
+        tracker_config.reacquire_track_speed = 0.20;
+        tracker_config.max_reacquire_vertical_speed = 1.0;
+        tracker_config.max_reacquire_horizontal_speed = 1.0;
+        tracker_config.reacquire_after_frames = 3;
+        tracker_config.stable_reacquire_frames = 2;
+        gmr::SourceGroundTracker tracker(tracker_config);
+        gmr::FootContactState support;
+        support.left_stance = true;
+        support.right_stance = true;
+        tracker.update(
+            observation(gmr::FootSide::Left, 0.0),
+            observation(gmr::FootSide::Right, 0.0), support, 5.0);
+        tracker.update(
+            observation(gmr::FootSide::Left, 0.02),
+            observation(gmr::FootSide::Right, 0.02), support, 5.1);
+        require(std::abs(tracker.groundZ() - 0.01) < 1e-9,
+                "stance ground tracking exceeded its causal speed cap");
+
+        gmr::FootContactState flight;
+        tracker.update(
+            observation(gmr::FootSide::Left, 0.10),
+            observation(gmr::FootSide::Right, 0.11), flight, 5.2);
+        tracker.update(
+            observation(gmr::FootSide::Left, 0.10),
+            observation(gmr::FootSide::Right, 0.11), flight, 5.3);
+        require(std::abs(tracker.groundZ() - 0.01) < 1e-9 &&
+                    !tracker.reacquiring(),
+                "ordinary flight must freeze the source ground");
+        tracker.update(
+            observation(gmr::FootSide::Left, 0.10),
+            observation(gmr::FootSide::Right, 0.11), flight, 5.4);
+        require(tracker.reacquiring() &&
+                    std::abs(tracker.groundZ() - 0.03) < 1e-9,
+                "long stable flight did not gradually reacquire drifted ground");
 
         std::cout << "foot_contact_detector_test: PASS\n";
         return 0;

@@ -195,7 +195,14 @@ bool SmplxReader::decodePacket(const uint8_t* data, size_t len, RawFrame& out) {
     RawFrame parsed;
     parsed.frame_number = readU32LE(data + 8);
     const uint64_t source_stamp_ns = readU64LE(data + 12);
-    (void)source_stamp_ns;
+    if (source_stamp_ns >
+        static_cast<uint64_t>(std::numeric_limits<int64_t>::max()))
+        return false;
+    // The synchronous batch service has no receive-clock timestamp of its
+    // own.  Preserve the producer timestamp so contact velocity is evaluated
+    // at the real 30/50 Hz source cadence.  UDP parsePacket() intentionally
+    // overwrites this value with the local receive clock below.
+    parsed.stamp_ns = static_cast<int64_t>(source_stamp_ns);
 
     const uint8_t* cursor = data + kHeaderBytes;
     for (size_t target = 0; target < kTargetCount; ++target) {

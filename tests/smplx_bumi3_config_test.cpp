@@ -1,4 +1,5 @@
 #include "gmr/body_map.hpp"
+#include "gmr/geometry_ground.hpp"
 #include "gmr/gmr_mink.hpp"
 #include "gmr/redis_publisher.hpp"
 
@@ -298,11 +299,31 @@ void validateRealtimeProfiles(const nlohmann::json& config,
     if (!foot.enabled || foot.left.body_name != "l_ankle_roll_link" ||
         foot.right.body_name != "r_ankle_roll_link")
         throw std::runtime_error("SMPL-X foot-contact target profile is invalid");
+    if (!foot.settings.hard_support_constraints ||
+        foot.settings.support_height != 0.001 ||
+        foot.settings.support_height_upper != 0.003 ||
+        foot.settings.max_heel_toe_height_difference != 0.003 ||
+        foot.settings.max_lateral_height_difference != 0.003 ||
+        foot.settings.max_output_root_horizontal_velocity != 0.75)
+        throw std::runtime_error(
+            "SMPL-X stance sole plane must use the configured 1--3 mm band");
     const auto detector = gmr::footDetectorConfigFromJson(
         config.at("foot_contact"));
-    if (!detector.allow_flight || detector.enter_frames < 2)
+    if (!detector.allow_flight || detector.enter_frames != 4 ||
+        detector.exit_frames != 2 ||
+        detector.max_enter_horizontal_speed != 0.3 ||
+        detector.max_exit_horizontal_speed != 0.7)
         throw std::runtime_error(
             "SMPL-X foot detector must preserve flight with contact hysteresis");
+    const auto ground_tracker = gmr::sourceGroundTrackerConfigFromJson(
+        config.at("foot_contact"));
+    if (!ground_tracker.enabled ||
+        ground_tracker.support_track_speed != 0.04 ||
+        ground_tracker.reacquire_track_speed != 0.12 ||
+        ground_tracker.reacquire_after_frames != 45 ||
+        ground_tracker.stable_reacquire_frames != 5)
+        throw std::runtime_error(
+            "SMPL-X source ground tracker profile is invalid");
     const auto source_left = gmr::footSoleDefinitionFromJson(
         config.at("foot_contact").at("source").at("left"),
         "foot_contact.source.left");
@@ -342,6 +363,83 @@ void validateRealtimeProfiles(const nlohmann::json& config,
     std::cout
         << "[BUMI3 realtime] velocity/acceleration, arm jump, support/flight "
            "profiles validated\n";
+}
+
+void validateHardSolePlane(const std::string& xml_path,
+                           const std::string& config_path,
+                           const nlohmann::json& config) {
+    const auto contact = gmr::footConstraintConfigFromJson(config);
+    gmr_mink::GMR solver(xml_path, config_path, 1.8, 1.0, false);
+    solver.setFootContactEnabled(true);
+    solver.setFootContactWeightScale(1.0);
+
+    gmr::BodyMap neutral = armsDownPose();
+    solver.calibrateGroundOffset(neutral, 0.05);
+    Eigen::VectorXd qpos;
+    for (int iteration = 0; iteration < 200; ++iteration)
+        qpos = solver.retarget(neutral, false);
+    gmr::TargetGroundAligner ground(
+        xml_path, {contact.left.body_name, contact.right.body_name});
+    ground.align(qpos, contact.ground_z);
+    solver.setConfiguration(qpos);
+
+    gmr::FootContactState double_support;
+    double_support.left_stance = true;
+    double_support.right_stance = true;
+    solver.initializeFootContacts(double_support);
+    solver.settleFootContacts();
+    for (int frame = 0; frame < 80; ++frame) {
+        solver.setFootContactState(double_support);
+        qpos = solver.retarget(neutral, false);
+    }
+    const auto neutral_status = solver.footContactDiagnostics();
+    std::cout << "[BUMI3 sole-plane neutral] tilt=("
+              << neutral_status.left_tilt_degrees << ','
+              << neutral_status.right_tilt_degrees << ")deg heel_toe=("
+              << neutral_status.left_heel_toe_height_difference << ','
+              << neutral_status.right_heel_toe_height_difference << ")m\n";
+
+    // Ask both source ankles to pitch by 0.45 rad while keeping their joint
+    // centres on the standing targets.  A stance constraint must keep the
+    // physical BUMI sole plane horizontal instead of copying that conflict.
+    gmr::BodyMap pitched = neutral;
+    const Eigen::Quaterniond pitch(
+        Eigen::AngleAxisd(0.45, Eigen::Vector3d::UnitY()));
+    const Eigen::Vector4d pitch_wxyz(
+        pitch.w(), pitch.x(), pitch.y(), pitch.z());
+    pitched.at("left_foot").rot_wxyz = pitch_wxyz;
+    pitched.at("right_foot").rot_wxyz = pitch_wxyz;
+    for (int frame = 0; frame < 80; ++frame) {
+        solver.setFootContactState(double_support);
+        qpos = solver.retarget(pitched, false);
+    }
+
+    const auto& status = solver.footContactDiagnostics();
+    const double plane_tolerance = 0.0035;
+    std::cout << "[BUMI3 sole-plane] daqp=" << status.daqp_exitflag
+              << " relaxed=" << status.relaxed_slip_constraints
+              << " tilt=(" << status.left_tilt_degrees << ','
+              << status.right_tilt_degrees << ")deg heel_toe=("
+              << status.left_heel_toe_height_difference << ','
+              << status.right_heel_toe_height_difference << ")m lateral=("
+              << status.left_lateral_height_difference << ','
+              << status.right_lateral_height_difference << ")m center=("
+              << status.left_center_height << ','
+              << status.right_center_height << ")m min=("
+              << status.left_min_height << ','
+              << status.right_min_height << ")m\n";
+    if (!qpos.allFinite() || status.daqp_exitflag <= 0 ||
+        std::abs(status.left_heel_toe_height_difference) > plane_tolerance ||
+        std::abs(status.right_heel_toe_height_difference) > plane_tolerance ||
+        std::abs(status.left_lateral_height_difference) > plane_tolerance ||
+        std::abs(status.right_lateral_height_difference) > plane_tolerance ||
+        status.left_min_height < -1e-5 || status.right_min_height < -1e-5 ||
+        status.left_center_height < 0.0005 ||
+        status.left_center_height > 0.0035 ||
+        status.right_center_height < 0.0005 ||
+        status.right_center_height > 0.0035)
+        throw std::runtime_error(
+            "hard stance sole-plane constraints did not converge");
 }
 
 double lowestFootTarget(const gmr::BodyMap& targets) {
@@ -511,6 +609,7 @@ int main() {
 
         validateConfigAndModel(root, xml_path, config_path, config, model.get());
         validateRealtimeProfiles(config, model.get());
+        validateHardSolePlane(xml_path, config_path, config);
         validateConfigAndModel(
             root, xml_path, legacy_config_path, legacy_config, model.get());
         validateBumi3RedisPreset(root, model.get());

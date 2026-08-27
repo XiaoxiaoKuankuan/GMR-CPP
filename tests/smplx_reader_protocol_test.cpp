@@ -67,6 +67,7 @@ int main() {
                     packet.data(), packet.size(), frame),
                 "valid SMP1 packet did not decode");
         require(frame.frame_number == 73, "wrong SMP1 sequence");
+        require(frame.stamp_ns == 987654321, "wrong SMP1 source timestamp");
         require(frame.body_data.size() == 14, "wrong target count");
         require(frame.body_data.count("pelvis") == 1, "pelvis missing");
         require(frame.body_data.count("spine3") == 1, "spine3 missing");

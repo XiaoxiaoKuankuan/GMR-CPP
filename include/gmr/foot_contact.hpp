@@ -336,6 +336,16 @@ struct FootContactDetectorConfig {
     bool allow_flight = false;
 };
 
+struct SourceGroundTrackerConfig {
+    bool enabled = false;
+    double support_track_speed = 0.04;
+    double reacquire_track_speed = 0.12;
+    double max_reacquire_vertical_speed = 0.30;
+    double max_reacquire_horizontal_speed = 0.50;
+    int reacquire_after_frames = 45;
+    int stable_reacquire_frames = 5;
+};
+
 struct FootContactState {
     bool left_stance = false;
     bool right_stance = false;
@@ -347,6 +357,138 @@ struct FootContactState {
     double right_vertical_speed = 0.0;
     double left_horizontal_speed = 0.0;
     double right_horizontal_speed = 0.0;
+};
+
+// Track only the slow vertical bias of the source coordinate system.  A
+// trusted stance may update the estimate, while ordinary flight freezes it.
+// After an implausibly long flight, a stable lower foot can reacquire the
+// floor gradually; this preserves real jumps without accepting permanent
+// long-sequence root drift as airborne motion.
+class SourceGroundTracker {
+public:
+    explicit SourceGroundTracker(SourceGroundTrackerConfig config = {})
+        : config_(config) {
+        if (!std::isfinite(config_.support_track_speed) ||
+            config_.support_track_speed < 0.0 ||
+            !std::isfinite(config_.reacquire_track_speed) ||
+            config_.reacquire_track_speed < config_.support_track_speed ||
+            !std::isfinite(config_.max_reacquire_vertical_speed) ||
+            config_.max_reacquire_vertical_speed < 0.0 ||
+            !std::isfinite(config_.max_reacquire_horizontal_speed) ||
+            config_.max_reacquire_horizontal_speed < 0.0 ||
+            config_.reacquire_after_frames < 1 ||
+            config_.stable_reacquire_frames < 1)
+            throw std::runtime_error("invalid source ground tracker configuration");
+    }
+
+    void reset() {
+        initialized_ = false;
+        ground_z_ = 0.0;
+        initial_ground_z_ = 0.0;
+        previous_timestamp_ = 0.0;
+        previous_left_center_.setZero();
+        previous_right_center_.setZero();
+        flight_frames_ = 0;
+        stable_reacquire_frames_ = 0;
+        reacquiring_ = false;
+    }
+
+    double update(const FootObservation& left, const FootObservation& right,
+                  const FootContactState& previous_state, double timestamp) {
+        if (!std::isfinite(timestamp))
+            throw std::runtime_error("source ground timestamp must be finite");
+        if (!initialized_) {
+            ground_z_ = std::min(left.minimumHeight(), right.minimumHeight());
+            initial_ground_z_ = ground_z_;
+            initialized_ = true;
+            remember(left, right, timestamp);
+            return ground_z_;
+        }
+
+        if (!config_.enabled) {
+            remember(left, right, timestamp);
+            return ground_z_;
+        }
+
+        const double elapsed = timestamp - previous_timestamp_;
+        const bool valid_dt = elapsed > 0.0 && elapsed <= 0.2;
+        const double dt = valid_dt ? elapsed : 0.0;
+        const double left_vz = valid_dt
+            ? (left.center_world.z() - previous_left_center_.z()) / dt : 0.0;
+        const double right_vz = valid_dt
+            ? (right.center_world.z() - previous_right_center_.z()) / dt : 0.0;
+        const double left_vxy = valid_dt
+            ? (left.center_world.head<2>() -
+               previous_left_center_.head<2>()).norm() / dt : 0.0;
+        const double right_vxy = valid_dt
+            ? (right.center_world.head<2>() -
+               previous_right_center_.head<2>()).norm() / dt : 0.0;
+
+        if (previous_state.left_stance || previous_state.right_stance) {
+            flight_frames_ = 0;
+            stable_reacquire_frames_ = 0;
+            reacquiring_ = false;
+            double candidate = std::numeric_limits<double>::infinity();
+            if (previous_state.left_stance)
+                candidate = std::min(candidate, left.minimumHeight());
+            if (previous_state.right_stance)
+                candidate = std::min(candidate, right.minimumHeight());
+            trackToward(candidate, config_.support_track_speed, dt);
+        } else {
+            ++flight_frames_;
+            const bool left_lower = left.minimumHeight() <= right.minimumHeight();
+            const auto& lower = left_lower ? left : right;
+            const double lower_vz = left_lower ? left_vz : right_vz;
+            const double lower_vxy = left_lower ? left_vxy : right_vxy;
+            const bool stable = valid_dt &&
+                std::abs(lower_vz) <= config_.max_reacquire_vertical_speed &&
+                lower_vxy <= config_.max_reacquire_horizontal_speed;
+            stable_reacquire_frames_ = stable
+                ? stable_reacquire_frames_ + 1 : 0;
+            if (flight_frames_ >= config_.reacquire_after_frames &&
+                stable_reacquire_frames_ >= config_.stable_reacquire_frames)
+                reacquiring_ = true;
+            if (reacquiring_)
+                trackToward(lower.minimumHeight(),
+                            config_.reacquire_track_speed, dt);
+        }
+
+        remember(left, right, timestamp);
+        return ground_z_;
+    }
+
+    bool initialized() const { return initialized_; }
+    double groundZ() const { return ground_z_; }
+    double initialGroundZ() const { return initial_ground_z_; }
+    double correction() const { return ground_z_ - initial_ground_z_; }
+    bool reacquiring() const { return reacquiring_; }
+    int flightFrames() const { return flight_frames_; }
+    const SourceGroundTrackerConfig& config() const { return config_; }
+
+private:
+    void trackToward(double candidate, double speed, double dt) {
+        if (!std::isfinite(candidate) || dt <= 0.0 || speed <= 0.0) return;
+        const double maximum = speed * dt;
+        ground_z_ += std::clamp(candidate - ground_z_, -maximum, maximum);
+    }
+
+    void remember(const FootObservation& left, const FootObservation& right,
+                  double timestamp) {
+        previous_left_center_ = left.center_world;
+        previous_right_center_ = right.center_world;
+        previous_timestamp_ = timestamp;
+    }
+
+    SourceGroundTrackerConfig config_;
+    bool initialized_ = false;
+    double ground_z_ = 0.0;
+    double initial_ground_z_ = 0.0;
+    double previous_timestamp_ = 0.0;
+    Eigen::Vector3d previous_left_center_ = Eigen::Vector3d::Zero();
+    Eigen::Vector3d previous_right_center_ = Eigen::Vector3d::Zero();
+    int flight_frames_ = 0;
+    int stable_reacquire_frames_ = 0;
+    bool reacquiring_ = false;
 };
 
 struct FootConstraintSettings {
@@ -361,9 +503,12 @@ struct FootConstraintSettings {
     double max_slip_speed = 0.05;
     double support_height = 0.001;
     double support_height_upper = 0.003;
+    double max_heel_toe_height_difference = 0.003;
+    double max_lateral_height_difference = 0.003;
     double penetration_tolerance = 0.0;
     double max_joint_velocity = 8.0;
     double max_root_linear_velocity = 3.0;
+    double max_output_root_horizontal_velocity = 0.75;
     double max_root_angular_velocity = 6.0;
     double forced_support_weight_scale = 0.08;
     int transition_frames = 8;
@@ -392,8 +537,14 @@ struct FootConstraintDiagnostics {
     double right_tilt_degrees = 0.0;
     double left_min_height = 0.0;
     double left_max_height = 0.0;
+    double left_center_height = 0.0;
+    double left_heel_toe_height_difference = 0.0;
+    double left_lateral_height_difference = 0.0;
     double right_min_height = 0.0;
     double right_max_height = 0.0;
+    double right_center_height = 0.0;
+    double right_heel_toe_height_difference = 0.0;
+    double right_lateral_height_difference = 0.0;
     int daqp_exitflag = 0;
     bool relaxed_slip_constraints = false;
     int primary_support_side = -1;  // -1 none, 0 left, 1 right
@@ -472,12 +623,21 @@ public:
                 right_vxy <= config_.double_support_max_horizontal_speed;
             if (left_stationary && !right_stationary) {
                 result.right_stance = false;
+                ambiguous_support_side_valid_ = false;
             } else if (right_stationary && !left_stationary) {
                 result.left_stance = false;
+                ambiguous_support_side_valid_ = false;
             } else {
-                const double left_score = result.left_height + 0.05 * left_vxy;
-                const double right_score = result.right_height + 0.05 * right_vxy;
-                if (left_score <= right_score) {
+                if (!ambiguous_support_side_valid_) {
+                    const double left_score =
+                        result.left_height + 0.05 * left_vxy;
+                    const double right_score =
+                        result.right_height + 0.05 * right_vxy;
+                    ambiguous_support_side_ = left_score <= right_score
+                        ? FootSide::Left : FootSide::Right;
+                    ambiguous_support_side_valid_ = true;
+                }
+                if (ambiguous_support_side_ == FootSide::Left) {
                     result.right_stance = false;
                     result.left_forced = true;
                 } else {
@@ -485,7 +645,19 @@ public:
                     result.right_forced = true;
                 }
             }
+        } else {
+            ambiguous_support_side_valid_ = false;
         }
+
+        // A low but moving single support is a sliding/turning ground hint.
+        // Keep its sole flat and seated, but mark it forced so the solver does
+        // not create a conflicting world-XY anchor.
+        if (result.left_stance && !result.right_stance &&
+            left_vxy > config_.double_support_max_horizontal_speed)
+            result.left_forced = true;
+        if (result.right_stance && !result.left_stance &&
+            right_vxy > config_.double_support_max_horizontal_speed)
+            result.right_forced = true;
 
         if (!config_.allow_flight && !result.left_stance && !result.right_stance) {
             if (!forced_side_valid_)
@@ -515,6 +687,7 @@ public:
         right_latch_ = {};
         has_previous_ = false;
         forced_side_valid_ = false;
+        ambiguous_support_side_valid_ = false;
     }
 
     const FootContactDetectorConfig& config() const { return config_; }
@@ -564,6 +737,8 @@ private:
     Eigen::Vector3d previous_right_center_ = Eigen::Vector3d::Zero();
     bool forced_side_valid_ = false;
     FootSide forced_side_ = FootSide::Left;
+    bool ambiguous_support_side_valid_ = false;
+    FootSide ambiguous_support_side_ = FootSide::Left;
 };
 
 }  // namespace gmr

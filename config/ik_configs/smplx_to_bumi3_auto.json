@@ -60,16 +60,25 @@
     "allow_flight": true,
     "ground_z": 0.0,
     "detection": {
-      "enter_height_m": 0.03,
-      "exit_height_m": 0.06,
-      "max_enter_vertical_speed_mps": 0.25,
-      "max_exit_upward_speed_mps": 0.4,
-      "max_enter_horizontal_speed_mps": 0.12,
-      "max_exit_horizontal_speed_mps": 0.3,
-      "double_support_max_horizontal_speed_mps": 0.1,
-      "enter_frames": 2,
-      "exit_frames": 1,
-      "minimum_stance_frames": 2
+      "enter_height_m": 0.04,
+      "exit_height_m": 0.08,
+      "max_enter_vertical_speed_mps": 0.35,
+      "max_exit_upward_speed_mps": 0.6,
+      "max_enter_horizontal_speed_mps": 0.3,
+      "max_exit_horizontal_speed_mps": 0.7,
+      "double_support_max_horizontal_speed_mps": 0.15,
+      "enter_frames": 4,
+      "exit_frames": 2,
+      "minimum_stance_frames": 3
+    },
+    "source_ground_tracking": {
+      "enabled": true,
+      "support_track_speed_mps": 0.04,
+      "reacquire_track_speed_mps": 0.12,
+      "max_reacquire_vertical_speed_mps": 0.3,
+      "max_reacquire_horizontal_speed_mps": 0.5,
+      "reacquire_after_frames": 45,
+      "stable_reacquire_frames": 5
     },
     "constraints": {
       "xy_weight": 35.0,
@@ -83,13 +92,16 @@
       "max_slip_speed_mps": 0.05,
       "support_height_m": 0.001,
       "support_height_upper_m": 0.003,
+      "max_heel_toe_height_difference_m": 0.003,
+      "max_lateral_height_difference_m": 0.003,
       "penetration_tolerance_m": 0.0,
       "max_joint_velocity_rps": 12.0,
       "max_root_linear_velocity_mps": 3.0,
+      "max_output_root_horizontal_velocity_mps": 0.75,
       "max_root_angular_velocity_rps": 6.0,
       "forced_support_weight_scale": 0.08,
       "transition_frames": 6,
-      "hard_support_constraints": false
+      "hard_support_constraints": true
     },
     "source": {
       "left": {

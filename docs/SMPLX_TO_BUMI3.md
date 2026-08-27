@@ -177,6 +177,28 @@ Redis 帧中的 `joint_pos`，不会改变 MuJoCo qpos、Viewer 或 IK 配置。
 `--offset-to-ground` 仅用于兼容。接触约束打开时程序会忽略逐帧最低脚对地，以免
 破坏腾空判断。
 
+同步 `smplx_bumi3_batch_server` 使用同一规则：默认从 IK JSON 启用接触检测，
+`RESET` 时只标定一次源地面并初始化机器人脚底锚点，之后逐帧更新 stance/swing/flight。
+即使调用端仍传入历史参数 `--offset-to-ground`，接触模式也会忽略逐帧对地；需要精确
+复现旧 batch 输出时必须显式传入 `--no-foot-contact-constraints`。支撑期额外限制
+脚尖/脚跟和内外侧高度差不超过 `3 mm`，这些约束不包含 yaw 行，因此不会锁住原动作
+的水平转向。
+
+batch 的人体源地面与机器人鞋底高度是两个独立参数：
+
+- `--source-ground-clearance 0` 只用于首次人体源地面标定；
+- `--ground-clearance 0` 不再人为抬高机器人，stance 的真实输出高度由 IK JSON 中
+  `support_height_m=0.001`、`support_height_upper_m=0.003` 决定；
+- 有可靠支撑时源地面仅以 `0.04 m/s` 慢跟踪，普通腾空冻结；长腾空持续 45 帧且脚
+  运动重新稳定后，才以 `0.12 m/s` 渐进重捕获；
+- 落脚当帧只运行一次人体 IK，然后捕获当前帧锚点，下一帧才进入渐进硬约束。禁止在
+  每次 stance 进入时运行多轮 settle，否则会表现为根节点跳动和机器人卡顿；
+- 最终根节点世界 XY 速度按 `0.75 m/s` 因果限制；Z 不做输出后截断，以免把已经满足
+  接触 QP 的支撑脚重新压入地面或拉离地面。
+
+旧 batch 生成的 qpos 不会自动改变，需要按新的 binary、IK SHA、source/target
+clearance 身份重新导出。
+
 ## 实时关节保护
 
 `realtime_safety` 配置默认打开，保护发生在每次 IK 结束后、脚底最终对地修正前：
