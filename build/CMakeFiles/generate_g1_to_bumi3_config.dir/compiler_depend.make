@@ -487,7 +487,13 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
   /usr/include/c++/11/bits/shared_ptr_atomic.h \
   /usr/include/c++/11/backward/auto_ptr.h \
   /usr/include/c++/11/pstl/glue_memory_defs.h \
-  /usr/include/eigen3/Eigen/Geometry \
+  ../include/gmr/foot_contact_json.hpp \
+  ../include/gmr/foot_contact.hpp \
+  ../include/gmr/body_map.hpp \
+  /usr/include/c++/11/map \
+  /usr/include/c++/11/bits/stl_tree.h \
+  /usr/include/c++/11/bits/stl_map.h \
+  /usr/include/c++/11/bits/stl_multimap.h \
   /usr/include/nlohmann/json.hpp \
   /usr/include/c++/11/iterator \
   /usr/include/c++/11/bits/stream_iterator.h \
@@ -499,10 +505,6 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
   /usr/include/c++/11/forward_list \
   /usr/include/c++/11/bits/forward_list.h \
   /usr/include/c++/11/bits/forward_list.tcc \
-  /usr/include/c++/11/map \
-  /usr/include/c++/11/bits/stl_tree.h \
-  /usr/include/c++/11/bits/stl_map.h \
-  /usr/include/c++/11/bits/stl_multimap.h \
   /usr/include/c++/11/valarray \
   /usr/include/c++/11/bits/valarray_array.h \
   /usr/include/c++/11/bits/valarray_array.tcc \
@@ -571,6 +573,7 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
   /usr/include/nlohmann/ordered_map.hpp \
   /usr/include/nlohmann/detail/macro_unscope.hpp \
   /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+  /usr/include/eigen3/Eigen/Geometry \
   /usr/include/c++/11/fstream \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
@@ -595,6 +598,8 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 /usr/include/nlohmann/detail/input/json_sax.hpp:
 
 /usr/include/nlohmann/detail/hash.hpp:
+
+/usr/include/c++/11/bits/fs_ops.h:
 
 /usr/include/c++/11/bits/stl_heap.h:
 
@@ -749,6 +754,10 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
 /usr/include/asm-generic/errno.h:
+
+/usr/include/nlohmann/detail/conversions/to_json.hpp:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h:
 
@@ -1128,8 +1137,6 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 
 /usr/include/eigen3/Eigen/src/QR/FullPivHouseholderQR.h:
 
-/usr/include/c++/11/cstdlib:
-
 /usr/include/c++/11/tr1/poly_laguerre.tcc:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h:
@@ -1215,6 +1222,8 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
 
 /usr/include/c++/11/algorithm:
+
+../include/gmr/foot_contact.hpp:
 
 /usr/include/eigen3/Eigen/src/Core/util/Constants.h:
 
@@ -1442,6 +1451,10 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 
 /usr/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h:
 
+/usr/include/c++/11/cstdlib:
+
+../include/gmr/body_map.hpp:
+
 /usr/include/nlohmann/detail/json_pointer.hpp:
 
 /usr/include/eigen3/Eigen/src/Core/products/SelfadjointMatrixVector.h:
@@ -1496,9 +1509,9 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 
 /usr/include/eigen3/Eigen/src/Core/Reverse.h:
 
-/usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
-
 /usr/include/nlohmann/detail/iterators/iteration_proxy.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
 
 /usr/include/eigen3/Eigen/src/Core/ArrayWrapper.h:
 
@@ -1527,10 +1540,6 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 /usr/include/eigen3/Eigen/src/Cholesky/LLT.h:
 
 /usr/include/eigen3/Eigen/src/Householder/Householder.h:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
-
-/usr/include/nlohmann/detail/conversions/to_json.hpp:
 
 /usr/include/eigen3/Eigen/src/Core/functors/TernaryFunctors.h:
 
@@ -1642,13 +1651,7 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 
 /usr/include/nlohmann/detail/conversions/from_json.hpp:
 
-/usr/include/nlohmann/json.hpp:
-
-/usr/include/c++/11/bits/stream_iterator.h:
-
-/usr/include/c++/11/bits/stl_numeric.h:
-
-/usr/include/nlohmann/adl_serializer.hpp:
+../include/gmr/foot_contact_json.hpp:
 
 ../third_party/mujoco/include/mujoco/mjrender.h:
 
@@ -1657,6 +1660,14 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 /usr/include/c++/11/bits/stl_tree.h:
 
 /usr/include/c++/11/bits/stl_map.h:
+
+/usr/include/nlohmann/json.hpp:
+
+/usr/include/c++/11/bits/stream_iterator.h:
+
+/usr/include/c++/11/bits/stl_numeric.h:
+
+/usr/include/nlohmann/adl_serializer.hpp:
 
 /usr/include/c++/11/valarray:
 
@@ -1709,5 +1720,3 @@ CMakeFiles/generate_g1_to_bumi3_config.dir/tools/generate_g1_to_bumi3_config.cpp
 /usr/include/c++/11/bits/quoted_string.h:
 
 /usr/include/c++/11/bits/fs_dir.h:
-
-/usr/include/c++/11/bits/fs_ops.h:

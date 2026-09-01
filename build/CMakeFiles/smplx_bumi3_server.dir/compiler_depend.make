@@ -482,7 +482,8 @@ CMakeFiles/smplx_bumi3_server.dir/apps/smplx_server.cpp.o: ../apps/smplx_server.
   /usr/include/c++/11/bits/allocated_ptr.h \
   /usr/include/c++/11/bits/unique_ptr.h \
   /usr/include/c++/11/ext/concurrence.h \
-  ../include/gmr/gmr_mink.hpp \
+  ../include/gmr/foot_contact_json.hpp \
+  ../include/gmr/foot_contact.hpp \
   ../third_party/mujoco/include/mujoco/mujoco.h \
   /usr/include/c++/11/math.h \
   ../third_party/mujoco/include/mujoco/mjdata.h \
@@ -579,6 +580,8 @@ CMakeFiles/smplx_bumi3_server.dir/apps/smplx_server.cpp.o: ../apps/smplx_server.
   /usr/include/nlohmann/ordered_map.hpp \
   /usr/include/nlohmann/detail/macro_unscope.hpp \
   /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+  ../include/gmr/geometry_ground.hpp \
+  ../include/gmr/gmr_mink.hpp \
   ../third_party/daqp/include/api.h \
   ../third_party/daqp/include/daqp.h \
   ../third_party/daqp/include/factorization.h \
@@ -589,8 +592,9 @@ CMakeFiles/smplx_bumi3_server.dir/apps/smplx_server.cpp.o: ../apps/smplx_server.
   ../third_party/daqp/include/bnb.h \
   ../third_party/daqp/include/hierarchical.h \
   ../third_party/daqp/include/types.h \
-  ../include/gmr/foot_contact_json.hpp \
-  ../include/gmr/foot_contact.hpp \
+  ../include/gmr/realtime_motion_guard.hpp \
+  /usr/include/c++/11/unordered_set \
+  /usr/include/c++/11/bits/unordered_set.h \
   /usr/include/c++/11/fstream \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
@@ -615,6 +619,7 @@ CMakeFiles/smplx_bumi3_server.dir/apps/smplx_server.cpp.o: ../apps/smplx_server.
   /usr/include/x86_64-linux-gnu/sys/time.h \
   /usr/include/hiredis/sds.h \
   /usr/include/hiredis/alloc.h \
+  ../include/gmr/realtime_motion_guard_json.hpp \
   ../readers/smplx_reader.hpp \
   ../readers/base_reader.hpp \
   /usr/include/c++/11/csignal \
@@ -1322,10 +1327,6 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 
 /usr/include/c++/11/fstream:
 
-../include/gmr/foot_contact.hpp:
-
-../include/gmr/foot_contact_json.hpp:
-
 ../third_party/daqp/include/bnb.h:
 
 ../third_party/daqp/include/types.h:
@@ -1333,6 +1334,10 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 ../third_party/daqp/include/factorization.h:
 
 ../third_party/daqp/include/daqp.h:
+
+../include/gmr/gmr_mink.hpp:
+
+../include/gmr/geometry_ground.hpp:
 
 /usr/include/nlohmann/ordered_map.hpp:
 
@@ -1433,6 +1438,8 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 /usr/include/c++/11/utility:
 
 /usr/include/c++/11/ios:
+
+/usr/include/c++/11/bits/unordered_set.h:
 
 /usr/include/c++/11/bits/stl_vector.h:
 
@@ -1820,6 +1827,8 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 
 /usr/include/c++/11/limits:
 
+../include/gmr/realtime_motion_guard.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
 /usr/include/c++/11/bits/range_access.h:
@@ -2049,6 +2058,8 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
 
 /usr/include/c++/11/algorithm:
+
+../include/gmr/foot_contact.hpp:
 
 /usr/include/eigen3/Eigen/src/Core/util/Constants.h:
 
@@ -2280,6 +2291,8 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 
 /usr/include/c++/11/bits/valarray_array.tcc:
 
+/usr/include/c++/11/unordered_set:
+
 /usr/include/eigen3/Eigen/src/Core/ProductEvaluators.h:
 
 /usr/include/c++/11/bits/std_function.h:
@@ -2289,8 +2302,6 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 /usr/include/eigen3/Eigen/src/SVD/JacobiSVD.h:
 
 /usr/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrix.h:
-
-../include/gmr/gmr_mink.hpp:
 
 /usr/include/nlohmann/detail/json_pointer.hpp:
 
@@ -2323,6 +2334,8 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 /usr/include/eigen3/Eigen/src/Core/Select.h:
 
 /usr/include/eigen3/Eigen/src/Core/VectorwiseOp.h:
+
+../include/gmr/realtime_motion_guard_json.hpp:
 
 /usr/include/nlohmann/detail/meta/is_sax.hpp:
 
@@ -2485,6 +2498,8 @@ CMakeFiles/smplx_bumi3_server.dir/readers/smplx_reader.cpp.o: ../readers/smplx_r
 /usr/include/c++/11/bits/unique_ptr.h:
 
 /usr/include/c++/11/ext/concurrence.h:
+
+../include/gmr/foot_contact_json.hpp:
 
 /usr/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h:
 

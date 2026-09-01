@@ -497,6 +497,7 @@ struct FootConstraintSettings {
     double height_weight = 80.0;
     double xy_kp = 5.0;
     double tilt_kp = 8.0;
+    double tilt_deadzone = 0.0;
     double height_kp = 10.0;
     double max_anchor_correction_speed = 0.20;
     double anchor_deadzone = 0.008;
@@ -516,6 +517,7 @@ struct FootConstraintSettings {
     double max_root_linear_acceleration = 3.0;
     double max_root_angular_velocity = 6.0;
     double max_root_angular_acceleration = 20.0;
+    double frame_jerk_weight = 0.0;
     double forced_support_weight_scale = 0.08;
     int transition_frames = 8;
     bool hard_support_constraints = false;

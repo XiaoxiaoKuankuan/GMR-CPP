@@ -541,6 +541,7 @@ CMakeFiles/smplx_bumi3_server.dir/apps/smplx_server.cpp.o: \
  /usr/include/hiredis/hiredis.h /usr/include/hiredis/read.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/hiredis/sds.h \
  /usr/include/hiredis/alloc.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/realtime_motion_guard_json.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/readers/smplx_reader.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
  /usr/include/c++/11/csignal /usr/include/signal.h \

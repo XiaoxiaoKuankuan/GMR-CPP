@@ -1,4 +1,10 @@
-smplx_reader_protocol_test 5 0.000505316
-smplx_bumi3_config_test 7 0.471223
-ground_clearance_test 6 0.078085
+smplx_reader_protocol_test 6 0.00029194
+smplx_bumi3_config_test 8 0.560607
+ground_clearance_test 7 0.0724758
+g1_motion_source_test 1 0.168714
+foot_contact_detector_test 1 0.0019417
+qpos_interpolator_test 1 0.00156844
+realtime_motion_guard_test 1 0.181414
+g1_to_bumi3_config_test 1 1.71297
+g1_bumi3_foot_constraint_test 1 2.09688
 ---

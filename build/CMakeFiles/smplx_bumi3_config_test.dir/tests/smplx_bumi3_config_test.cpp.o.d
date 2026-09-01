@@ -411,7 +411,7 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: \
  /usr/include/c++/11/map /usr/include/c++/11/bits/stl_tree.h \
  /usr/include/c++/11/bits/stl_map.h \
  /usr/include/c++/11/bits/stl_multimap.h \
- /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/gmr_mink.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/geometry_ground.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mujoco.h \
  /usr/include/c++/11/math.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjdata.h \
@@ -426,8 +426,7 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjsan.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjspec.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjui.h \
- /usr/include/nlohmann/json.hpp /usr/include/c++/11/iterator \
- /usr/include/c++/11/bits/stream_iterator.h /usr/include/c++/11/memory \
+ /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
  /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
  /usr/include/c++/11/bits/unique_ptr.h \
@@ -437,7 +436,10 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: \
  /usr/include/c++/11/ext/concurrence.h \
  /usr/include/c++/11/bits/shared_ptr_atomic.h \
  /usr/include/c++/11/backward/auto_ptr.h \
- /usr/include/c++/11/pstl/glue_memory_defs.h /usr/include/c++/11/numeric \
+ /usr/include/c++/11/pstl/glue_memory_defs.h \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/gmr_mink.hpp \
+ /usr/include/nlohmann/json.hpp /usr/include/c++/11/iterator \
+ /usr/include/c++/11/bits/stream_iterator.h /usr/include/c++/11/numeric \
  /usr/include/c++/11/bits/stl_numeric.h \
  /usr/include/c++/11/pstl/glue_numeric_defs.h \
  /usr/include/nlohmann/adl_serializer.hpp \
@@ -521,6 +523,7 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/iostream \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/realtime_motion_guard_json.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/redis_publisher.hpp \
  /usr/include/hiredis/hiredis.h /usr/include/hiredis/read.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/hiredis/sds.h \

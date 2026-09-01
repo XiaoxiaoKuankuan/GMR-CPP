@@ -465,7 +465,7 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
   /usr/include/c++/11/bits/stl_tree.h \
   /usr/include/c++/11/bits/stl_map.h \
   /usr/include/c++/11/bits/stl_multimap.h \
-  ../include/gmr/gmr_mink.hpp \
+  ../include/gmr/geometry_ground.hpp \
   ../third_party/mujoco/include/mujoco/mujoco.h \
   /usr/include/c++/11/math.h \
   ../third_party/mujoco/include/mujoco/mjdata.h \
@@ -480,9 +480,6 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
   ../third_party/mujoco/include/mujoco/mjsan.h \
   ../third_party/mujoco/include/mujoco/mjspec.h \
   ../third_party/mujoco/include/mujoco/mjui.h \
-  /usr/include/nlohmann/json.hpp \
-  /usr/include/c++/11/iterator \
-  /usr/include/c++/11/bits/stream_iterator.h \
   /usr/include/c++/11/memory \
   /usr/include/c++/11/bits/stl_raw_storage_iter.h \
   /usr/include/c++/11/bits/align.h \
@@ -495,6 +492,10 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
   /usr/include/c++/11/bits/shared_ptr_atomic.h \
   /usr/include/c++/11/backward/auto_ptr.h \
   /usr/include/c++/11/pstl/glue_memory_defs.h \
+  ../include/gmr/gmr_mink.hpp \
+  /usr/include/nlohmann/json.hpp \
+  /usr/include/c++/11/iterator \
+  /usr/include/c++/11/bits/stream_iterator.h \
   /usr/include/c++/11/numeric \
   /usr/include/c++/11/bits/stl_numeric.h \
   /usr/include/c++/11/pstl/glue_numeric_defs.h \
@@ -583,11 +584,15 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
   ../third_party/daqp/include/types.h \
   ../include/gmr/foot_contact_json.hpp \
   ../include/gmr/foot_contact.hpp \
+  ../include/gmr/realtime_motion_guard.hpp \
+  /usr/include/c++/11/unordered_set \
+  /usr/include/c++/11/bits/unordered_set.h \
   /usr/include/c++/11/fstream \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
   /usr/include/c++/11/iostream \
+  ../include/gmr/realtime_motion_guard_json.hpp \
   ../include/gmr/redis_publisher.hpp \
   /usr/include/hiredis/hiredis.h \
   /usr/include/hiredis/read.h \
@@ -715,6 +720,8 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 
 /usr/include/c++/11/ios:
 
+/usr/include/c++/11/bits/unordered_set.h:
+
 /usr/include/c++/11/bits/stl_vector.h:
 
 /usr/include/c++/11/cstddef:
@@ -798,6 +805,10 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
 /usr/include/asm-generic/errno.h:
+
+/usr/include/nlohmann/detail/conversions/to_json.hpp:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h:
 
@@ -1070,6 +1081,8 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h:
 
 /usr/include/c++/11/limits:
+
+../include/gmr/realtime_motion_guard.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
@@ -1491,6 +1504,8 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 
 /usr/include/c++/11/bits/valarray_array.tcc:
 
+/usr/include/c++/11/unordered_set:
+
 /usr/include/eigen3/Eigen/src/Core/ProductEvaluators.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
@@ -1532,6 +1547,8 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 /usr/include/eigen3/Eigen/src/Core/Select.h:
 
 /usr/include/eigen3/Eigen/src/Core/VectorwiseOp.h:
+
+../include/gmr/realtime_motion_guard_json.hpp:
 
 /usr/include/nlohmann/detail/meta/is_sax.hpp:
 
@@ -1590,10 +1607,6 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 /usr/include/eigen3/Eigen/src/Cholesky/LLT.h:
 
 /usr/include/eigen3/Eigen/src/Householder/Householder.h:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
-
-/usr/include/nlohmann/detail/conversions/to_json.hpp:
 
 /usr/include/eigen3/Eigen/src/Core/functors/TernaryFunctors.h:
 
@@ -1671,6 +1684,8 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 
 /usr/include/c++/11/bits/stl_map.h:
 
+../include/gmr/geometry_ground.hpp:
+
 /usr/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h:
 
 ../third_party/mujoco/include/mujoco/mjthread.h:
@@ -1688,10 +1703,6 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 /usr/include/eigen3/Eigen/src/Core/ConditionEstimator.h:
 
 ../third_party/mujoco/include/mujoco/mjui.h:
-
-/usr/include/nlohmann/json.hpp:
-
-/usr/include/c++/11/bits/stream_iterator.h:
 
 /usr/include/c++/11/bits/stl_raw_storage_iter.h:
 
@@ -1716,6 +1727,10 @@ CMakeFiles/smplx_bumi3_config_test.dir/tests/smplx_bumi3_config_test.cpp.o: ../t
 /usr/include/c++/11/backward/auto_ptr.h:
 
 /usr/include/nlohmann/detail/conversions/from_json.hpp:
+
+/usr/include/nlohmann/json.hpp:
+
+/usr/include/c++/11/bits/stream_iterator.h:
 
 /usr/include/c++/11/bits/stl_numeric.h:
 

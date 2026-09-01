@@ -498,7 +498,8 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
   /usr/include/c++/11/backward/auto_ptr.h \
   /usr/include/c++/11/pstl/glue_memory_defs.h \
   ../include/gmr/geometry_ground.hpp \
-  ../include/gmr/gmr_mink.hpp \
+  ../include/gmr/foot_contact_json.hpp \
+  ../include/gmr/foot_contact.hpp \
   /usr/include/nlohmann/json.hpp \
   /usr/include/c++/11/iterator \
   /usr/include/c++/11/bits/stream_iterator.h \
@@ -578,6 +579,7 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
   /usr/include/nlohmann/ordered_map.hpp \
   /usr/include/nlohmann/detail/macro_unscope.hpp \
   /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+  ../include/gmr/gmr_mink.hpp \
   ../third_party/daqp/include/api.h \
   ../third_party/daqp/include/daqp.h \
   ../third_party/daqp/include/factorization.h \
@@ -588,6 +590,9 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
   ../third_party/daqp/include/bnb.h \
   ../third_party/daqp/include/hierarchical.h \
   ../third_party/daqp/include/types.h \
+  ../include/gmr/realtime_motion_guard.hpp \
+  /usr/include/c++/11/unordered_set \
+  /usr/include/c++/11/bits/unordered_set.h \
   /usr/include/c++/11/fstream \
   /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
@@ -609,6 +614,8 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
 ../third_party/daqp/include/factorization.h:
 
 ../third_party/daqp/include/daqp.h:
+
+../include/gmr/gmr_mink.hpp:
 
 /usr/include/nlohmann/ordered_map.hpp:
 
@@ -703,6 +710,8 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
 /usr/include/c++/11/utility:
 
 /usr/include/c++/11/ios:
+
+/usr/include/c++/11/bits/unordered_set.h:
 
 /usr/include/c++/11/bits/stl_vector.h:
 
@@ -1070,6 +1079,8 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
 
 /usr/include/c++/11/limits:
 
+../include/gmr/realtime_motion_guard.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
 /usr/include/c++/11/bits/range_access.h:
@@ -1265,6 +1276,8 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
 
 /usr/include/c++/11/algorithm:
+
+../include/gmr/foot_contact.hpp:
 
 /usr/include/eigen3/Eigen/src/Core/util/Constants.h:
 
@@ -1482,6 +1495,8 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
 
 /usr/include/c++/11/bits/valarray_array.tcc:
 
+/usr/include/c++/11/unordered_set:
+
 /usr/include/eigen3/Eigen/src/Core/ProductEvaluators.h:
 
 /usr/include/c++/11/bits/std_function.h:
@@ -1491,8 +1506,6 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
 /usr/include/eigen3/Eigen/src/SVD/JacobiSVD.h:
 
 /usr/include/eigen3/Eigen/src/Core/products/GeneralMatrixMatrix.h:
-
-../include/gmr/gmr_mink.hpp:
 
 /usr/include/nlohmann/detail/json_pointer.hpp:
 
@@ -1707,6 +1720,8 @@ CMakeFiles/test_g1_to_bumi3.dir/tools/test_g1_to_bumi3.cpp.o: ../tools/test_g1_t
 /usr/include/nlohmann/detail/conversions/from_json.hpp:
 
 ../include/gmr/geometry_ground.hpp:
+
+../include/gmr/foot_contact_json.hpp:
 
 /usr/include/nlohmann/json.hpp:
 

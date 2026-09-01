@@ -492,8 +492,10 @@ public:
         frame_temporal_initialized_ = false;
         frame_temporal_start_qpos_.resize(0);
         previous_frame_velocity_.resize(0);
+        previous_frame_acceleration_.resize(0);
         frame_displacement_lower_.resize(0);
         frame_displacement_upper_.resize(0);
+        frame_displacement_target_.resize(0);
         frame_temporal_diagnostics_ = {};
     }
     bool frameTemporalLimitsEnabled() const {
@@ -582,8 +584,10 @@ private:
     std::vector<FrameTemporalDofLimit> frame_temporal_dof_limits_;
     Eigen::VectorXd frame_temporal_start_qpos_;
     Eigen::VectorXd previous_frame_velocity_;
+    Eigen::VectorXd previous_frame_acceleration_;
     Eigen::VectorXd frame_displacement_lower_;
     Eigen::VectorXd frame_displacement_upper_;
+    Eigen::VectorXd frame_displacement_target_;
     FrameTemporalLimitDiagnostics frame_temporal_diagnostics_;
 
     struct VelBound { int vadr; int qadr; double lo; double hi; };
@@ -693,10 +697,12 @@ private:
         for (int index = 0; index < nq_; ++index)
             frame_temporal_start_qpos_[index] = data_->qpos[index];
         previous_frame_velocity_ = Eigen::VectorXd::Zero(nv_);
+        previous_frame_acceleration_ = Eigen::VectorXd::Zero(nv_);
         frame_displacement_lower_ = Eigen::VectorXd::Constant(
             nv_, -std::numeric_limits<double>::infinity());
         frame_displacement_upper_ = Eigen::VectorXd::Constant(
             nv_, std::numeric_limits<double>::infinity());
+        frame_displacement_target_ = Eigen::VectorXd::Zero(nv_);
         frame_temporal_diagnostics_ = {};
     }
 
@@ -725,6 +731,7 @@ private:
                     -std::numeric_limits<double>::infinity();
                 frame_displacement_upper_[dof] =
                     std::numeric_limits<double>::infinity();
+                frame_displacement_target_[dof] = 0.0;
                 continue;
             }
             ++frame_temporal_diagnostics_.bounded_dofs;
@@ -746,6 +753,15 @@ private:
                 lower_velocity * frame_temporal_timestep_;
             frame_displacement_upper_[dof] =
                 upper_velocity * frame_temporal_timestep_;
+            // 零 jerk 的预测是“下一帧保持上一帧加速度”。它只是同一
+            // 接触 QP 中的软目标；接触硬约束或防穿地需要时仍可让步。
+            const double predicted_velocity = std::clamp(
+                previous_frame_velocity_[dof] +
+                    previous_frame_acceleration_[dof] *
+                        frame_temporal_timestep_,
+                lower_velocity, upper_velocity);
+            frame_displacement_target_[dof] =
+                predicted_velocity * frame_temporal_timestep_;
         }
         frame_temporal_limits_active_ = true;
     }
@@ -798,9 +814,35 @@ private:
                 ++frame_temporal_diagnostics_.total_active_bound_dofs;
             }
         }
-        previous_frame_velocity_ =
+        const Eigen::VectorXd current_velocity =
             displacement / frame_temporal_timestep_;
+        previous_frame_acceleration_ =
+            (current_velocity - previous_frame_velocity_) /
+            frame_temporal_timestep_;
+        previous_frame_velocity_ = current_velocity;
         frame_temporal_limits_active_ = false;
+    }
+
+    void addFrameJerkObjective(Eigen::MatrixXd& H, Eigen::VectorXd& f,
+                               double integration_timestep) const {
+        const double weight = foot_config_.settings.frame_jerk_weight;
+        if (!frame_temporal_limits_active_ || weight <= 0.0) return;
+
+        Eigen::VectorXd displacement(nv_);
+        mj_differentiatePos(
+            model_, displacement.data(), 1.0,
+            frame_temporal_start_qpos_.data(), data_->qpos);
+        const double squared_weight = weight * weight;
+        for (int dof = 0; dof < nv_; ++dof) {
+            if (!std::isfinite(frame_displacement_lower_[dof]) ||
+                !std::isfinite(frame_displacement_upper_[dof]))
+                continue;
+            const double target_velocity =
+                (frame_displacement_target_[dof] - displacement[dof]) /
+                integration_timestep;
+            H(dof, dof) += squared_weight;
+            f[dof] -= squared_weight * target_velocity;
+        }
     }
 
     BodyMap scaleHumanData(const BodyMap& src) const {
@@ -1171,8 +1213,20 @@ private:
             observation.center_world, body, true);
         const Eigen::Vector3d tilt_error =
             observation.normal_world.cross(Eigen::Vector3d::UnitZ());
+        Eigen::Vector2d planar_tilt_error = tilt_error.head<2>();
+        const double planar_norm = planar_tilt_error.norm();
+        const double tilt_angle = std::atan2(
+            planar_norm, observation.normal_world.z());
+        if (planar_norm <= 1e-9 ||
+            tilt_angle <= foot_config_.settings.tilt_deadzone) {
+            planar_tilt_error.setZero();
+        } else {
+            planar_tilt_error *=
+                (tilt_angle - foot_config_.settings.tilt_deadzone) /
+                planar_norm;
+        }
         const Eigen::Vector2d angular_target =
-            foot_config_.settings.tilt_kp * tilt_error.head<2>();
+            foot_config_.settings.tilt_kp * planar_tilt_error;
         addWeightedTask(
             H, f, angular_jacobian.topRows(2), angular_target,
             foot_config_.settings.tilt_weight * blend_scale * grounding_scale *
@@ -1632,6 +1686,7 @@ private:
             addFootObjective(H, f, right_contact_, foot_config_.right,
                              gmr::FootSide::Right);
         }
+        addFrameJerkObjective(H, f, dt);
 
         std::vector<double> vlo(nv_, -1e30), vhi(nv_, 1e30);
         for (auto& b : vel_bounds_) {

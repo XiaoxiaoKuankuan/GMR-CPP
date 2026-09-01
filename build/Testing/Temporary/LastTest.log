@@ -1,10 +1,10 @@
-Start testing: Jul 21 14:02 CST
+Start testing: Aug 27 18:41 CST
 ----------------------------------------------------------
-1/3 Testing: smplx_reader_protocol_test
-1/3 Test: smplx_reader_protocol_test
+1/9 Testing: smplx_reader_protocol_test
+1/9 Test: smplx_reader_protocol_test
 Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/smplx_reader_protocol_test"
 Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
-"smplx_reader_protocol_test" start time: Jul 21 14:02 CST
+"smplx_reader_protocol_test" start time: Aug 27 18:41 CST
 Output:
 ----------------------------------------------------------
 SMP1 parser self-test passed
@@ -12,72 +12,177 @@ SMP1 parser self-test passed
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"smplx_reader_protocol_test" end time: Jul 21 14:02 CST
+"smplx_reader_protocol_test" end time: Aug 27 18:41 CST
 "smplx_reader_protocol_test" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-2/3 Testing: smplx_bumi3_config_test
-2/3 Test: smplx_bumi3_config_test
+2/9 Testing: smplx_bumi3_config_test
+2/9 Test: smplx_bumi3_config_test
 Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/smplx_bumi3_config_test"
 Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
-"smplx_bumi3_config_test" start time: Jul 21 14:02 CST
+"smplx_bumi3_config_test" start time: Aug 27 18:41 CST
 Output:
 ----------------------------------------------------------
 [BUMI3 config] valid fixed runtime config, targets=12, XML=/home/weili/GMR-CPP_e1jump_lowdpi/assets/bumi3/mjcf/bumi3.xml
+[BUMI3 realtime] velocity/acceleration, arm jump, support/flight profiles validated
+[BUMI3 sole-plane neutral] tilt=(0.394511,0.332994)deg heel_toe=(-0.000920738,-0.000777776)m
+[BUMI3 sole-plane] daqp=1 relaxed=0 tilt=(0.462463,0.473423)deg heel_toe=(-0.000885059,-0.000582151)m lateral=(0.000282567,0.000425352)m center=(0.00218264,0.00260165)m min=(0.00159939,0.00209874)m
+[BUMI3 frame-shared QP] dt=0.0333333 active_bounds=7 bounded_dofs=27 max_overrun=3.22861e-08 max_root_linear_velocity=0.057735 max_joint_velocity=2.66667 foot_min=(0.00270019,0.00270265)m
+[BUMI3 config] valid fixed runtime config, targets=12, XML=/home/weili/GMR-CPP_e1jump_lowdpi/assets/bumi3/mjcf/bumi3.xml
 [BUMI3 Redis] qpos->GMT reorder verified: 9,15,0,10,16,1,5,11,17,2,6,12,18,3,7,13,19,4,8,14,20 key=gmt_online_frame_bumi
 [BUMI3 jump] scale/mapping/position-offset/rotation-offset preserved
-[BUMI3 jump] vertical translation preserved: base_delta_z=0.288992 standing_lowest_foot_z=-0.0991525 standing_robot_ankle_z=-0.082989 lowest_foot_target_delta_z=0.289034
+[BUMI3 jump] vertical translation preserved: base_delta_z=0.289034 standing_lowest_foot_z=-0.0991525 standing_robot_ankle_z=-0.0836905 lowest_foot_target_delta_z=0.289034
 [fixed-pose] stand
-  qpos= 0.00575095    0.104006     1.02437     0.47402   -0.401837   -0.669404   -0.407101    -1.46594    -1.25251    0.390847    -1.45973           0       -3.14     0.41737   -0.750737    -1.50651     1.57486   -0.257151   -0.344565           0       -0.96   0.0354421     1.42561  -0.0405439  -0.0991456 5.74761e-19       -0.96       -0.17
-  joint_limit_hits=7 target_position_error_mean=0.307744 target_rotation_error_mean=0.828001
-  body_z(base/left_foot/right_foot)=1.02437/0.578966/0.567961
+  qpos= 0.0195523   0.125689    0.44532   0.652413  -0.311639  -0.427592  -0.542589    1.56034   -1.43853  0.0722723  -0.851364          0  -0.774541       0.14       1.57      -2.26   0.844452  -0.177657  -0.300143 7.5698e-17      -0.96   0.121186   0.695965  0.0599967 -0.0180352          0      -0.96      -0.17
+  joint_limit_hits=9 target_position_error_mean=0.245268 target_rotation_error_mean=0.94412
+  body_z(base/left_foot/right_foot)=0.44532/0.0210428/0.0330949
 [fixed-pose] T-pose
-  qpos= 0.00646619    0.102216     1.02355    0.480465   -0.408548   -0.645613    -0.43061    -1.50517    -1.32136    0.338713    -1.43153 -1.8567e-18       -3.14    0.580423   -0.613373    -1.58255     1.53416   -0.248916   -0.306378           0       -0.96   0.0494509     1.37552  -0.0220705  -0.0494556           0       -0.96       -0.17
-  joint_limit_hits=7 target_position_error_mean=0.336999 target_rotation_error_mean=0.822809
-  body_z(base/left_foot/right_foot)=1.02355/0.578627/0.569632
+  qpos=  0.0191844    0.125899    0.445042    0.659718   -0.298688   -0.421583   -0.545734     1.55956    -1.45193   0.0697666   -0.818308           0   -0.725485        0.14        1.57       -2.26    0.815008   -0.187206   -0.303927 3.44901e-18       -0.96    0.117923    0.666829   0.0484609  -0.0230135           0       -0.96       -0.17
+  joint_limit_hits=9 target_position_error_mean=0.267077 target_rotation_error_mean=0.949455
+  body_z(base/left_foot/right_foot)=0.445042/0.0226585/0.0327728
 [fixed-pose] arms-down
-  qpos= 0.00575095    0.104006     1.02437     0.47402   -0.401837   -0.669404   -0.407101    -1.46594    -1.25251    0.390847    -1.45973           0       -3.14     0.41737   -0.750737    -1.50651     1.57486   -0.257151   -0.344565           0       -0.96   0.0354421     1.42561  -0.0405439  -0.0991456 5.74761e-19       -0.96       -0.17
-  joint_limit_hits=7 target_position_error_mean=0.307744 target_rotation_error_mean=0.828001
-  body_z(base/left_foot/right_foot)=1.02437/0.578966/0.567961
+  qpos= 0.0195523   0.125689    0.44532   0.652413  -0.311639  -0.427592  -0.542589    1.56034   -1.43853  0.0722723  -0.851364          0  -0.774541       0.14       1.57      -2.26   0.844452  -0.177657  -0.300143 7.5698e-17      -0.96   0.121186   0.695965  0.0599967 -0.0180352          0      -0.96      -0.17
+  joint_limit_hits=9 target_position_error_mean=0.245268 target_rotation_error_mean=0.94412
+  body_z(base/left_foot/right_foot)=0.44532/0.0210428/0.0330949
 [fixed-pose] left-arm-raise
-  qpos= 0.00619069    0.102787     1.02396    0.478222   -0.405868   -0.654836   -0.421621    -1.49019    -1.29114    0.345624    -1.44233           0       -3.14    0.516048   -0.666918    -1.55517     1.54979   -0.252229   -0.321438 4.33817e-18       -0.96   0.0441291     1.39472  -0.0294483  -0.0687298           0       -0.96       -0.17
-  joint_limit_hits=7 target_position_error_mean=0.333981 target_rotation_error_mean=0.827458
-  body_z(base/left_foot/right_foot)=1.02396/0.578848/0.569006
+  qpos= 0.0190018   0.125998   0.444873   0.662641  -0.295336  -0.420052  -0.545197    1.55982   -1.44872  0.0415337  -0.811511          0  -0.719095       0.14       1.57      -2.26   0.807175  -0.188071  -0.305891          0      -0.96   0.114665    0.65961  0.0461882 -0.0275534          0      -0.96      -0.17
+  joint_limit_hits=9 target_position_error_mean=0.265256 target_rotation_error_mean=0.953856
+  body_z(base/left_foot/right_foot)=0.444873/0.0228556/0.0326767
 [fixed-pose] right-arm-raise
-  qpos=  0.00604703     0.102918      1.02415     0.478639    -0.402656    -0.659758    -0.416525       -1.478     -1.27075     0.374743     -1.44295 -8.87691e-19        -3.14     0.470165    -0.707988     -1.53034      1.55536    -0.254175    -0.332459  2.69703e-18        -0.96    0.0406103      1.40282   -0.0342015   -0.0823773  3.64365e-18        -0.96        -0.17
-  joint_limit_hits=7 target_position_error_mean=0.323603 target_rotation_error_mean=0.827096
-  body_z(base/left_foot/right_foot)=1.02415/0.579053/0.56862
+  qpos=   0.0196905     0.125628     0.445787     0.650692     -0.31405    -0.427826    -0.543082      1.55997     -1.44164    0.0754448    -0.855389 -2.41235e-18    -0.798627         0.14         1.57        -2.26     0.848632    -0.175903    -0.298477  6.98551e-17        -0.96     0.123358     0.699779    0.0626861   -0.0148086            0        -0.96        -0.17
+  joint_limit_hits=9 target_position_error_mean=0.260028 target_rotation_error_mean=0.942759
+  body_z(base/left_foot/right_foot)=0.445787/0.0211829/0.0336307
 [fixed-pose] squat
-  qpos= 0.000698741     0.125785     0.772308     0.513213    -0.384548    -0.578363    -0.504214     -1.55616     -1.39373     0.316222     -1.24838 -5.14996e-19        -3.14     0.925711    -0.420675     -1.67534       1.2655    -0.263683    -0.186302            0        -0.96    0.0511711      1.07062    0.0181633    0.0767932  1.13956e-18        -0.96        -0.17
-  joint_limit_hits=7 target_position_error_mean=0.281493 target_rotation_error_mean=0.769587
-  body_z(base/left_foot/right_foot)=0.772308/0.344217/0.3468
+  qpos= 0.0124392   0.147978   0.378786   0.686952  -0.247197  -0.402464   -0.55228    1.55907   -1.36477  0.0615641  -0.715617          0  -0.580903       0.14       1.57      -2.26    0.63607  -0.239955  -0.292596          0      -0.96  0.0851612   0.482075 0.00800931 -0.0356259          0      -0.96      -0.17
+  joint_limit_hits=9 target_position_error_mean=0.227037 target_rotation_error_mean=0.925593
+  body_z(base/left_foot/right_foot)=0.378786/-0.0254315/-0.0174353
 [fixed-pose] single-leg-raise
-  qpos= 0.000268251     0.114951      1.07168     0.526334    -0.236654    -0.598683     -0.55547        -1.57     -1.17767     0.435015     -1.01782 -2.71051e-19     -1.13068         1.04         1.57        -2.26     0.994363    -0.140093    0.0991105            0        -0.96        -0.17     0.997618     -0.31618    0.0323057  2.30988e-18        -0.96        -0.17
-  joint_limit_hits=11 target_position_error_mean=0.254534 target_rotation_error_mean=0.842537
-  body_z(base/left_foot/right_foot)=1.07168/0.706954/0.608273
+  qpos=  0.0155659    0.140766    0.494439    0.715031    0.106448   -0.544629    -0.42518    0.229623   -0.155052    0.448761    0.572135           0        1.57    0.113118        1.57   -0.191856    0.361747       -0.66   -0.189511 9.14169e-18       -0.96       -0.17    0.564024   -0.840362   -0.383003           0       -0.96       -0.17
+  joint_limit_hits=10 target_position_error_mean=0.220091 target_rotation_error_mean=1.00061
+  body_z(base/left_foot/right_foot)=0.494439/0.189103/0.0332688
 smplx_bumi3_config_test: PASS
 <end of output>
-Test time =   3.30 sec
+Test time =   4.48 sec
 ----------------------------------------------------------
 Test Passed.
-"smplx_bumi3_config_test" end time: Jul 21 14:02 CST
-"smplx_bumi3_config_test" time elapsed: 00:00:03
+"smplx_bumi3_config_test" end time: Aug 27 18:41 CST
+"smplx_bumi3_config_test" time elapsed: 00:00:04
 ----------------------------------------------------------
 
-3/3 Testing: ground_clearance_test
-3/3 Test: ground_clearance_test
+3/9 Testing: ground_clearance_test
+3/9 Test: ground_clearance_test
 Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/ground_clearance_test"
 Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
-"ground_clearance_test" start time: Jul 21 14:02 CST
+"ground_clearance_test" start time: Aug 27 18:41 CST
 Output:
 ----------------------------------------------------------
-ground_clearance_test: PASS default=0.06 bumi3=0.02 fixed_offset=0.41
+ground_clearance_test: PASS default=0.06 bumi3=0.04 fixed_offset=0.41
 <end of output>
-Test time =   0.47 sec
+Test time =   0.51 sec
 ----------------------------------------------------------
 Test Passed.
-"ground_clearance_test" end time: Jul 21 14:02 CST
+"ground_clearance_test" end time: Aug 27 18:41 CST
 "ground_clearance_test" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Jul 21 14:02 CST
+4/9 Testing: g1_motion_source_test
+4/9 Test: g1_motion_source_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/g1_motion_source_test"
+Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
+"g1_motion_source_test" start time: Aug 27 18:41 CST
+Output:
+----------------------------------------------------------
+g1_motion_source_test: PASS
+<end of output>
+Test time =   0.17 sec
+----------------------------------------------------------
+Test Passed.
+"g1_motion_source_test" end time: Aug 27 18:41 CST
+"g1_motion_source_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/9 Testing: foot_contact_detector_test
+5/9 Test: foot_contact_detector_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/foot_contact_detector_test"
+Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
+"foot_contact_detector_test" start time: Aug 27 18:41 CST
+Output:
+----------------------------------------------------------
+foot_contact_detector_test: PASS
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"foot_contact_detector_test" end time: Aug 27 18:41 CST
+"foot_contact_detector_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/9 Testing: qpos_interpolator_test
+6/9 Test: qpos_interpolator_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/qpos_interpolator_test"
+Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
+"qpos_interpolator_test" start time: Aug 27 18:41 CST
+Output:
+----------------------------------------------------------
+qpos_interpolator_test: PASS
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"qpos_interpolator_test" end time: Aug 27 18:41 CST
+"qpos_interpolator_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/9 Testing: realtime_motion_guard_test
+7/9 Test: realtime_motion_guard_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/realtime_motion_guard_test"
+Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
+"realtime_motion_guard_test" start time: Aug 27 18:41 CST
+Output:
+----------------------------------------------------------
+realtime_motion_guard_test: PASS
+<end of output>
+Test time =   0.18 sec
+----------------------------------------------------------
+Test Passed.
+"realtime_motion_guard_test" end time: Aug 27 18:41 CST
+"realtime_motion_guard_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/9 Testing: g1_to_bumi3_config_test
+8/9 Test: g1_to_bumi3_config_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/g1_to_bumi3_config_test"
+Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
+"g1_to_bumi3_config_test" start time: Aug 27 18:41 CST
+Output:
+----------------------------------------------------------
+g1_to_bumi3_config_test: PASS mappings=12 sole_z=3.46945e-18 seated_sole_z=-0.005 worst_forearm_error_deg=2.67625
+<end of output>
+Test time =   1.71 sec
+----------------------------------------------------------
+Test Passed.
+"g1_to_bumi3_config_test" end time: Aug 27 18:41 CST
+"g1_to_bumi3_config_test" time elapsed: 00:00:01
+----------------------------------------------------------
+
+9/9 Testing: g1_bumi3_foot_constraint_test
+9/9 Test: g1_bumi3_foot_constraint_test
+Command: "/home/weili/GMR-CPP_e1jump_lowdpi/build/g1_bumi3_foot_constraint_test"
+Directory: /home/weili/GMR-CPP_e1jump_lowdpi/build
+"g1_bumi3_foot_constraint_test" start time: Aug 27 18:41 CST
+Output:
+----------------------------------------------------------
+[light-contact] slip=(0.0698104,0.0698104)m tilt=(7.86257,7.86257)deg height_max=(0.0202467,0.0202467)m
+[waist-axis] yaw_only_change=0.00149984 legacy_change=0.0772695
+[torso-pitch] trunk_change=0.463828 hip_change=0.471412
+[temporal] regularized_step=0.0984293 raw_step=0.123037
+g1_bumi3_foot_constraint_test: PASS slip=(0.0698104,0.0698104)m tilt=(7.86257,7.86257)deg
+<end of output>
+Test time =   2.10 sec
+----------------------------------------------------------
+Test Passed.
+"g1_bumi3_foot_constraint_test" end time: Aug 27 18:41 CST
+"g1_bumi3_foot_constraint_test" time elapsed: 00:00:02
+----------------------------------------------------------
+
+End testing: Aug 27 18:41 CST

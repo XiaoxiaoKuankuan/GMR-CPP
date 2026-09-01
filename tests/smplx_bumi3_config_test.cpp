@@ -303,8 +303,12 @@ void validateRealtimeProfiles(const nlohmann::json& config,
     if (!foot.settings.hard_support_constraints ||
         foot.settings.support_height != 0.001 ||
         foot.settings.support_height_upper != 0.003 ||
-        foot.settings.max_heel_toe_height_difference != 0.003 ||
-        foot.settings.max_lateral_height_difference != 0.003 ||
+        foot.settings.tilt_weight != 12.0 ||
+        foot.settings.tilt_kp != 2.5 ||
+        std::abs(foot.settings.tilt_deadzone -
+                 0.02617993877991494) > 1e-12 ||
+        foot.settings.max_heel_toe_height_difference != 0.006 ||
+        foot.settings.max_lateral_height_difference != 0.006 ||
         foot.settings.mesh_floor_margin != 0.0006 ||
         foot.settings.sole_corner_floor_margin != 0.0027 ||
         foot.settings.max_joint_velocity != 6.0 ||
@@ -313,9 +317,11 @@ void validateRealtimeProfiles(const nlohmann::json& config,
         foot.settings.max_root_vertical_velocity != 0.45 ||
         foot.settings.max_root_linear_acceleration != 3.0 ||
         foot.settings.max_root_angular_velocity != 6.0 ||
-        foot.settings.max_root_angular_acceleration != 20.0)
+        foot.settings.max_root_angular_acceleration != 20.0 ||
+        foot.settings.frame_jerk_weight != 0.25 ||
+        foot.settings.transition_frames != 12)
         throw std::runtime_error(
-            "SMPL-X stance sole plane must use the configured 1--3 mm band");
+            "SMPL-X stance sole plane must use the low-gain jerk profile");
     const auto detector = gmr::footDetectorConfigFromJson(
         config.at("foot_contact"));
     if (!detector.allow_flight || detector.enter_frames != 4 ||
@@ -424,7 +430,7 @@ void validateHardSolePlane(const std::string& xml_path,
     }
 
     const auto& status = solver.footContactDiagnostics();
-    const double plane_tolerance = 0.0035;
+    const double plane_tolerance = 0.0065;
     std::cout << "[BUMI3 sole-plane] daqp=" << status.daqp_exitflag
               << " relaxed=" << status.relaxed_slip_constraints
               << " tilt=(" << status.left_tilt_degrees << ','

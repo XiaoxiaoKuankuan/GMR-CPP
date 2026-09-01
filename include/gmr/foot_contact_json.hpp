@@ -127,6 +127,8 @@ inline FootConstraintConfig footConstraintConfigFromJson(
         target.height_weight = settings.value("height_weight", target.height_weight);
         target.xy_kp = settings.value("xy_kp", target.xy_kp);
         target.tilt_kp = settings.value("tilt_kp", target.tilt_kp);
+        target.tilt_deadzone = settings.value(
+            "tilt_deadzone_rad", target.tilt_deadzone);
         target.height_kp = settings.value("height_kp", target.height_kp);
         target.max_anchor_correction_speed = settings.value(
             "max_anchor_correction_speed_mps", target.max_anchor_correction_speed);
@@ -172,6 +174,8 @@ inline FootConstraintConfig footConstraintConfigFromJson(
         target.max_root_angular_acceleration = settings.value(
             "max_root_angular_acceleration_rps2",
             target.max_root_angular_acceleration);
+        target.frame_jerk_weight = settings.value(
+            "frame_jerk_weight", target.frame_jerk_weight);
         target.forced_support_weight_scale = settings.value(
             "forced_support_weight_scale",
             target.forced_support_weight_scale);
@@ -187,6 +191,8 @@ inline FootConstraintConfig footConstraintConfigFromJson(
         std::isfinite(settings.height_weight) && settings.height_weight > 0.0 &&
         std::isfinite(settings.xy_kp) && settings.xy_kp > 0.0 &&
         std::isfinite(settings.tilt_kp) && settings.tilt_kp > 0.0 &&
+        std::isfinite(settings.tilt_deadzone) &&
+        settings.tilt_deadzone >= 0.0 && settings.tilt_deadzone <= 0.20 &&
         std::isfinite(settings.height_kp) && settings.height_kp > 0.0 &&
         std::isfinite(settings.max_anchor_correction_speed) &&
         settings.max_anchor_correction_speed > 0.0 &&
@@ -224,6 +230,8 @@ inline FootConstraintConfig footConstraintConfigFromJson(
         settings.max_root_angular_velocity > 0.0 &&
         std::isfinite(settings.max_root_angular_acceleration) &&
         settings.max_root_angular_acceleration > 0.0 &&
+        std::isfinite(settings.frame_jerk_weight) &&
+        settings.frame_jerk_weight >= 0.0 &&
         std::isfinite(settings.forced_support_weight_scale) &&
         settings.forced_support_weight_scale >= 0.0 &&
         settings.forced_support_weight_scale <= 1.0 &&

@@ -424,7 +424,8 @@ CMakeFiles/smplx_bumi3_batch_server.dir/apps/smplx_bumi3_batch_server.cpp.o: \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/ext/concurrence.h \
- /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/gmr_mink.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact_json.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mujoco.h \
  /usr/include/c++/11/math.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/mujoco/include/mujoco/mjdata.h \
@@ -509,6 +510,8 @@ CMakeFiles/smplx_bumi3_batch_server.dir/apps/smplx_bumi3_batch_server.cpp.o: \
  /usr/include/nlohmann/ordered_map.hpp \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
  /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/geometry_ground.hpp \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/gmr_mink.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/api.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/daqp.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/factorization.h \
@@ -519,14 +522,13 @@ CMakeFiles/smplx_bumi3_batch_server.dir/apps/smplx_bumi3_batch_server.cpp.o: \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/bnb.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/hierarchical.h \
  /home/weili/GMR-CPP_e1jump_lowdpi/third_party/daqp/include/types.h \
- /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact_json.hpp \
- /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/foot_contact.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/realtime_motion_guard.hpp \
  /usr/include/c++/11/unordered_set \
  /usr/include/c++/11/bits/unordered_set.h /usr/include/c++/11/fstream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/iostream \
+ /home/weili/GMR-CPP_e1jump_lowdpi/include/gmr/realtime_motion_guard_json.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/readers/smplx_reader.hpp \
  /home/weili/GMR-CPP_e1jump_lowdpi/readers/base_reader.hpp \
  /usr/include/c++/11/thread /usr/include/c++/11/bits/std_thread.h \

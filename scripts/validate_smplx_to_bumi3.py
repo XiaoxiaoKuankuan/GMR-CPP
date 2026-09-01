@@ -132,6 +132,12 @@ def main() -> None:
     )
     contact_limits = foot_contact["constraints"]
     require(
+        float(contact_limits["tilt_weight"]) == 12.0 and
+        float(contact_limits["tilt_kp"]) == 2.5 and
+        abs(float(contact_limits["tilt_deadzone_rad"]) -
+            math.radians(1.5)) <= 1e-12 and
+        float(contact_limits["max_heel_toe_height_difference_m"]) == 0.006 and
+        float(contact_limits["max_lateral_height_difference_m"]) == 0.006 and
         float(contact_limits["mesh_floor_margin_m"]) == 0.0006 and
         float(contact_limits["sole_corner_floor_margin_m"]) == 0.0027 and
         float(contact_limits["max_joint_velocity_rps"]) == 6.0 and
@@ -140,8 +146,10 @@ def main() -> None:
         float(contact_limits["max_root_vertical_velocity_mps"]) == 0.45 and
         float(contact_limits["max_root_linear_acceleration_mps2"]) == 3.0 and
         float(contact_limits["max_root_angular_velocity_rps"]) == 6.0 and
-        float(contact_limits["max_root_angular_acceleration_rps2"]) == 20.0,
-        "batch frame-shared temporal limits differ from the reviewed profile",
+        float(contact_limits["max_root_angular_acceleration_rps2"]) == 20.0 and
+        float(contact_limits["frame_jerk_weight"]) == 0.25 and
+        int(contact_limits["transition_frames"]) == 12,
+        "batch low-gain sole/jerk profile differs from the reviewed profile",
     )
 
     base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "base_link")
